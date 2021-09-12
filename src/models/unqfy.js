@@ -1,9 +1,14 @@
 
-const picklify = require('picklify'); // para cargar/guarfar unqfy
-const fs = require('fs'); // para cargar/guarfar unqfy
-
+const picklify = require('picklify'); // para cargar/guardar unqfy
+const fs = require('fs'); // para cargar/guardar unqfy
+const Artist = require('./artist.js');
 
 class UNQfy {
+
+  constructor() {
+    this._artists = {};
+    this._idCounter = 1;
+  }
 
   // artistData: objeto JS con los datos necesarios para crear un artista
   //   artistData.name (string)
@@ -15,8 +20,12 @@ class UNQfy {
     - una propiedad name (string)
     - una propiedad country (string)
   */
+    const newId = this._generateId();
+    const newArtist = new Artist(newId, artistData.name, artistData.country);
+    
+    this._artists[newId] = newArtist;
+    return newArtist;
   }
-
 
   // albumData: objeto JS con los datos necesarios para crear un album
   //   albumData.name (string)
@@ -46,7 +55,10 @@ class UNQfy {
   }
 
   getArtistById(id) {
+    const maybeArtist = this._artists[id];
+    if (!maybeArtist) throw new Error('Artist not found');
 
+    return maybeArtist;
   }
 
   getAlbumById(id) {
@@ -98,6 +110,11 @@ class UNQfy {
     //COMPLETAR POR EL ALUMNO: Agregar a la lista todas las clases que necesitan ser instanciadas
     const classes = [UNQfy];
     return picklify.unpicklify(JSON.parse(serializedData), classes);
+  }
+
+  //PRIVATE
+  _generateId() {
+    return this._idCounter++;
   }
 }
 

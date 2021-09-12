@@ -25,15 +25,34 @@ describe('Add, remove and filter data', () => {
     unqfy = new libunqfy.UNQfy();
   });
 
-  it('should add an artist', () => {
-    const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+  describe('Artist', () =>{
 
-    assert.equal(artist.name, 'Guns n\' Roses');
-    assert.equal(artist.country, 'USA');
+    it('should add an artist', () => {
+      const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+
+      assert.equal(artist.name, 'Guns n\' Roses');
+      assert.equal(artist.country, 'USA');
+
+    });
+
+    it('should obtain an artist by id', () => {
+      const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+      const foundArtist = unqfy.getArtistById(artist.id);
+
+      assert.equal(artist, foundArtist);
+    });
+
+    it('throws exception when an artist is not found by id', () => {
+      const inexistentId = 99999;
+      
+      const expectedThrown = () => unqfy.getArtistById(inexistentId);
+      
+      assert.throws(expectedThrown, `Artist not found`);
+    });
 
   });
 
-  it('should add an album to an artist', () => {
+  xit('should add an album to an artist', () => {
     const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
     const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
 
@@ -41,7 +60,7 @@ describe('Add, remove and filter data', () => {
     assert.equal(album.year, 1987);
   });
 
-  it('should add a track to an album', () => {
+  xit('should add a track to an album', () => {
     const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
     const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
     const track = createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock']);
@@ -53,7 +72,7 @@ describe('Add, remove and filter data', () => {
     assert.lengthOf(track.genres, 2);
   });
 
-  it('should find different things by name', () => {
+  xit('should find different things by name', () => {
     const artist1 = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
     const album1 = createAndAddAlbum(unqfy, artist1.id, 'Roses Album', 1987);
     const track = createAndAddTrack(unqfy, album1.id, 'Roses track', 200, ['pop', 'movie']);
@@ -68,7 +87,7 @@ describe('Add, remove and filter data', () => {
     });
   });
 
-  it('should get all tracks matching genres', () => {
+  xit('should get all tracks matching genres', () => {
     const artist1 = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
     const album1 = createAndAddAlbum(unqfy, artist1.id, 'Appetite for Destruction', 1987);
     const t0 = createAndAddTrack(unqfy, album1.id, 'Welcome to the jungle', 200, ['rock', 'hard rock', 'movie']);
@@ -91,7 +110,7 @@ describe('Add, remove and filter data', () => {
     assert.equal(tracksMatching.includes(t3), true);
   });
 
-  it('should get all tracks matching artist', () => {
+  xit('should get all tracks matching artist', () => {
     const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
     const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
     const t1 = createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock']);
@@ -123,7 +142,7 @@ describe('Playlist Creation and properties', () => {
     unqfy = new libunqfy.UNQfy();
   });
 
-  it('should create a playlist as requested', () => {
+  xit('should create a playlist as requested', () => {
     const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
     const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
     const t1 = createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock', 'movie']);
