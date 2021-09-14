@@ -2,6 +2,8 @@
 
 const fs = require('fs'); // necesitado para guardar/cargar unqfy
 const unqmod = require('./src/models/unqfy'); // importamos el modulo unqfy
+const ArtistController = require('./src/controllers/ArtistController')
+const Controller = require('./src/controllers/Controller.js')
 
 // Retorna una instancia de UNQfy. Si existe filename, recupera la instancia desde el archivo.
 function getUNQfy(filename = 'data.json') {
@@ -15,6 +17,10 @@ function getUNQfy(filename = 'data.json') {
 function saveUNQfy(unqfy, filename = 'data.json') {
   unqfy.save(filename);
 }
+
+//Private
+let _controller = new Controller();
+let _artistController = new ArtistController();
 
 /*
  En esta funcion deberán interpretar los argumentos pasado por linea de comandos
@@ -45,12 +51,6 @@ function saveUNQfy(unqfy, filename = 'data.json') {
    4. Guardar el estado de UNQfy (saveUNQfy)
 
 */
-function valueOf(field, args) {
-  const fieldIndex = args.indexOf(field);
-
-  return args[fieldIndex + 1];
-}
-
 function neededInfo() {
   return {
     unqfy: getUNQfy(),
@@ -59,29 +59,18 @@ function neededInfo() {
   }
 }
 
+function setActualController(command) {
+  if (command.includes("artist")) _controller.setController(_artistController);
+  else console.log('User error: Invalid command. Please, try again.');
+}
+
 function execute(unqfy, command, args) {
-  switch (command) {
-    case 'addArtist':
-      const name = valueOf('--name', args);
-      const country = valueOf('--country', args);
-      
-      return unqfy.addArtist({ name, country });
-    case 'getArtist':
-      const id = valueOf('--id', args);
-      try {
-        return `== ARTIST FOUND === \n${JSON.stringify(unqfy.getArtistById(id))}`;
-      } catch (err) {
-        return `UNQfy error: ${err.message}`;
-      }
-    default: {
-      console.log('User error: Invalid command. Please, try again.'); 
-      break;
-    }
-  }
+  setActualController(command.toLowerCase());
+  return _controller.execute(unqfy, command, args);
 }
 
 function main() {
-  const {unqfy, args, command} = neededInfo();
+  const { unqfy, args, command } = neededInfo();
 
   console.log(execute(unqfy, command, args));
 
