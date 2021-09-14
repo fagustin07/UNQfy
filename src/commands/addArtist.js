@@ -1,8 +1,9 @@
-const Command = require("./Command");
+const Command = require("./command");
 
 class AddArtist extends Command {
-    constructor(){
-        super("addArtist")
+
+    static command() {
+        return 'addArtist';
     }
 
     execute(unqfy,args){

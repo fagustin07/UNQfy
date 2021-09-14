@@ -2,9 +2,7 @@
 
 const fs = require('fs'); // necesitado para guardar/cargar unqfy
 const unqmod = require('./src/models/unqfy'); // importamos el modulo unqfy
-const AddArtist = require('./src/controllers/AddArtist.js')
-const GetArtist = require('./src/controllers/GetArtist.js')
-const Controller = require('./src/controllers/Controller.js')
+const CommandManager = require('./src/commands/commandManager.js')
 
 // Retorna una instancia de UNQfy. Si existe filename, recupera la instancia desde el archivo.
 function getUNQfy(filename = 'data.json') {
@@ -19,10 +17,28 @@ function saveUNQfy(unqfy, filename = 'data.json') {
   unqfy.save(filename);
 }
 
-//Private
-let _controller = new Controller();
-_controller.addCommand(new AddArtist());
-_controller.addCommand(new GetArtist());
+const _commandManager = new CommandManager();
+
+function neededInfo() {
+  return {
+    unqfy: getUNQfy(),
+    command: process.argv[2],
+    args: process.argv.splice(3)
+  }
+}
+
+function main() {
+  const { unqfy, args, command } = neededInfo();
+  const result = _commandManager
+                    .findCommand(command)
+                    .execute(unqfy, args);
+
+  console.log(result);
+
+  saveUNQfy(unqfy);
+}
+
+main();
 
 /*
  En esta funcion deberán interpretar los argumentos pasado por linea de comandos
@@ -53,24 +69,3 @@ _controller.addCommand(new GetArtist());
    4. Guardar el estado de UNQfy (saveUNQfy)
 
 */
-function neededInfo() {
-  return {
-    unqfy: getUNQfy(),
-    command: process.argv[2],
-    args: process.argv.splice(3)
-  }
-}
-
-function execute(unqfy, command, args) {
-  return _controller.execute(unqfy, command, args);
-}
-
-function main() {
-  const { unqfy, args, command } = neededInfo();
-
-  console.log(execute(unqfy, command, args));
-
-  saveUNQfy(unqfy);
-}
-
-main();
