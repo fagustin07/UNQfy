@@ -33,6 +33,8 @@ class UNQfy {
      - una propiedad name (string)
      - una propiedad year (number)
   */
+    
+    return this._artistService.createAlbum(artistId, albumData)
   }
 
 
@@ -55,7 +57,7 @@ class UNQfy {
   }
 
   getAlbumById(id) {
-
+    return this._artistService.getAlbumById(id);
   }
 
   getTrackById(id) {

@@ -17,8 +17,6 @@ function saveUNQfy(unqfy, filename = 'data.json') {
   unqfy.save(filename);
 }
 
-const _commandManager = new CommandManager();
-
 function neededInfo() {
   return {
     unqfy: getUNQfy(),
@@ -29,7 +27,7 @@ function neededInfo() {
 
 function main() {
   const { unqfy, args, command } = neededInfo();
-  const result = _commandManager
+  const result = new CommandManager()
                     .findCommand(command)
                     .execute(unqfy, args);
 

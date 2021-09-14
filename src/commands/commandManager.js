@@ -1,9 +1,11 @@
 const AddArtist = require('./addArtist');
+const AddAlbum = require('./addAlbum.js');
 const GetArtist = require('./getArtist');
+const GetAlbum = require('./getAlbum');
 
 class CommandManager {
     constructor(){
-        this._commands = [ AddArtist, GetArtist ];
+        this._commands = [ AddArtist, GetArtist, AddAlbum, GetAlbum ];
     }
 
     addCommand(command) {

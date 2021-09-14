@@ -15,12 +15,31 @@ class ArtistService {
       this._artists[newId] = newArtist;
       return newArtist;
     }
-  
+
+    createAlbum(artistId, albumData) {
+      const newId = this._generateId();
+      const album = this.getArtistById(artistId)
+                      .createAlbum({...albumData, id: newId});
+
+      return album;
+    }
+
     getArtistById(id) {
       return this._getOrThrow(id, 'Artist not found');
     }
 
+
+    getAlbumById(id) {
+      return this._albums().find(album => album.id === id);
+    }
+  
     //PRIVATE
+
+    _albums() {
+      return Object.values(this._artists)
+                  .reduce((albums, artist) => albums.concat(artist.albums()), []);
+    }
+
     _getOrThrow(id, msgError) {
         const maybeArtist = this._artists[id];
         if (!maybeArtist) throw new Error(msgError);

@@ -61,12 +61,22 @@ describe('Add, remove and filter data', () => {
 
   });
 
-  xit('should add an album to an artist', () => {
-    const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
-    const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
+  describe('Albums', () => {
+    it('should add an album to an artist', () => {
+      const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+      const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
 
-    assert.equal(album.name, 'Appetite for Destruction');
-    assert.equal(album.year, 1987);
+      assert.equal(album.name, 'Appetite for Destruction');
+      assert.equal(album.year, 1987);
+    });
+
+    it('should find an album', () => {
+      const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+      const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
+
+      assert.equal(unqfy.getAlbumById(album.id), album);
+    });
+    
   });
 
   xit('should add a track to an album', () => {
@@ -80,7 +90,7 @@ describe('Add, remove and filter data', () => {
     assert.equal(track.genres.includes('hard rock'), true);
     assert.lengthOf(track.genres, 2);
   });
-
+  
   xit('should find different things by name', () => {
     const artist1 = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
     const album1 = createAndAddAlbum(unqfy, artist1.id, 'Roses Album', 1987);

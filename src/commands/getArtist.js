@@ -7,7 +7,7 @@ class GetArtist extends Command {
     }
 
     execute(unqfy, args) {
-        const id = this.valueOf('--id', args);
+        const id = parseInt(this.valueOf('--id', args));
         try {
             return `== ARTIST FOUND === \n${JSON.stringify(unqfy.getArtistById(id))}`;
         } catch (err) {
