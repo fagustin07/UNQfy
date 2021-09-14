@@ -9,6 +9,7 @@ class ArtistService {
 
     addArtist(artistData) {
       const newId = this._generateId();
+      if(this._exists(artistData.name)) throw Error('Artist alredy exists')
       const newArtist = new Artist(newId, artistData.name, artistData.country);
       
       this._artists[newId] = newArtist;
@@ -29,6 +30,11 @@ class ArtistService {
 
     _generateId() {
         return this._idCounter++;
+    }
+
+    _exists(artistName){
+      let artists = Object.values(this._artists)
+      return artists.some(anArtist => anArtist.name.toLowerCase() === artistName.toLowerCase())
     }
 }
 

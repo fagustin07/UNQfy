@@ -50,6 +50,15 @@ describe('Add, remove and filter data', () => {
       assert.throws(expectedThrown, `Artist not found`);
     });
 
+    it('an artist cannot be created with a name that already exists', () => {
+      const artist = createAndAddArtist(unqfy, 'Nirvana', 'USA');
+      
+      const expectedThrown = () => createAndAddArtist(unqfy, 'Nirvana', 'USA');
+      
+      assert.throws(expectedThrown, `Artist alredy exists`);
+    });
+
+
   });
 
   xit('should add an album to an artist', () => {

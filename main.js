@@ -2,6 +2,7 @@
 
 const fs = require('fs'); // necesitado para guardar/cargar unqfy
 const unqmod = require('./src/models/unqfy'); // importamos el modulo unqfy
+const CommandManager = require('./src/commands/commandManager.js')
 
 // Retorna una instancia de UNQfy. Si existe filename, recupera la instancia desde el archivo.
 function getUNQfy(filename = 'data.json') {
@@ -15,6 +16,29 @@ function getUNQfy(filename = 'data.json') {
 function saveUNQfy(unqfy, filename = 'data.json') {
   unqfy.save(filename);
 }
+
+const _commandManager = new CommandManager();
+
+function neededInfo() {
+  return {
+    unqfy: getUNQfy(),
+    command: process.argv[2],
+    args: process.argv.splice(3)
+  }
+}
+
+function main() {
+  const { unqfy, args, command } = neededInfo();
+  const result = _commandManager
+                    .findCommand(command)
+                    .execute(unqfy, args);
+
+  console.log(result);
+
+  saveUNQfy(unqfy);
+}
+
+main();
 
 /*
  En esta funcion deberán interpretar los argumentos pasado por linea de comandos
@@ -45,47 +69,3 @@ function saveUNQfy(unqfy, filename = 'data.json') {
    4. Guardar el estado de UNQfy (saveUNQfy)
 
 */
-function valueOf(field, args) {
-  const fieldIndex = args.indexOf(field);
-
-  return args[fieldIndex + 1];
-}
-
-function neededInfo() {
-  return {
-    unqfy: getUNQfy(),
-    command: process.argv[2],
-    args: process.argv.splice(3)
-  }
-}
-
-function execute(unqfy, command, args) {
-  switch (command) {
-    case 'addArtist':
-      const name = valueOf('--name', args);
-      const country = valueOf('--country', args);
-      
-      return unqfy.addArtist({ name, country });
-    case 'getArtist':
-      const id = valueOf('--id', args);
-      try {
-        return `== ARTIST FOUND === \n${JSON.stringify(unqfy.getArtistById(id))}`;
-      } catch (err) {
-        return `UNQfy error: ${err.message}`;
-      }
-    default: {
-      console.log('User error: Invalid command. Please, try again.'); 
-      break;
-    }
-  }
-}
-
-function main() {
-  const {unqfy, args, command} = neededInfo();
-
-  console.log(execute(unqfy, command, args));
-
-  saveUNQfy(unqfy);
-}
-
-main();
