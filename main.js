@@ -2,7 +2,8 @@
 
 const fs = require('fs'); // necesitado para guardar/cargar unqfy
 const unqmod = require('./src/models/unqfy'); // importamos el modulo unqfy
-const ArtistController = require('./src/controllers/ArtistController')
+const AddArtist = require('./src/controllers/AddArtist.js')
+const GetArtist = require('./src/controllers/GetArtist.js')
 const Controller = require('./src/controllers/Controller.js')
 
 // Retorna una instancia de UNQfy. Si existe filename, recupera la instancia desde el archivo.
@@ -20,7 +21,8 @@ function saveUNQfy(unqfy, filename = 'data.json') {
 
 //Private
 let _controller = new Controller();
-let _artistController = new ArtistController();
+_controller.addCommand(new AddArtist());
+_controller.addCommand(new GetArtist());
 
 /*
  En esta funcion deberán interpretar los argumentos pasado por linea de comandos
@@ -59,13 +61,7 @@ function neededInfo() {
   }
 }
 
-function setActualController(command) {
-  if (command.includes("artist")) _controller.setController(_artistController);
-  else console.log('User error: Invalid command. Please, try again.');
-}
-
 function execute(unqfy, command, args) {
-  setActualController(command.toLowerCase());
   return _controller.execute(unqfy, command, args);
 }
 

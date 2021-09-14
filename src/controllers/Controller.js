@@ -1,20 +1,20 @@
-const ArtistController = require("./ArtistController");
 
 class Controller {
     constructor(){
-        this._controller = null;
+        this._commands = [];
     }
 
-    controller = () => this._controller
-
-    setController(controller){
-        this._controller = controller;
+    addCommand(command) {
+        this._commands.push(command);
     }
 
-    execute(unqfy, command, args) {
-        if(this.controller() !== null) return this._controller.execute(unqfy,command,args);
-        else throw Error("Controller not set");
-     }
+    execute(unqfy,command,args){
+        let commandFinded = this._commands.find(aCommand => aCommand.isCommand(command));
+
+        if(commandFinded) return commandFinded.execute(unqfy,args);
+        else throw Error("Command not recognized");
+        
+    }
 }
 
 module.exports = Controller
