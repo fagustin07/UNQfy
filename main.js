@@ -45,10 +45,47 @@ function saveUNQfy(unqfy, filename = 'data.json') {
    4. Guardar el estado de UNQfy (saveUNQfy)
 
 */
+function valueOf(field, args) {
+  const fieldIndex = args.indexOf(field);
+
+  return args[fieldIndex + 1];
+}
+
+function neededInfo() {
+  return {
+    unqfy: getUNQfy(),
+    command: process.argv[2],
+    args: process.argv.splice(3)
+  }
+}
+
+function execute(unqfy, command, args) {
+  switch (command) {
+    case 'addArtist':
+      const name = valueOf('--name', args);
+      const country = valueOf('--country', args);
+      
+      return unqfy.addArtist({ name, country });
+    case 'getArtist':
+      const id = valueOf('--id', args);
+      try {
+        return `== ARTIST FOUND === \n${JSON.stringify(unqfy.getArtistById(id))}`;
+      } catch (err) {
+        return `UNQfy error: ${err.message}`;
+      }
+    default: {
+      console.log('User error: Invalid command. Please, try again.'); 
+      break;
+    }
+  }
+}
 
 function main() {
-  console.log('arguments: ');
-  process.argv.forEach(argument => console.log(argument));
+  const {unqfy, args, command} = neededInfo();
+
+  console.log(execute(unqfy, command, args));
+
+  saveUNQfy(unqfy);
 }
 
 main();
