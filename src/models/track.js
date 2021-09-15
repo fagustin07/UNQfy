@@ -1,7 +1,8 @@
+const _idGenerator = require('../lib/IDGenerator');
 
 class Track {
-    constructor(id,name,duration,genres){
-        this.id = id;
+    constructor(name, duration, genres){
+        this.id = _idGenerator.newId();
         this.name = name;
         this.duration = duration;
         this.genres = genres;

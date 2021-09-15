@@ -36,7 +36,7 @@ class UNQfy {
      - una propiedad year (number)
   */
     
-    return this._artistService.createAlbum(artistId, albumData)
+    return this._artistService.addAlbum(artistId, albumData)
   }
 
 
@@ -52,7 +52,7 @@ class UNQfy {
       - una propiedad duration (number),
       - una propiedad genres (lista de strings)
   */
-    return this._artistService.createTrack(albumId,trackData)
+    return this._artistService.addTrack(albumId,trackData)
   }
 
   getArtistById(id) {
@@ -107,7 +107,7 @@ class UNQfy {
   static load(filename) {
     const serializedData = fs.readFileSync(filename, {encoding: 'utf-8'});
     //COMPLETAR POR EL ALUMNO: Agregar a la lista todas las clases que necesitan ser instanciadas
-    const classes = [UNQfy, ArtistService, Artist, Album, Track];
+    const classes = [UNQfy, ArtistService, Artist, Album, Track, _idGenerator];
     return picklify.unpicklify(JSON.parse(serializedData), classes);
   }
 }

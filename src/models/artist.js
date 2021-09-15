@@ -1,17 +1,18 @@
 const Album = require('./album');
+const _idGenerator = require('../lib/IDGenerator');
 
 class Artist {
 
-    constructor(id, name, country) {
-        this.id = id;
+    constructor(name, country) {
+        this.id = _idGenerator.newId();
         this.name = name;
         this.country = country;
         this._albums = {};
     }
 
-    createAlbum({name, year, id}) {
-        const album = new Album(id, name, year);
-        this._albums[id] = album;
+    createAlbum({name, year}) {
+        const album = new Album(name, year);
+        this._albums[album.id] = album;
 
         return album;
     }

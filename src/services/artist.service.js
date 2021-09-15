@@ -4,35 +4,31 @@ class ArtistService {
 
   constructor() {
     this._artists = {};
-    this._idCounter = 1;
   }
 
   addArtist(artistData) {
     if (this._exists(artistData.name, Object.values(this._artists))) throw new Error('Artist alredy exists');
-    
-    const newId = this._generateId();
-    const newArtist = new Artist(newId, artistData.name, artistData.country);
 
-    this._artists[newId] = newArtist;
+    const newArtist = new Artist(artistData.name, artistData.country);
+
+    this._artists[newArtist.id] = newArtist;
     return newArtist;
   }
 
-  createAlbum(artistId, albumData) {
+  addAlbum(artistId, albumData) {
     const artist = this.getArtistById(artistId)
     if (this._exists(albumData.name, artist.albums())) throw Error('Album alredy exists');
 
-    const newId = this._generateId();
-    const album = artist.createAlbum({ ...albumData, id: newId })
+    const album = artist.createAlbum(albumData)
 
     return album;
   }
 
-  createTrack(albumId,trackData) {
-    const album = this.getAlbumById(albumId)
+  addTrack(albumId,trackData) {
+    const album = this.getAlbumById(albumId);
     if (this._exists(trackData.name, album.tracks())) throw Error('Track alredy exists');
-    const newId = this._generateId();
 
-    const track = album.createTrack({...trackData, id: newId })
+    const track = album.createTrack(trackData);
 
     return track;
 

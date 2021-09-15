@@ -15,7 +15,7 @@ class GetTrack extends Command {
         
         try {
             return unqfy.getTrackById(id);
-        } catch(error) {
+        } catch(err) {
             return `UNQfy error: ${err.message}`;
         }
     }

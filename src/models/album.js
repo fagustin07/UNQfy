@@ -1,17 +1,18 @@
 const Track = require("./track");
+const _idGenerator = require('../lib/IDGenerator');
 
 class Album {
 
-    constructor(id, name, year) {
-        this.id = id;
+    constructor(name, year) {
+        this.id = _idGenerator.newId();
         this.name = name;
         this.year = year;
         this._tracks = {};
     }
 
-    createTrack({name, duration, genres,id}){
-        const track = new Track(id,name,duration,genres);
-        this._tracks[id] = track;
+    createTrack({name, duration, genres}){
+        const track = new Track(name,duration,genres);
+        this._tracks[track.id] = track;
 
         return track;
     }
