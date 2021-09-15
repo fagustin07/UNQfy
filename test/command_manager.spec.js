@@ -31,7 +31,7 @@ describe('Command manager and commands', () => {
 
         assert.equal(
             getArtistResult,
-            `== ARTIST FOUND === \n${JSON.stringify(expectedArtist)}`);
+            expectedArtist);
     });
 
     it('should recognized addAlbum command', () => {

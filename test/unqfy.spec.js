@@ -77,13 +77,6 @@ describe('Add, remove and filter data', () => {
       assert.equal(unqfy.getAlbumById(album.id), album);
     });
 
-    it('an album meets its composer artist', () => {
-      const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
-      const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
-
-      assert.equal(album.composer, artist);
-    });
-
     it('an album cannot have a name alredy declared', () => {
       const artist = createAndAddArtist(unqfy, 'Nirvana', 'USA');
       const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);

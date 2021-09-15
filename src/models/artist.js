@@ -10,7 +10,7 @@ class Artist {
     }
 
     createAlbum({name, year, id}) {
-        const album = new Album(id, name, year, this);
+        const album = new Album(id, name, year);
         this._albums[id] = album;
 
         return album;
