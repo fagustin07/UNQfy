@@ -1,24 +1,25 @@
 const Command = require("./command");
 
-class GetArtist extends Command {
+class GetTrack extends Command {
 
     static command() {
-        return 'getArtist';
+        return 'getTrack';
     }
 
     makeBeuty(element){
-        return '== ARTIST FOUNDED === \n' + super.makeBeuty(element);
+        return '== TRACK FOUNDED === \n' + super.makeBeuty(element);
     }
 
     execute(unqfy, args) {
         const id = parseInt(this.valueOf('--id', args));
+        
         try {
-            return unqfy.getArtistById(id);
-        } catch (err) {
+            return unqfy.getTrackById(id);
+        } catch(error) {
             return `UNQfy error: ${err.message}`;
         }
     }
 
 }
 
-module.exports = GetArtist;
+module.exports = GetTrack;

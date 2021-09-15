@@ -7,7 +7,7 @@ class GetAlbum extends Command {
     }
 
     makeBeuty(element){
-        return `== ALBUM FOUNDED === \n {id: ${element.id}, name: ${element.name}, year: ${element.year}}`;
+        return '== ALBUM FOUNDED === \n' + super.makeBeuty(element);
     }
 
     execute(unqfy, args) {

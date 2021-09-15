@@ -58,4 +58,31 @@ describe('Command manager and commands', () => {
             expectedAlbum);
     });
 
+    it('should recognized addTrack command', () => {
+        const artist = unqfy.addArtist({name: 'Nirvana', country: 'USA'});
+        const album = unqfy.addAlbum(artist.id, {name: 'Appetite for Destruction', year: 1987})
+
+        const command = commandManager.findCommand('addTrack');
+        const args = ['--albumId', `${album.id}`, '--name', 'Welcome to the jungle', '--duration', '200', '--genres', 'rock,alternative'];
+        
+        const track = command.execute(unqfy, args);
+
+        assert.equal(track, unqfy.getTrackById(track.id) );
+    });
+
+    it('should recognized getTrack command', () => {
+        const artist = unqfy.addArtist({name: 'Nirvana', country: 'US'});
+        const album = unqfy.addAlbum(artist.id, {name: 'Appetite for Destruction', year: 1987})
+        const expectedTrack = unqfy.addTrack(album.id, {name: 'Welcome to the jungle', duration: 200, genres: ['rock','alternative']});
+        const command = commandManager.findCommand('getTrack');
+        const args = ['--id', `${expectedTrack.id}`];
+
+        const getTrackResult = command.execute(unqfy, args);
+
+        assert.equal(
+            getTrackResult,
+            expectedTrack);
+    });
+
+
 });

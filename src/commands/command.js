@@ -20,7 +20,7 @@ class Command {
     }
 
     makeBeuty(element){
-        throw new Error('Subclass responsability');
+        return JSON.stringify(element);
     }
 }
 

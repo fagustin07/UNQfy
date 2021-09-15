@@ -25,7 +25,7 @@ describe('Add, remove and filter data', () => {
     unqfy = new libunqfy.UNQfy();
   });
 
-  describe('Artist', () =>{
+  describe('Artist', () => {
 
     it('should add an artist', () => {
       const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
@@ -44,17 +44,17 @@ describe('Add, remove and filter data', () => {
 
     it('throws exception when an artist is not found by id', () => {
       const inexistentId = 99999;
-      
+
       const expectedThrown = () => unqfy.getArtistById(inexistentId);
-      
+
       assert.throws(expectedThrown, `Artist not found`);
     });
 
     it('an artist cannot be created with a name that already exists', () => {
       const artist = createAndAddArtist(unqfy, 'Nirvana', 'USA');
-      
+
       const expectedThrown = () => createAndAddArtist(unqfy, 'Nirvana', 'USA');
-      
+
       assert.throws(expectedThrown, `Artist alredy exists`);
     });
 
@@ -80,33 +80,63 @@ describe('Add, remove and filter data', () => {
     it('an album cannot have a name alredy declared', () => {
       const artist = createAndAddArtist(unqfy, 'Nirvana', 'USA');
       const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
-      
-      const expectedThrown = () =>  createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
-      
+
+      const expectedThrown = () => createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
+
       assert.throws(expectedThrown, `Album alredy exists`);
     });
 
     it('throws exception when an album is not found by id', () => {
       const inexistentId = 99999;
-      
+
       const expectedThrown = () => unqfy.getAlbumById(inexistentId);
-      
+
       assert.throws(expectedThrown, `Album not found`);
     });
 
-    
+
   });
+  describe('Tracks', () => {
 
-  xit('should add a track to an album', () => {
-    const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
-    const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
-    const track = createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock']);
+    it('should add a track to an album', () => {
+      const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+      const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
+      const track = createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock']);
 
-    assert.equal(track.name, 'Welcome to the jungle');
-    assert.strictEqual(track.duration, 200);
-    assert.equal(track.genres.includes('rock'), true);
-    assert.equal(track.genres.includes('hard rock'), true);
-    assert.lengthOf(track.genres, 2);
+      assert.equal(track.name, 'Welcome to the jungle');
+      assert.strictEqual(track.duration, 200);
+      assert.equal(track.genres.includes('rock'), true);
+      assert.equal(track.genres.includes('hard rock'), true);
+      assert.lengthOf(track.genres, 2);
+    });
+
+    it('should find an track', () => {
+      const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+      const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
+      const track = createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock']);
+
+
+      assert.equal(unqfy.getTrackById(track.id), track);
+    });
+
+    it('throws exception when an track is not found by id', () => {
+      const inexistentId = 99999;
+
+      const expectedThrown = () => unqfy.getTrackById(inexistentId);
+
+      assert.throws(expectedThrown, `Track not found`);
+    });
+
+    it('an track cannot have a name alredy declared', () => {
+      const artist = createAndAddArtist(unqfy, 'Nirvana', 'USA');
+      const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
+      const track = createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock']);
+
+      const expectedThrown = () => createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock']);
+
+      assert.throws(expectedThrown, `Track alredy exists`);
+    });
+
   });
   
   xit('should find different things by name', () => {

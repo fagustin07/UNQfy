@@ -7,7 +7,7 @@ class AddAlbum extends Command {
     }
 
     makeBeuty(element){
-        return `== NEW ALBUM === \n {id: ${element.id}, name: ${element.name}, year: ${element.year}}`;
+        return `== NEW ALBUM === \n` + super.makeBeuty(element);
     }
 
     execute(unqfy,args){

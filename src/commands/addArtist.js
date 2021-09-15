@@ -7,7 +7,7 @@ class AddArtist extends Command {
     }
 
     makeBeuty(element){
-        return `== NEW ARTIST === \n${JSON.stringify(element)}`;
+        return '== NEW ARTIST === \n' + super.makeBeuty(element);
     }
 
     execute(unqfy,args){

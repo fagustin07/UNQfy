@@ -4,6 +4,7 @@ const fs = require('fs'); // para cargar/guardar unqfy
 const ArtistService = require('../services/artist.service');
 const Artist = require('./artist');
 const Album = require('./album');
+const Track = require('./track');
 
 class UNQfy {
 
@@ -51,6 +52,7 @@ class UNQfy {
       - una propiedad duration (number),
       - una propiedad genres (lista de strings)
   */
+    return this._artistService.createTrack(albumId,trackData)
   }
 
   getArtistById(id) {
@@ -62,6 +64,7 @@ class UNQfy {
   }
 
   getTrackById(id) {
+    return this._artistService.getTrackById(id);
 
   }
 
@@ -104,7 +107,7 @@ class UNQfy {
   static load(filename) {
     const serializedData = fs.readFileSync(filename, {encoding: 'utf-8'});
     //COMPLETAR POR EL ALUMNO: Agregar a la lista todas las clases que necesitan ser instanciadas
-    const classes = [UNQfy, ArtistService, Artist, Album];
+    const classes = [UNQfy, ArtistService, Artist, Album, Track];
     return picklify.unpicklify(JSON.parse(serializedData), classes);
   }
 }

@@ -27,20 +27,41 @@ class ArtistService {
     return album;
   }
 
+  createTrack(albumId,trackData) {
+    const album = this.getAlbumById(albumId)
+    if (this._exists(trackData.name, album.tracks())) throw Error('Track alredy exists');
+    const newId = this._generateId();
+
+    const track = album.createTrack({...trackData, id: newId })
+
+    return track;
+
+  }
+
   getArtistById(id) {
     return this._getOrThrow(id, Object.values(this._artists), 'Artist not found');
   }
-
 
   getAlbumById(id) {
     return this._getOrThrow(id, this._albums(), 'Album not found')
   }
 
+  getTrackById(id) {
+    return this._getOrThrow(id, this._tracks(), 'Track not found')
+  }
+
   //PRIVATE
 
+  _artistsArray() {
+    return Object.values(this._artists);
+  }
+
   _albums() {
-    return Object.values(this._artists)
-      .reduce((albums, artist) => albums.concat(artist.albums()), []);
+    return this._artistsArray().reduce((albums, artist) => albums.concat(artist.albums()), []);
+  }
+
+  _tracks() {
+    return this._albums().reduce((tracks, album) => tracks.concat(album.tracks()), [])
   }
 
   _getOrThrow(id, anArray, msgError) {
