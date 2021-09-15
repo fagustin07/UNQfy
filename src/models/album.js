@@ -1,9 +1,10 @@
 class Album {
 
-    constructor(id, name, year) {
+    constructor(id, name, year, artist) {
         this.id = id;
         this.name = name;
         this.year = year;
+        this.composer = artist;
     }
 }
 

@@ -10,7 +10,7 @@ class Artist {
     }
 
     createAlbum({name, year, id}) {
-        const album = new Album(id, name, year);
+        const album = new Album(id, name, year, this);
         this._albums[id] = album;
 
         return album;
@@ -27,7 +27,6 @@ class Artist {
     albums() {
         return Object.values(this._albums);
     }
-
 }
 
 module.exports = Artist;

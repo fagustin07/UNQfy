@@ -27,11 +27,12 @@ function neededInfo() {
 
 function main() {
   const { unqfy, args, command } = neededInfo();
-  const result = new CommandManager()
-                    .findCommand(command)
-                    .execute(unqfy, args);
+  let commandFounded = new CommandManager().findCommand(command)
+  const result = commandFounded.execute(unqfy, args);
 
-  console.log(result);
+  const beutyResult = commandFounded.makeBeuty(result);
+
+  console.log(beutyResult);
 
   saveUNQfy(unqfy);
 }

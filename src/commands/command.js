@@ -18,6 +18,10 @@ class Command {
     execute(unqfy,args) { 
         throw new Error('Subclass responsability');
     }
+
+    makeBeuty(element){
+        throw new Error('Subclass responsability');
+    }
 }
 
 module.exports = Command;

@@ -6,10 +6,14 @@ class GetArtist extends Command {
         return 'getArtist';
     }
 
+    makeBeuty(element){
+        return `== ARTIST FOUNDED === \n${JSON.stringify(element)}`;
+    }
+
     execute(unqfy, args) {
         const id = parseInt(this.valueOf('--id', args));
         try {
-            return `== ARTIST FOUND === \n${JSON.stringify(unqfy.getArtistById(id))}`;
+            return unqfy.getArtistById(id);
         } catch (err) {
             return `UNQfy error: ${err.message}`;
         }
