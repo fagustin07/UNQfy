@@ -154,7 +154,7 @@ describe('Add, remove and filter data', () => {
     });
   });
 
-  xit('should get all tracks matching genres', () => {
+  it('should get all tracks matching genres', () => {
     const artist1 = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
     const album1 = createAndAddAlbum(unqfy, artist1.id, 'Appetite for Destruction', 1987);
     const t0 = createAndAddTrack(unqfy, album1.id, 'Welcome to the jungle', 200, ['rock', 'hard rock', 'movie']);
@@ -177,7 +177,7 @@ describe('Add, remove and filter data', () => {
     assert.equal(tracksMatching.includes(t3), true);
   });
 
-  xit('should get all tracks matching artist', () => {
+  it('should get all tracks matching artist', () => {
     const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
     const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
     const t1 = createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock']);

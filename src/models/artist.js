@@ -28,6 +28,10 @@ class Artist {
     albums() {
         return Object.values(this._albums);
     }
+
+    getTracks(){
+        return this.albums().reduce((tracks, album) => tracks.concat(album.tracks()), []);
+    }
 }
 
 module.exports = Artist;

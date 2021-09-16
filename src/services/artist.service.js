@@ -46,6 +46,17 @@ class ArtistService {
     return this._getOrThrow(id, this._tracks(), 'Track not found')
   }
 
+  getTracksMatchingGenres(genres){
+    return this._tracks().filter(aTrack => aTrack.haveGenres(genres) )
+  }
+
+  getTracksMatchingArtist(artistName){
+    let artist = this._artistsArray().find(anArtist => anArtist.name === artistName);
+    return artist.getTracks();
+  }
+
+  
+
   //PRIVATE
 
   _artistsArray() {
@@ -65,10 +76,6 @@ class ArtistService {
     if (!maybeElement) throw new Error(msgError);
 
     return maybeElement;
-  }
-
-  _generateId() {
-    return this._idCounter++;
   }
 
   _exists(anElement, anArray) {
