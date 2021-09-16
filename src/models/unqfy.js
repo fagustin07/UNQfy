@@ -5,6 +5,7 @@ const ArtistService = require('../services/artist.service');
 const Artist = require('./artist');
 const Album = require('./album');
 const Track = require('./track');
+const _idGenerator = require('../lib/IDGenerator');
 
 class UNQfy {
 
