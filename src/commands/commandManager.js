@@ -4,12 +4,15 @@ const GetArtist = require('./getArtist');
 const GetAlbum = require('./getAlbum');
 const AddTrack = require('./addTrack');
 const GetTrack = require('./getTrack');
-const GetTracksByGenres = require('./GetTracksByGenres');
+const GetTracksByGenres = require('./getTracksByGenres');
 const GetTracksByArtist = require('./getTracksByArtist');
 
 class CommandManager {
     constructor(){
-        this._commands = [ AddArtist, GetArtist, AddAlbum, GetAlbum, AddTrack, GetTrack, GetTracksByGenres, GetTracksByArtist ];
+        this._commands = [ 
+            AddArtist, AddAlbum, AddTrack, 
+            GetArtist, GetAlbum, GetTrack, GetTracksByGenres, GetTracksByArtist 
+        ];
     }
 
     addCommand(command) {
