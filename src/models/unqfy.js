@@ -6,11 +6,14 @@ const Artist = require('./artist');
 const Album = require('./album');
 const Track = require('./track');
 const _idGenerator = require('../lib/IDGenerator');
+const PlaylistService = require('../services/playlist.service');
+const Playlist = require('./playlist');
 
 class UNQfy {
 
   constructor() {
     this._artistService = new ArtistService();
+    this._playlisService = new PlaylistService(this._artistService);
   }
 
   // artistData: objeto JS con los datos necesarios para crear un artista
@@ -70,7 +73,7 @@ class UNQfy {
   }
 
   getPlaylistById(id) {
-
+    return this._playlisService.getPlaylistById(id);
   }
 
   // genres: array de generos(strings)
@@ -97,7 +100,7 @@ class UNQfy {
       * un metodo duration() que retorne la duración de la playlist.
       * un metodo hasTrack(aTrack) que retorna true si aTrack se encuentra en la playlist.
   */
-
+    return this._playlisService.createPlaylist(name,genresToInclude,maxDuration);
   }
 
   save(filename) {
@@ -108,7 +111,7 @@ class UNQfy {
   static load(filename) {
     const serializedData = fs.readFileSync(filename, {encoding: 'utf-8'});
     //COMPLETAR POR EL ALUMNO: Agregar a la lista todas las clases que necesitan ser instanciadas
-    const classes = [UNQfy, ArtistService, Artist, Album, Track, _idGenerator];
+    const classes = [UNQfy, ArtistService, Artist, Album, Track, _idGenerator, Playlist, PlaylistService];
     return picklify.unpicklify(JSON.parse(serializedData), classes);
   }
 }

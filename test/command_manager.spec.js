@@ -148,5 +148,36 @@ describe('Command manager and commands', () => {
     assert.isTrue(getTracksByArtistResult.includes(t3));
     });
 
+    it('should recognized createPlaylist command', () => {
+        const artist = createAndAddArtist(unqfy, 'Michael Jackson', 'USA');
+        const album = createAndAddAlbum(unqfy, artist.id, 'Thriller', 1987);
+        const t1 = createAndAddTrack(unqfy, album.id, 'Thriller', 200, ['pop', 'movie']);
+        const t2 = createAndAddTrack(unqfy, album.id, 'Another song', 500, ['pop']);
+        const t3 = createAndAddTrack(unqfy, album.id, 'Another song II', 500, ['pop']);
+        
+        const command = commandManager.findCommand('createPlaylist');
+        const args = ['--name', 'my playlist', '--genresToInclude',"pop, rock", '--maxDuration', 1400]
+        const createPlaylistResult = command.execute(unqfy,args);
+
+        assert.equal(createPlaylistResult.name, 'my playlist');
+        assert.isAtMost(createPlaylistResult.duration(), 1400);
+        assert.isTrue(createPlaylistResult.hasTrack(t1));
+        assert.isTrue(createPlaylistResult.hasTrack(t2));
+        assert.isTrue(createPlaylistResult.hasTrack(t3));
+        assert.lengthOf(createPlaylistResult.tracks, 3);
+      });
+
+      it('should recognized getPlaylist command', () => {
+        const playlist = unqfy.createPlaylist('my playlist', ['pop', 'rock'], 1400);
+
+        const command = commandManager.findCommand('getPlaylist');
+        const args = ['--id', `${playlist.id}`]
+        const getPlaylistResult = command.execute(unqfy,args);
+
+        assert.equal(getPlaylistResult.name, playlist.name);
+        assert.equal(getPlaylistResult.id, playlist.id);
+        assert.lengthOf(getPlaylistResult.tracks, 0);
+      });
+
 
 });

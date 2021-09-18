@@ -6,12 +6,14 @@ const AddTrack = require('./addTrack');
 const GetTrack = require('./getTrack');
 const GetTracksByGenres = require('./getTracksByGenres');
 const GetTracksByArtist = require('./getTracksByArtist');
+const CreatePlaylist = require('./createPlaylist');
+const GetPlaylist = require('./getPlaylist');
 
 class CommandManager {
-    constructor(){
-        this._commands = [ 
-            AddArtist, AddAlbum, AddTrack, 
-            GetArtist, GetAlbum, GetTrack, GetTracksByGenres, GetTracksByArtist 
+    constructor() {
+        this._commands = [
+            AddArtist, AddAlbum, AddTrack,
+            GetArtist, GetAlbum, GetTrack, GetTracksByGenres, GetTracksByArtist, CreatePlaylist, GetPlaylist
         ];
     }
 
@@ -22,7 +24,7 @@ class CommandManager {
     findCommand(command) {
         let commandFounded = this._commands.find(aCommand => aCommand.canHandle(command));
 
-        if(commandFounded) return new commandFounded();
+        if (commandFounded) return new commandFounded();
         else throw Error("Command not recognized");
     }
 }

@@ -7,7 +7,7 @@ class ArtistService {
   }
 
   addArtist(artistData) {
-    if (this._exists(artistData.name, Object.values(this._artists))) throw new Error('Artist alredy exists');
+    if (this._exists(artistData.name, this._artistsArray())) throw new Error('Artist alredy exists');
 
     const newArtist = new Artist(artistData.name, artistData.country);
 

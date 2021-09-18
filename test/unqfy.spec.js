@@ -209,7 +209,7 @@ describe('Playlist Creation and properties', () => {
     unqfy = new libunqfy.UNQfy();
   });
 
-  xit('should create a playlist as requested', () => {
+  it('should create a playlist as requested', () => {
     const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
     const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
     const t1 = createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock', 'movie']);
@@ -231,4 +231,36 @@ describe('Playlist Creation and properties', () => {
     assert.isTrue(playlist.hasTrack(t4));
     assert.lengthOf(playlist.tracks, 4);
   });
+
+  it('should find a playlist', () => {
+    const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+    const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
+    createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock', 'movie']);
+    createAndAddTrack(unqfy, album.id, 'Sweet Child o\' Mine', 1500, ['rock', 'hard rock', 'pop', 'movie']);
+  
+    const expectedPlaylist = unqfy.createPlaylist('my playlist', ['pop', 'rock'], 1400);
+
+    const playlist = unqfy.getPlaylistById(expectedPlaylist.id); 
+
+    assert.equal(playlist, expectedPlaylist);
+  });
+
+  
+  it('an playlist cannot have a name alredy declared', () => {
+    const artist = unqfy.createPlaylist('my playlist', ['rock'], 1400);
+
+    const expectedThrown = () => unqfy.createPlaylist('my playlist', ['rock', 'pop'], 800);
+
+    assert.throws(expectedThrown, `Playlist alredy exists`);
+  });
+
+  it('throws exception when an playlist is not found by id', () => {
+    const inexistentId = 99999;
+
+    const expectedThrown = () => unqfy.getPlaylistById(inexistentId);
+
+    assert.throws(expectedThrown, `Playlist not found`);
+  });
+
+
 });
