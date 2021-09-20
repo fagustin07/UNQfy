@@ -1,4 +1,4 @@
-const Command = require("./Command");
+const Command = require("./command");
 
 class CreatePlaylist extends Command {
 
