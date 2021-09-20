@@ -1,36 +1,26 @@
-const Album = require('./album');
-const _idGenerator = require('../lib/IDGenerator');
+const Adder = require('./adder');
 
-class Artist {
+class Artist extends Adder {
 
     constructor(name, country) {
-        this.id = _idGenerator.newId();
-        this.name = name;
+        super(name);
         this.country = country;
-        this._albums = {};
     }
 
-    createAlbum({name, year}) {
-        const album = new Album(name, year);
-        this._albums[album.id] = album;
-
-        return album;
+    createAlbum(anAlbum) {
+        this.addElement(anAlbum);
     }
 
     getTracksByGenres(genres){
         return this.getTracks().filter(aTrack => aTrack.haveGenres(genres) )
     }
 
-    hasAlbum(id) {
-        return this._albums[id] !== undefined;
-    }
-
     takeAlbum(id) {
-        return this._albums[id];
+        return this.takeElement(id);
     }
 
     albums() {
-        return Object.values(this._albums);
+        return this.elements();
     }
 
     getTracks() {
@@ -38,7 +28,7 @@ class Artist {
     }
 
     removeAlbum(anAlbum) {
-        delete this._albums[anAlbum.id];
+        this.removeElement(anAlbum);
     }
 
     toJSON() {

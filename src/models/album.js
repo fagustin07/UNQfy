@@ -1,36 +1,30 @@
-const Track = require("./track");
-const _idGenerator = require('../lib/IDGenerator');
+const Adder = require("./adder");
 
-class Album {
+class Album extends Adder {
 
     constructor(name, year) {
-        this.id = _idGenerator.newId();
-        this.name = name;
+        super(name);
         this.year = year;
-        this._tracks = {};
     }
 
-    createTrack({name, duration, genres}){
-        const track = new Track(name,duration,genres);
-        this._tracks[track.id] = track;
-
-        return track;
+    createTrack(aTrack){
+        this.addElement(aTrack);
     }
 
     removeTrack(aTrack) {
-        delete this._tracks[aTrack.id];
+        this.removeElement(aTrack);
     }
 
     hasTrack(track) {
-        return this._tracks[track.id] !== undefined;
+        return this.belongsElement(track);
     }
 
     takeTrack(id) {
-        return this._tracks[id];
+        return this.takeElement(id);
     }
 
     tracks() {
-        return Object.values(this._tracks);
+        return this.elements();
     }
 
     toJSON() {

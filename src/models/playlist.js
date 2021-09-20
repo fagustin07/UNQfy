@@ -1,10 +1,9 @@
-const _idGenerator = require('../lib/IDGenerator');
+const Recognizable = require('./recognizable');
 
-class Playlist {
+class Playlist extends Recognizable {
     constructor(name, tracks) {
-        this.id = _idGenerator.newId();
-        this.name = name;
-        this.tracks = tracks
+        super(name);
+        this.tracks = tracks;
     }
 
     duration(){
@@ -13,6 +12,15 @@ class Playlist {
 
     hasTrack(track){
         return this.tracks.some(aTrack => aTrack.id === track.id);
+    }
+
+    toJSON(){
+        return {
+            id: this.id,
+            name: this.name,
+            duration: this.duration(),
+            tracks: this.tracks.map(track => track.toJSON())
+        }
     }
 }
 module.exports = Playlist;

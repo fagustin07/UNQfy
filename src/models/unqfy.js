@@ -6,12 +6,12 @@ const Album = require('./album');
 const Track = require('./track');
 const _idGenerator = require('../lib/IDGenerator');
 const Playlist = require('./playlist');
-const MultimediaService = require('../services/multimedia.service');
+const EntitiesManager = require('./entitiesManager');
 
 class UNQfy {
 
   constructor() {
-    this._multimediaService = new MultimediaService();
+    this._entitiesManager = new EntitiesManager();
   }
 
   // artistData: objeto JS con los datos necesarios para crear un artista
@@ -24,7 +24,7 @@ class UNQfy {
     - una propiedad name (string)
     - una propiedad country (string)
   */
-    return this._multimediaService.addArtist(artistData);
+    return this._entitiesManager.addArtist(artistData);
   }
 
   // albumData: objeto JS con los datos necesarios para crear un album
@@ -38,7 +38,7 @@ class UNQfy {
      - una propiedad year (number)
   */
     
-    return this._multimediaService.addAlbum(artistId, albumData)
+    return this._entitiesManager.addAlbum(artistId, albumData)
   }
 
 
@@ -54,64 +54,64 @@ class UNQfy {
       - una propiedad duration (number),
       - una propiedad genres (lista de strings)
   */
-    return this._multimediaService.addTrack(albumId,trackData)
+    return this._entitiesManager.addTrack(albumId,trackData)
   }
 
   getAllArtists() {
-    return this._multimediaService.getAllArtists();
+    return this._entitiesManager.getAllArtists();
   }
 
   getAlbumsFrom(artistId) {
-    return this._multimediaService.getAlbumsFrom(artistId);
+    return this._entitiesManager.getAlbumsFrom(artistId);
   }
 
   getTracksFrom(artistId) {
-    return this._multimediaService.getTracksFrom(artistId);
+    return this._entitiesManager.getTracksFrom(artistId);
   }
 
   getArtistById(id) {
-    return this._multimediaService.getArtistById(id);
+    return this._entitiesManager.getArtistById(id);
   }
 
   getAlbumById(id) {
-    return this._multimediaService.getAlbumById(id);
+    return this._entitiesManager.getAlbumById(id);
   }
 
   getTrackById(id) {
-    return this._multimediaService.getTrackById(id);
+    return this._entitiesManager.getTrackById(id);
 
   }
 
   getPlaylistById(id) {
-    return this._multimediaService.getPlaylistById(id);
+    return this._entitiesManager.getPlaylistById(id);
   }
 
   removeArtistById(id){
-    return this._multimediaService.removeArtistById(id)
+    return this._entitiesManager.removeArtistById(id)
   }
 
   removeAlbumById(id){
-    return this._multimediaService.removeAlbumById(id)
+    return this._entitiesManager.removeAlbumById(id)
   }
 
   removeTrackById(id){
-    return this._multimediaService.removeTrackById(id)
+    return this._entitiesManager.removeTrackById(id)
   }
 
   removePlaylistById(id){
-    return this._multimediaService.removePlaylistById(id)
+    return this._entitiesManager.removePlaylistById(id)
   }
 
   // genres: array de generos(strings)
   // retorna: los tracks que contenga alguno de los generos en el parametro genres
   getTracksMatchingGenres(genres) {
-    return this._multimediaService.getTracksMatchingGenres(genres)
+    return this._entitiesManager.getTracksMatchingGenres(genres)
   }
 
   // artistName: nombre de artista(string)
   // retorna: los tracks interpredatos por el artista con nombre artistName
   getTracksMatchingArtist(artistName) {
-    return this._multimediaService.getTracksMatchingArtist(artistName)
+    return this._entitiesManager.getTracksMatchingArtist(artistName)
   }
 
 
@@ -126,7 +126,7 @@ class UNQfy {
       * un metodo duration() que retorne la duración de la playlist.
       * un metodo hasTrack(aTrack) que retorna true si aTrack se encuentra en la playlist.
   */
-    return this._multimediaService.createPlaylist(name,genresToInclude,maxDuration);
+    return this._entitiesManager.createPlaylist(name,genresToInclude,maxDuration);
   }
 
   save(filename) {
@@ -137,7 +137,7 @@ class UNQfy {
   static load(filename) {
     const serializedData = fs.readFileSync(filename, {encoding: 'utf-8'});
     //COMPLETAR POR EL ALUMNO: Agregar a la lista todas las clases que necesitan ser instanciadas
-    const classes = [UNQfy, Artist, Album, Track, _idGenerator, Playlist, MultimediaService];
+    const classes = [UNQfy, Artist, Album, Track, _idGenerator, Playlist, EntitiesManager];
     return picklify.unpicklify(JSON.parse(serializedData), classes);
   }
 }

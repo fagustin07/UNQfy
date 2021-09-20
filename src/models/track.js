@@ -1,9 +1,8 @@
-const _idGenerator = require('../lib/IDGenerator');
+const Recognizable = require('./recognizable');
 
-class Track {
+class Track extends Recognizable {
     constructor(name, duration, genres){
-        this.id = _idGenerator.newId();
-        this.name = name;
+        super(name);
         this.duration = duration;
         this.genres = genres;
     }

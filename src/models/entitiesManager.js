@@ -1,8 +1,9 @@
-const Artist = require('../models/artist');
-const Playlist = require("../models/playlist");
+const Artist = require('./artist');
+const Album = require('./album');
+const Playlist = require("./playlist");
+const Track = require("./track");
 
-
-class MultimediaService {
+class EntitiesManager {
 
     constructor() {
         this._artists = {};
@@ -23,8 +24,9 @@ class MultimediaService {
     addAlbum(artistId, albumData) {
         const artist = this.getArtistById(artistId)
         if (this._exists(albumData.name, artist.albums())) throw Error('Album alredy exists');
-
-        const album = artist.createAlbum(albumData)
+        
+        const album = new Album(albumData.name, albumData.year);
+        artist.createAlbum(album);
 
         return album;
     }
@@ -32,8 +34,10 @@ class MultimediaService {
     addTrack(albumId, trackData) {
         const album = this.getAlbumById(albumId);
         if (this._exists(trackData.name, album.tracks())) throw Error('Track alredy exists');
+        
+        const track = new Track(trackData.name, trackData.duration, trackData.genres);
 
-        const track = album.createTrack(trackData);
+        album.createTrack(track);
 
         return track;
 
@@ -163,4 +167,4 @@ class MultimediaService {
     }
 }
 
-module.exports = MultimediaService;
+module.exports = EntitiesManager;
