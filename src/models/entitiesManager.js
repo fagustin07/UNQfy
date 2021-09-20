@@ -92,9 +92,9 @@ class EntitiesManager {
         return artist.albums();
     }
 
-    getTracksFrom(artistId) {
-        const artist = this.getArtistById(artistId);
-        return artist.albums().tracks();
+    getTracksFrom(albumId) {
+        const album = this.getAlbumById(albumId);
+        return album.tracks();
     }
 
     searchByPartialName(aPartialName) {

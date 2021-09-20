@@ -7,17 +7,17 @@ class GetTracksFrom extends Command {
     }
 
     execute(unqfy, args) {
-        const id = parseInt(this.valueOf('--artistId', args));
+        const id = parseInt(this.valueOf('--albumId', args));
         
         return ['TRACKS FOUND', unqfy.getTracksFrom(id)];
     }
 
     expectedArgsFormatMessage() {
-        return 'getTracksFrom --artistId artistTrackOwnerId';
+        return 'getTracksFrom --albumId trackAlbumId';
     }
 
     expectedArgs() {
-        return ['--artistId'];
+        return ['--albumId'];
     }
 
 }

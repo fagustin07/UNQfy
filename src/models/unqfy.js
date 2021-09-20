@@ -65,8 +65,8 @@ class UNQfy {
     return this._entitiesManager.getAlbumsFrom(artistId);
   }
 
-  getTracksFrom(artistId) {
-    return this._entitiesManager.getTracksFrom(artistId);
+  getTracksFrom(albumId) {
+    return this._entitiesManager.getTracksFrom(albumId);
   }
 
   getArtistById(id) {
