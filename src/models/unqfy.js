@@ -1,10 +1,10 @@
 
 const picklify = require('picklify'); // para cargar/guardar unqfy
 const fs = require('fs'); // para cargar/guardar unqfy
-const Artist = require('./Artist');
-const Album = require('./Album');
-const Track = require('./Track');
-const Playlist = require('./Playlist');
+const Artist = require('./artist');
+const Album = require('./album');
+const Track = require('./track');
+const Playlist = require('./playlist');
 const _idGenerator = require('../lib/IDGenerator');
 
 class UNQfy {

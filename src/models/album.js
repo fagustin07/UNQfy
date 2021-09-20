@@ -1,4 +1,4 @@
-const Track = require("./Track");
+const Track = require("./track");
 const _idGenerator = require('../lib/IDGenerator');
 
 class Album {
