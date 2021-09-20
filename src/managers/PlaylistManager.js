@@ -1,15 +1,15 @@
 const Playlist = require("../models/playlist");
 
-class PlaylistService {
-    constructor(artistService) {
+class PlaylistManager {
+    constructor(artistManager) {
         this._playlist = {};
-        this._artistService = artistService;
+        this._artistManager = artistManager;
     }
 
     createPlaylist(name, genresToInclude, maxDuration) {
         if (this._exists(name, this._playlistArray())) throw new Error('Playlist alredy exists');
 
-        const tracksByGenre = this._artistService.getTracksMatchingGenres(genresToInclude);
+        const tracksByGenre = this._artistManager.getTracksMatchingGenres(genresToInclude);
         const tracks = this._agroupTracksByMaxDuration(tracksByGenre, maxDuration);
 
         const newPlaylist = new Playlist(name, tracks);
@@ -52,4 +52,4 @@ class PlaylistService {
 
 }
 
-module.exports = PlaylistService;
+module.exports = PlaylistManager;

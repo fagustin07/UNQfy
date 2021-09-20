@@ -55,6 +55,28 @@ class ArtistService {
     return artist.getTracks();
   }
 
+  removeArtist(id){
+    const artist = this.getArtistById(id);
+    const albums = artist.albums;
+    albums.forEach(album => this.removeAlbum(album.id));
+    delete this._artists[id];
+    return artist;
+  }
+
+  removeAlbum(id){
+    const album = this.getAlbumById(id);
+    const tracks = album.tracks;
+    tracks.forEach(track => this.removeTrack(track.id));
+    this.getArtists().forEach(artist => artist.removeAlbum(album));
+    return album;
+  }
+
+  removeTrack(id){
+    const track = this.getTrackById(id);
+    const tracksContainers = this._albums().concat(this.getPlayLists());
+    tracksContainers.forEach(container => container.removeTrack(track));
+    return track;
+  }
   
 
   //PRIVATE

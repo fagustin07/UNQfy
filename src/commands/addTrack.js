@@ -1,4 +1,4 @@
-const Command = require("./command");
+const Command = require("./Command");
 
 class AddTrack extends Command {
     static command() {

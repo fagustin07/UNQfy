@@ -1,8 +1,17 @@
 /* eslint-env node, mocha */
 
 const assert = require('chai').assert;
-const CommandManager = require('../src/commands/commandManager');
 const libunqfy = require('../src/models/unqfy');
+const AddArtist = require('../src/commands/AddArtist');
+const AddAlbum = require('../src/commands/AddAlbum');
+const AddTrack = require('../src/commands/AddTrack');
+const CreatePlaylist = require('../src/commands/CreatePlaylist');
+const GetAlbum = require('../src/commands/GetAlbum');
+const GetArtist = require('../src/commands/GetArtist');
+const GetPlaylist = require('../src/commands/GetPlaylist');
+const GetTrack = require('../src/commands/GetTrack');
+const GetTracksByArtist = require('../src/commands/GetTracksByArtist');
+const GetTracksByGenres = require('../src/commands/GetTracksByGenres');
 
 function createAndAddArtist(unqfy, artistName, country) {
     const artist = unqfy.addArtist({ name: artistName, country });
@@ -17,17 +26,15 @@ function createAndAddArtist(unqfy, artistName, country) {
     return unqfy.addTrack(albumId, { name: trackName, duration: trackDuraction, genres: trackGenres });
   }
 
-describe('Command manager and commands', () => {
-    let commandManager = null;
+describe('Commands from command-line interpretation', () => {
     let unqfy = null;
 
     beforeEach(() => {
-        commandManager = new CommandManager();
         unqfy = new libunqfy.UNQfy();
     });
 
     it('should recognized addArtist command', () => {
-        const command = commandManager.findCommand('addArtist');
+        const command = new AddArtist();
         const args = ['--name', 'riky', '--country', 'venezuela'];
 
         const artist = command.execute(unqfy, args)[1];
@@ -37,10 +44,10 @@ describe('Command manager and commands', () => {
 
     it('should recognized getArtist command', () => {
         const expectedArtist = unqfy.addArtist({ name: 'jose', country: 'puerto rico' });
-        const command = commandManager.findCommand('getArtist');
+        const command = new GetArtist();
         const args = ['--id', `${expectedArtist.id}`];
 
-        const getArtistResult = command.execute(unqfy, args);
+        const getArtistResult = command.execute(unqfy, args)[1];
 
         assert.equal(
             getArtistResult,
@@ -50,10 +57,10 @@ describe('Command manager and commands', () => {
     it('should recognized addAlbum command', () => {
         const artist = unqfy.addArtist({ name: 'pepe', country: 'US' });
 
-        const command = commandManager.findCommand('addAlbum');
+        const command = new AddAlbum();
         const args = ['--artistId', `${artist.id}`, '--name', 'mi argentina', '--year', '2020'];
 
-        const album = command.execute(unqfy, args);
+        const album = command.execute(unqfy, args)[1];
 
         assert.equal(album, unqfy.getAlbumById(album.id));
     });
@@ -61,10 +68,10 @@ describe('Command manager and commands', () => {
     it('should recognized getAlbum command', () => {
         const artist = unqfy.addArtist({ name: 'pepe', country: 'US' });
         const expectedAlbum = unqfy.addAlbum(artist.id, { name: 'mi argentina', year: 2021 });
-        const command = commandManager.findCommand('getAlbum');
+        const command = new GetAlbum();
         const args = ['--id', `${expectedAlbum.id}`];
 
-        const getAlbumResult = command.execute(unqfy, args);
+        const getAlbumResult = command.execute(unqfy, args)[1];
 
         assert.equal(
             getAlbumResult,
@@ -75,10 +82,10 @@ describe('Command manager and commands', () => {
         const artist = unqfy.addArtist({ name: 'Nirvana', country: 'USA' });
         const album = unqfy.addAlbum(artist.id, { name: 'Appetite for Destruction', year: 1987 })
 
-        const command = commandManager.findCommand('addTrack');
+        const command = new AddTrack();
         const args = ['--albumId', `${album.id}`, '--name', 'Welcome to the jungle', '--duration', '200', '--genres', 'rock,alternative'];
 
-        const track = command.execute(unqfy, args);
+        const track = command.execute(unqfy, args)[1];
 
         assert.equal(track, unqfy.getTrackById(track.id));
     });
@@ -87,10 +94,10 @@ describe('Command manager and commands', () => {
         const artist = unqfy.addArtist({ name: 'Nirvana', country: 'US' });
         const album = unqfy.addAlbum(artist.id, { name: 'Appetite for Destruction', year: 1987 })
         const expectedTrack = unqfy.addTrack(album.id, { name: 'Welcome to the jungle', duration: 200, genres: ['rock', 'alternative'] });
-        const command = commandManager.findCommand('getTrack');
+        const command = new GetTrack();
         const args = ['--id', `${expectedTrack.id}`];
 
-        const getTrackResult = command.execute(unqfy, args);
+        const getTrackResult = command.execute(unqfy, args)[1];
 
         assert.equal(
             getTrackResult,
@@ -109,10 +116,10 @@ describe('Command manager and commands', () => {
         const t4 = createAndAddTrack(unqfy, album2.id, 'Another song', 500, ['classic']);
         createAndAddTrack(unqfy, album2.id, 'Another song II', 500, ['movie']);
 
-        const command = commandManager.findCommand('getTracksByGenres');
+        const command = new GetTracksByGenres();
         const args = ['--genres', "pop, classic"];
 
-        const getTracksByGenresResult = command.execute(unqfy, args);
+        const getTracksByGenresResult = command.execute(unqfy, args)[1];
 
         assert.isArray(getTracksByGenresResult);
         assert.lengthOf(getTracksByGenresResult, 3);
@@ -136,10 +143,10 @@ describe('Command manager and commands', () => {
     createAndAddTrack(unqfy, album3.id, 'Another song', 500, ['classic']);
     createAndAddTrack(unqfy, album3.id, 'Another song II', 500, ['movie']);
     
-    const command = commandManager.findCommand('getTracksByArtist');
+    const command = new GetTracksByArtist();
     const args = ['--artistName', `${artist.name}`];
 
-    const getTracksByArtistResult = command.execute(unqfy, args);
+    const getTracksByArtistResult = command.execute(unqfy, args)[1];
 
     assert.isArray(getTracksByArtistResult);
     assert.lengthOf(getTracksByArtistResult, 3);
@@ -155,9 +162,9 @@ describe('Command manager and commands', () => {
         const t2 = createAndAddTrack(unqfy, album.id, 'Another song', 500, ['pop']);
         const t3 = createAndAddTrack(unqfy, album.id, 'Another song II', 500, ['pop']);
         
-        const command = commandManager.findCommand('createPlaylist');
+        const command = new CreatePlaylist();
         const args = ['--name', 'my playlist', '--genresToInclude',"pop, rock", '--maxDuration', 1400]
-        const createPlaylistResult = command.execute(unqfy,args);
+        const createPlaylistResult = command.execute(unqfy,args)[1];
 
         assert.equal(createPlaylistResult.name, 'my playlist');
         assert.isAtMost(createPlaylistResult.duration(), 1400);
@@ -170,9 +177,9 @@ describe('Command manager and commands', () => {
       it('should recognized getPlaylist command', () => {
         const playlist = unqfy.createPlaylist('my playlist', ['pop', 'rock'], 1400);
 
-        const command = commandManager.findCommand('getPlaylist');
+        const command = new GetPlaylist();
         const args = ['--id', `${playlist.id}`]
-        const getPlaylistResult = command.execute(unqfy,args);
+        const getPlaylistResult = command.execute(unqfy,args)[1];
 
         assert.equal(getPlaylistResult.name, playlist.name);
         assert.equal(getPlaylistResult.id, playlist.id);
