@@ -12,6 +12,14 @@ class AddArtist extends Command {
 
         return ['ARTIST ADDED', unqfy.addArtist({ name, country })];
     }
+
+    expectedArgsFormatMessage() {
+        return 'addArtist --name artistName --country aCountry';
+    }
+
+    expectedArgs() {
+        return ['--name', '--country']
+    }
 }
 
 module.exports = AddArtist;

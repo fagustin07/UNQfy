@@ -35,12 +35,14 @@ class CommandExecutor {
 
     run(command, args) {
         const unqfy = this._unqfyPersistence.getUNQfy();
-        let commandFounded = this._commands.find(aCommand => aCommand.canHandle(command));
+        let maybeCommand = this._commands.find(aCommand => aCommand.canHandle(command));
         
         try {
-            this._checkIfExistCommand(commandFounded);
-
-            const result = new commandFounded().execute(unqfy,args);
+            this._checkIfExistCommand(maybeCommand);
+            const commandFound = new maybeCommand(); 
+            commandFound.validateArgs(args);
+            
+            const result = commandFound.execute(unqfy,args);
             const title = result[0];
             const commandResult = result[1];
 

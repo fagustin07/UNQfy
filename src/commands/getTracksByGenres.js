@@ -15,6 +15,14 @@ class GetTracksByGenres extends Command {
 
         return ['TRACKS FOUND', unqfy.getTracksMatchingGenres(genres)];
     }
+
+    expectedArgsFormatMessage() {
+        return 'getTracksByGenres --genres "genre1, genre2, ..."';
+    }
+
+    expectedArgs() {
+        return ['--genres'];
+    }
 }
 
 module.exports = GetTracksByGenres;

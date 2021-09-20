@@ -10,6 +10,13 @@ class GetAllArtists extends Command {
         return ['ARTISTS FOUND', unqfy.getAllArtists()];
     }
 
+    expectedArgsFormatMessage() {
+        return '';
+    }
+
+    expectedArgs() {
+        return [];
+    }
 }
 
 module.exports = GetAllArtists;

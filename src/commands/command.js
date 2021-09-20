@@ -19,8 +19,26 @@ class Command {
         throw new Error('Subclass responsability');
     }
 
-    makeBeuty(element){
-        return JSON.stringify(element);
+    validateArgs(args) {
+        this.expectedArgs().forEach(expectedArg => this.checkIfExistArg(expectedArg, args));
+    }
+
+    checkIfExistArg(expectedArg, args) {
+        const param = args.find(arg => arg === expectedArg); 
+        const paramIndex = args.indexOf(param);
+        const arg = args[paramIndex+1];
+
+        if(param === undefined || arg === undefined || arg.startsWith('--')) {
+            throw new Error('Invalid command format. Try with: ' + this.expectedArgsFormatMessage()); 
+        }
+    }
+
+    expectedArgsFormatMessage() {
+        throw new Error('Subclass responsability');
+    }
+
+    expectedArgs() {
+        throw new Error('Subclass responsability');
     }
 }
 

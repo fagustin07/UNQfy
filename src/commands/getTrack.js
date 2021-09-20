@@ -11,7 +11,14 @@ class GetTrack extends Command {
         
         return ['TRACK FOUND', unqfy.getTrackById(id)];
     }
+    
+    expectedArgsFormatMessage() {
+        return 'getTrack --id trackId';
+    }
 
+    expectedArgs() {
+        return ['--id'];
+    }
 }
 
 module.exports = GetTrack;

@@ -12,6 +12,14 @@ class GetTracksFrom extends Command {
         return ['TRACKS FOUND', unqfy.getTracksFrom(id)];
     }
 
+    expectedArgsFormatMessage() {
+        return 'getTracksFrom --artistId artistTrackOwnerId';
+    }
+
+    expectedArgs() {
+        return ['--artistId'];
+    }
+
 }
 
 module.exports = GetTracksFrom;

@@ -10,6 +10,14 @@ class GetPlaylist extends Command {
 
         return ['PLAYLIST FOUND', unqfy.getPlaylistById(id)];
     }
+
+    expectedArgsFormatMessage() {
+        return 'getPlaylist --id playlistId';
+    }
+
+    expectedArgs() {
+        return ['--id'];
+    }
 }
 
 module.exports = GetPlaylist;

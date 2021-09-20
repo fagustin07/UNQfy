@@ -13,6 +13,14 @@ class AddTrack extends Command {
 
         return ['TRACK ADDED', unqfy.addTrack(albumId, { name, duration, genres})];
     }
+
+    expectedArgsFormatMessage() {
+        return 'addTrack --albumId albumId --name trackName --duration trackDuration --genres "genre1, genre2, ..."';
+    }
+
+    expectedArgs() {
+        return ['--albumId', '--name', '--duration', '--genres'];
+    }
 }
 
 module.exports = AddTrack;

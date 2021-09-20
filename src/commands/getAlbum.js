@@ -12,6 +12,13 @@ class GetAlbum extends Command {
         return ['ALBUM FOUND', unqfy.getAlbumById(id)];
     }
 
+    expectedArgsFormatMessage() {
+        return 'getAlbum --id albumId';
+    }
+
+    expectedArgs() {
+        return ['--id'];
+    }
 }
 
 module.exports = GetAlbum;

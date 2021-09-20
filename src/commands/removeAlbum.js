@@ -11,6 +11,14 @@ class RemoveAlbum extends Command {
 
         return ['ALBUM REMOVED', unqfy.removeAlbumById(artistId)];
     }
+
+    expectedArgsFormatMessage() {
+        return 'removeAlbum --id albumId';
+    }
+
+    expectedArgs() {
+        return ['--id'];
+    }
 }
 
 module.exports = RemoveAlbum;

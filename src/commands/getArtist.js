@@ -12,6 +12,13 @@ class GetArtist extends Command {
         return ['ARTIST FOUND', unqfy.getArtistById(id)];
     }
 
+    expectedArgsFormatMessage() {
+        return 'getArtist --id artistId';
+    }
+
+    expectedArgs() {
+        return ['--id'];
+    }
 }
 
 module.exports = GetArtist;

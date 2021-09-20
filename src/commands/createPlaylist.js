@@ -13,6 +13,14 @@ class CreatePlaylist extends Command {
 
         return ['PLAYLIST ADDED', unqfy.createPlaylist(name, genresToInclude, maxDuration)];
     }
+
+    expectedArgsFormatMessage() {
+        return 'createPlaylist --name playlistName --maxDuration aMaxDuration --genresToInclude "genre1, genre2, ..."';
+    }
+
+    expectedArgs() {
+        return ['--name', '--genresToInclude', '--maxDuration'];
+    }
 }
 
 module.exports = CreatePlaylist;

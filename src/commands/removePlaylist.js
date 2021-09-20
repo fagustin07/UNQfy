@@ -11,6 +11,14 @@ class RemovePlaylist extends Command {
 
         return ['PLAYLIST REMOVED', unqfy.removePlaylistById(playlistId)];
     }
+
+    expectedArgsFormatMessage() {
+        return 'removePlaylist --id playlistId';
+    }
+
+    expectedArgs() {
+        return ['--id'];
+    }
 }
 
 module.exports = RemovePlaylist;

@@ -11,6 +11,14 @@ class RemoveTrack extends Command {
 
         return ['TRACK REMOVED', unqfy.removeTrackById(trackId)];
     }
+
+    expectedArgsFormatMessage() {
+        return 'removeTrack --id trackId';
+    }
+
+    expectedArgs() {
+        return ['--id'];
+    }
 }
 
 module.exports = RemoveTrack;

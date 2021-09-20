@@ -11,6 +11,14 @@ class RemoveArtist extends Command {
 
         return ['ARTIST REMOVED', unqfy.removeArtistById(artistId)];
     }
+
+    expectedArgsFormatMessage() {
+        return 'removeArtist --id artistId';
+    }
+
+    expectedArgs() {
+        return ['--id'];
+    }
 }
 
 module.exports = RemoveArtist;

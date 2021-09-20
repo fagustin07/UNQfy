@@ -11,6 +11,14 @@ class GetTracksByArtist extends Command {
 
         return ['TRACKS FOUND', unqfy.getTracksMatchingArtist(artistName)];    
     }
+
+    expectedArgsFormatMessage() {
+        return 'getTracksByArtist --artistName artistName';
+    }
+
+    expectedArgs() {
+        return ['--id'];
+    }
 }
 
 module.exports = GetTracksByArtist;
