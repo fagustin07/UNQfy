@@ -58,6 +58,16 @@ describe('Add, remove and filter data', () => {
       assert.throws(expectedThrown, `Artist alredy exists`);
     });
 
+    it('should delete a artist', () => {
+      const artist = createAndAddArtist(unqfy,"Nirvana", "USA")
+  
+      unqfy.removeArtistById(artist.id);
+  
+      const expectedThrown = () => unqfy.getArtistById(artist.id);
+  
+      assert.throws(expectedThrown, `Artist not found`);
+    });
+
 
   });
 
@@ -91,6 +101,17 @@ describe('Add, remove and filter data', () => {
 
       const expectedThrown = () => unqfy.getAlbumById(inexistentId);
 
+      assert.throws(expectedThrown, `Album not found`);
+    });
+
+    it('should delete a album', () => {
+      const artist = createAndAddArtist(unqfy,"Nirvana", "USA");
+      const album = createAndAddAlbum(unqfy, artist.id, 'Nevermind', 1991);
+  
+      unqfy.removeAlbumById(album.id);
+  
+      const expectedThrown = () => unqfy.getAlbumById(album.id);
+  
       assert.throws(expectedThrown, `Album not found`);
     });
 
@@ -137,8 +158,21 @@ describe('Add, remove and filter data', () => {
       assert.throws(expectedThrown, `Track alredy exists`);
     });
 
-  });
+    it('should delete a track', () => {
+      const artist = createAndAddArtist(unqfy,"Nirvana", "USA");
+      const album = createAndAddAlbum(unqfy, artist.id, 'Nevermind', 1991);
+      const track = createAndAddTrack(unqfy, album.id, 'Smells like teen spirit', 500, ['rock', 'alternative']);
+
   
+      unqfy.removeTrackById(track.id);
+      
+      const expectedThrown = () => unqfy.getTrackById(track.id);
+  
+      assert.throws(expectedThrown, `Track not found`);
+    });
+
+  });
+
   xit('should find different things by name', () => {
     const artist1 = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
     const album1 = createAndAddAlbum(unqfy, artist1.id, 'Roses Album', 1987);
@@ -237,15 +271,15 @@ describe('Playlist Creation and properties', () => {
     const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
     createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock', 'movie']);
     createAndAddTrack(unqfy, album.id, 'Sweet Child o\' Mine', 1500, ['rock', 'hard rock', 'pop', 'movie']);
-  
+
     const expectedPlaylist = unqfy.createPlaylist('my playlist', ['pop', 'rock'], 1400);
 
-    const playlist = unqfy.getPlaylistById(expectedPlaylist.id); 
+    const playlist = unqfy.getPlaylistById(expectedPlaylist.id);
 
     assert.equal(playlist, expectedPlaylist);
   });
 
-  
+
   it('an playlist cannot have a name alredy declared', () => {
     const artist = unqfy.createPlaylist('my playlist', ['rock'], 1400);
 
@@ -263,4 +297,42 @@ describe('Playlist Creation and properties', () => {
   });
 
 
+  it('should delete a playlist', () => {
+    const playlist = unqfy.createPlaylist('my playlist', ['rock'], 1400);
+
+    unqfy.removePlaylistById(playlist.id);
+
+    const expectedThrown = () => unqfy.getPlaylistById(playlist.id);
+
+    assert.throws(expectedThrown, `Playlist not found`);
+  });
+
+  describe('Delete properties', () => {
+
+    it('on delete a track, it delete from playlist and album who contains it', () => {
+      const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+      const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
+      const track = createAndAddTrack(unqfy, album.id, 'Sweet Child o\' Mine', 1500, ['rock', 'hard rock', 'pop', 'movie']);
+
+      const playlist = unqfy.createPlaylist('my playlist', ['pop', 'rock'], 1400);
+
+      unqfy.removeTrackById(track.id);
+
+      assert.equal(unqfy.getPlaylistById(playlist.id).hasTrack(track), false)
+      assert.equal(unqfy.getAlbumById(album.id).hasTrack(track), false)
+    });
+
+    it('when delete an artist, delete from UNQfy his albums and tracks', () => {
+      const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+      const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
+      const track = createAndAddTrack(unqfy, album.id, 'Sweet Child o\' Mine', 1500, ['rock', 'hard rock', 'pop', 'movie']);
+      const playlist = unqfy.createPlaylist('my playlist', ['pop', 'rock'], 1400);
+
+      unqfy.removeArtistById(artist.id);
+
+      assert.throws(() => unqfy.getAlbumById(album.id), 'Album not found');
+      assert.throws(() => unqfy.getTrackById(track.id), 'Track not found');
+      assert.equal(unqfy.getPlaylistById(playlist.id).hasTrack(track), false)
+    });
+  });
 });

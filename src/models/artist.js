@@ -17,6 +17,10 @@ class Artist {
         return album;
     }
 
+    getTracksByGenres(genres){
+        return this.getTracks().filter(aTrack => aTrack.haveGenres(genres) )
+    }
+
     hasAlbum(id) {
         return this._albums[id] !== undefined;
     }
@@ -31,6 +35,10 @@ class Artist {
 
     getTracks(){
         return this.albums().reduce((tracks, album) => tracks.concat(album.tracks()), []);
+    }
+
+    removeAlbum(anAlbum) {
+        delete this._albums[anAlbum.id];
     }
 }
 

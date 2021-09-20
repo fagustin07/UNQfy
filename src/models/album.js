@@ -17,8 +17,12 @@ class Album {
         return track;
     }
 
-    hasTrack(id) {
-        return this._tracks[id] !== undefined;
+    removeTrack(aTrack) {
+        delete this._tracks[aTrack.id];
+    }
+
+    hasTrack(track) {
+        return this._tracks[track.id] !== undefined;
     }
 
     takeTrack(id) {
