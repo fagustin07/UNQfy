@@ -6,18 +6,10 @@ class GetTrack extends Command {
         return 'getTrack';
     }
 
-    makeBeuty(element){
-        return '== TRACK FOUNDED === \n' + super.makeBeuty(element);
-    }
-
     execute(unqfy, args) {
         const id = parseInt(this.valueOf('--id', args));
         
-        try {
-            return unqfy.getTrackById(id);
-        } catch(err) {
-            return `UNQfy error: ${err.message}`;
-        }
+        return ['FOUND TRACK', unqfy.getTrackById(id)];
     }
 
 }

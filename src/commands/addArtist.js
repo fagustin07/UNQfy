@@ -6,19 +6,11 @@ class AddArtist extends Command {
         return 'addArtist';
     }
 
-    makeBeuty(element){
-        return '== NEW ARTIST === \n' + super.makeBeuty(element);
-    }
-
     execute(unqfy,args){
         const name = this.valueOf('--name', args);
         const country = this.valueOf('--country', args);
 
-        try {
-            return unqfy.addArtist({ name, country });
-        } catch (err) {
-            return `UNQfy error: ${err.message}`;
-        }
+        return ['ADDED ARTIST', unqfy.addArtist({ name, country })];
     }
 }
 

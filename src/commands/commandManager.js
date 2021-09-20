@@ -8,24 +8,35 @@ const GetTracksByGenres = require('./getTracksByGenres');
 const GetTracksByArtist = require('./getTracksByArtist');
 const CreatePlaylist = require('./createPlaylist');
 const GetPlaylist = require('./getPlaylist');
+const Printer = require('../lib/Printer');
+const UNQfyPersistence = require('../lib/UNQfyPersistence');
 
 class CommandManager {
     constructor() {
         this._commands = [
-            AddArtist, AddAlbum, AddTrack,
-            GetArtist, GetAlbum, GetTrack, GetTracksByGenres, GetTracksByArtist, CreatePlaylist, GetPlaylist
+            AddArtist, AddAlbum, AddTrack, CreatePlaylist,
+            GetArtist, GetAlbum, GetTrack, GetTracksByGenres, GetTracksByArtist, GetPlaylist
         ];
+        this._printer = new Printer();
+        this._unqfyPersistence = new UNQfyPersistence();
     }
 
-    addCommand(command) {
-        this._commands.push(command);
-    }
+    execute(command, args) {
+        const unqfy = this._unqfyPersistence.getUNQfy();
 
-    findCommand(command) {
         let commandFounded = this._commands.find(aCommand => aCommand.canHandle(command));
+        if (!commandFounded) this._printer.print('Command not recognized');
 
-        if (commandFounded) return new commandFounded();
-        else throw Error("Command not recognized");
+        try {
+            const result = new commandFounded().execute(unqfy,args);
+            const title = result[0];
+            const commandResult = result[1];
+            this._printer.printResult(title, commandResult);
+        } catch(err) {
+            this._printer.printException(err);
+        }
+
+        this._unqfyPersistence.saveUNQfy(unqfy);
     }
 }
 

@@ -30,7 +30,7 @@ describe('Command manager and commands', () => {
         const command = commandManager.findCommand('addArtist');
         const args = ['--name', 'riky', '--country', 'venezuela'];
 
-        const artist = command.execute(unqfy, args);
+        const artist = command.execute(unqfy, args)[1];
 
         assert.equal(artist, unqfy.getArtistById(artist.id));
     });

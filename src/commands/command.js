@@ -18,10 +18,6 @@ class Command {
     execute(unqfy,args) { 
         throw new Error('Subclass responsability');
     }
-
-    makeBeuty(element){
-        return JSON.stringify(element);
-    }
 }
 
 module.exports = Command;
