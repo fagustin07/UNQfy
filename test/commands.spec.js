@@ -1,7 +1,7 @@
 /* eslint-env node, mocha */
 
 const assert = require('chai').assert;
-const libunqfy = require('../src/models/unqfy');
+const libunqfy = require('../src/models/UNQfy');
 const AddArtist = require('../src/commands/AddArtist');
 const AddAlbum = require('../src/commands/AddAlbum');
 const AddTrack = require('../src/commands/AddTrack');

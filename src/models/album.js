@@ -1,4 +1,4 @@
-const Track = require("./track");
+const Track = require("./Track");
 const _idGenerator = require('../lib/IDGenerator');
 
 class Album {
@@ -17,8 +17,12 @@ class Album {
         return track;
     }
 
-    hasTrack(id) {
-        return this._tracks[id] !== undefined;
+    removeTrack(aTrack) {
+        delete this._tracks[aTrack.id];
+    }
+
+    hasTrack(aTrack) {
+        return this._tracks[aTrack.id] !== undefined;
     }
 
     takeTrack(id) {

@@ -51,11 +51,21 @@ describe('Add, remove and filter data', () => {
     });
 
     it('an artist cannot be created with a name that already exists', () => {
-      const artist = createAndAddArtist(unqfy, 'Nirvana', 'USA');
+      createAndAddArtist(unqfy, 'Nirvana', 'USA');
 
       const expectedThrown = () => createAndAddArtist(unqfy, 'Nirvana', 'USA');
 
       assert.throws(expectedThrown, `Artist alredy exists`);
+    });
+
+    it('should remove an artist', () => {
+      const artist = createAndAddArtist(unqfy, 'Nirvana', 'USA');
+
+      unqfy.removeArtistById(artist.id);
+
+      const expectedThrown = () => unqfy.getArtistById(artist.id);
+
+      assert.throws(expectedThrown, `Artist not found`);
     });
 
 
@@ -79,7 +89,7 @@ describe('Add, remove and filter data', () => {
 
     it('an album cannot have a name alredy declared', () => {
       const artist = createAndAddArtist(unqfy, 'Nirvana', 'USA');
-      const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
+      createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
 
       const expectedThrown = () => createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
 
@@ -94,8 +104,17 @@ describe('Add, remove and filter data', () => {
       assert.throws(expectedThrown, `Album not found`);
     });
 
+    it('should remove an album', () => {
+      const artist = createAndAddArtist(unqfy, 'Nirvana', 'USA');
+      const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
 
+      unqfy.removeAlbumById(album.id);
+
+      const expectedThrown = () => unqfy.getAlbumById(album.id);
+      assert.throws(expectedThrown, `Album not found`);
+    });
   });
+
   describe('Tracks', () => {
 
     it('should add a track to an album', () => {
@@ -247,11 +266,21 @@ describe('Playlist Creation and properties', () => {
 
   
   it('an playlist cannot have a name alredy declared', () => {
-    const artist = unqfy.createPlaylist('my playlist', ['rock'], 1400);
+    unqfy.createPlaylist('my playlist', ['rock'], 1400);
 
     const expectedThrown = () => unqfy.createPlaylist('my playlist', ['rock', 'pop'], 800);
 
     assert.throws(expectedThrown, `Playlist alredy exists`);
+  });
+
+  it('should delete a playlist', () => {
+    const playlist = unqfy.createPlaylist('my playlist', ['rock'], 1400);
+
+    unqfy.removePlaylistById(playlist.id);
+
+    const expectedThrown = () => unqfy.getPlaylistById(playlist.id);
+
+    assert.throws(expectedThrown, `Playlist not found`);
   });
 
   it('throws exception when an playlist is not found by id', () => {
@@ -262,5 +291,29 @@ describe('Playlist Creation and properties', () => {
     assert.throws(expectedThrown, `Playlist not found`);
   });
 
+  it('on delete a track, it delete from playlist and album who contains it', () => {
+    const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+    const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
+    const track = createAndAddTrack(unqfy, album.id, 'Sweet Child o\' Mine', 1500, ['rock', 'hard rock', 'pop', 'movie']);
 
+    const playlist = unqfy.createPlaylist('my playlist', ['pop', 'rock'], 1400);
+
+    unqfy.removeTrackById(track.id);
+
+    assert.equal(unqfy.getPlaylistById(playlist.id).hasTrack(track), false)  
+    assert.equal(unqfy.getAlbumById(album.id).hasTrack(track), false)  
+  });
+
+  it('when delete an artist, delete from UNQfy his albums and tracks', () => {
+    const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+    const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
+    const track = createAndAddTrack(unqfy, album.id, 'Sweet Child o\' Mine', 1500, ['rock', 'hard rock', 'pop', 'movie']);
+    const playlist = unqfy.createPlaylist('my playlist', ['pop', 'rock'], 1400);
+
+    unqfy.removeArtistById(artist.id);
+
+    assert.throws(() => unqfy.getAlbumById(album.id), 'Album not found');
+    assert.throws(() => unqfy.getTrackById(track.id), 'Track not found');
+    assert.equal(unqfy.getPlaylistById(playlist.id).hasTrack(track), false)  
+  });
 });

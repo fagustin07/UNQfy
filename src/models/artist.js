@@ -1,4 +1,4 @@
-const Album = require('./album');
+const Album = require('./Album');
 const _idGenerator = require('../lib/IDGenerator');
 
 class Artist {
@@ -19,6 +19,10 @@ class Artist {
 
     hasAlbum(id) {
         return this._albums[id] !== undefined;
+    }
+
+    removeAlbum(anAlbum) {
+        delete this._albums[anAlbum.id];
     }
 
     takeAlbum(id) {

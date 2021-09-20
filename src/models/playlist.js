@@ -11,6 +11,10 @@ class Playlist {
         return this.tracks.reduce((duration, aTrack) => duration += aTrack.duration, 0);
     }
 
+    removeTrack(aTrack) {
+        this._tracks = this._tracks.filter(track => track.id !== aTrack.id);
+    }
+    
     hasTrack(track){
         return this.tracks.some(aTrack => aTrack.id === track.id);
     }
