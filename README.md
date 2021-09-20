@@ -11,6 +11,16 @@
 
 ![diagrama-de-clases](https://github.com/fagustin07/UNQfy/blob/885586e7b2bfa98f3f9294ca915c103faa0e81f3/imagenes/Diagrama%20de%20clases%20UNQFy.jpg)
 
+# Command Pattern
+
+Para utilizar la interfaz provista por el objeto UNQFy en forma de comandos desde la consola hemos propuesto el patron de diseño Command. Dicho patron fue diseñado de la siguiente forma:
+
+![command-pattern](https://github.com/fagustin07/UNQfy/blob/b7b8ac9bc9ea02e7daa350b6d6baf11a424b321e/imagenes/Command%20Pattern.jpg)
+
+De esta forma logramos:
+- Abstraer comportamiento
+- Reducir la cantidad de codigo repetido
+
 # Comandos
 
 - Agregar un artista
