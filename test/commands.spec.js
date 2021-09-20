@@ -2,16 +2,16 @@
 
 const assert = require('chai').assert;
 const libunqfy = require('../src/models/unqfy');
-const AddArtist = require('../src/commands/AddArtist');
-const AddAlbum = require('../src/commands/AddAlbum');
-const AddTrack = require('../src/commands/AddTrack');
-const CreatePlaylist = require('../src/commands/CreatePlaylist');
-const GetAlbum = require('../src/commands/GetAlbum');
-const GetArtist = require('../src/commands/GetArtist');
-const GetPlaylist = require('../src/commands/GetPlaylist');
-const GetTrack = require('../src/commands/GetTrack');
-const GetTracksByArtist = require('../src/commands/GetTracksByArtist');
-const GetTracksByGenres = require('../src/commands/GetTracksByGenres');
+const AddArtist = require('../src/commands/addArtist');
+const AddAlbum = require('../src/commands/addAlbum');
+const AddTrack = require('../src/commands/addTrack');
+const CreatePlaylist = require('../src/commands/createPlaylist');
+const GetAlbum = require('../src/commands/getAlbum');
+const GetArtist = require('../src/commands/getArtist');
+const GetPlaylist = require('../src/commands/getPlaylist');
+const GetTrack = require('../src/commands/getTrack');
+const GetTracksByArtist = require('../src/commands/getTracksByArtist');
+const GetTracksByGenres = require('../src/commands/getTracksByGenres');
 
 function createAndAddArtist(unqfy, artistName, country) {
     const artist = unqfy.addArtist({ name: artistName, country });
