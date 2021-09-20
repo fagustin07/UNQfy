@@ -6,18 +6,10 @@ class GetAlbum extends Command {
         return 'getAlbum';
     }
 
-    makeBeuty(element){
-        return '== ALBUM FOUNDED === \n' + super.makeBeuty(element);
-    }
-
     execute(unqfy, args) {
         const id = parseInt(this.valueOf('--id', args));
         
-        try {
-            return unqfy.getAlbumById(id);
-        } catch(error) {
-            return `UNQfy error: ${err.message}`;
-        }
+        return ['FOUND ALBUM', unqfy.getAlbumById(id)];
     }
 
 }

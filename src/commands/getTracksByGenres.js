@@ -13,12 +13,7 @@ class GetTracksByGenres extends Command {
     execute(unqfy,args){
         const genres = this.valueOf('--genres', args).split(',').map(genre => genre.trim())
 
-        try {
-            return unqfy.getTracksMatchingGenres(genres);
-        } catch (err) {
-            return `UNQfy error: ${err.message}`;
-        }
-    
+        return ['FOUND TRACKS', unqfy.getTracksMatchingGenres(genres)];
     }
 }
 

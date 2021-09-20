@@ -6,19 +6,10 @@ class GetTracksByArtist extends Command {
         return 'getTracksByArtist';
     }
 
-    makeBeuty(element){
-        return super.makeBeuty(element);
-    }
-
     execute(unqfy,args){
         const artistName = this.valueOf('--artistName', args)
 
-        try {
-            return unqfy.getTracksMatchingArtist(artistName);
-        } catch (err) {
-            return `UNQfy error: ${err.message}`;
-        }
-    
+        return ['FOUND TRACKS', unqfy.getTracksMatchingArtist(artistName)];    
     }
 }
 
