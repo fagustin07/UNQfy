@@ -1,39 +1,45 @@
 class Printer {
 
     print(text) {
-        console.log('<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>');
-        console.log(text);
-        console.log('<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>');
+      this._separator();
+      console.log(text);
+      this._separator();
     }
 
     printResult(title, commandResult){
-        console.log('');
-        console.log(`${title}:`);
+        this._title(title);
         this._space();
         if(commandResult instanceof Array){
             this.printArray(commandResult);
         }
         else {
-            console.log(commandResult);
+            console.log(JSON.stringify(commandResult));
         }
       }
     
     printArray(array) {
-      this._space();
       array.forEach((element) => {
-        console.log();
-        console.log(element);
-        console.log();
+        console.log(JSON.stringify(element));
+        this._separator();
       });
-      this._space();
     }
 
   printException(exception) {
-    console.error(`Ups! [UNQfyException]: ${exception.message}`);
+    this._separator();
+    console.log(`Ups! [UNQfyException]: ${exception.message}`);
+    this._separator();
+  }
+
+  _title(aTitle) {
+    console.log(`============== ${aTitle} ==============`);
+  }
+
+  _separator() {
+    console.log(`---------------   --------------`);
   }
 
   _space() {
-    console.log('<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>');
+    console.log();
   }
 }
   module.exports = Printer;

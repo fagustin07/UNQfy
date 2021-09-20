@@ -9,7 +9,7 @@ class GetAlbum extends Command {
     execute(unqfy, args) {
         const id = parseInt(this.valueOf('--id', args));
         
-        return ['FOUND ALBUM', unqfy.getAlbumById(id)];
+        return ['ALBUM FOUND', unqfy.getAlbumById(id)];
     }
 
 }

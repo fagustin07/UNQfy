@@ -11,6 +11,15 @@ class Track {
     haveGenres(genres){
         return genres.some(aGenre => this.genres.includes(aGenre))
     }
+
+    toJSON() {
+        return {
+            id: this.id,
+            name: this.name,
+            duration: this.country,
+            genres: this.genres,
+        }
+    }
 }
 
 module.exports = Track;

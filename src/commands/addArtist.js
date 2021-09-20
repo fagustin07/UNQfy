@@ -10,7 +10,7 @@ class AddArtist extends Command {
         const name = this.valueOf('--name', args);
         const country = this.valueOf('--country', args);
 
-        return ['ADDED ARTIST', unqfy.addArtist({ name, country })];
+        return ['ARTIST ADDED', unqfy.addArtist({ name, country })];
     }
 }
 

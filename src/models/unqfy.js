@@ -57,6 +57,18 @@ class UNQfy {
     return this._multimediaService.addTrack(albumId,trackData)
   }
 
+  getAllArtists() {
+    return this._multimediaService.getAllArtists();
+  }
+
+  getAlbumsFrom(artistId) {
+    return this._multimediaService.getAlbumsFrom(artistId);
+  }
+
+  getTracksFrom(artistId) {
+    return this._multimediaService.getTracksFrom(artistId);
+  }
+
   getArtistById(id) {
     return this._multimediaService.getArtistById(id);
   }
@@ -75,19 +87,19 @@ class UNQfy {
   }
 
   removeArtistById(id){
-    this._multimediaService.removeArtistById(id)
+    return this._multimediaService.removeArtistById(id)
   }
 
   removeAlbumById(id){
-    this._multimediaService.removeAlbumById(id)
+    return this._multimediaService.removeAlbumById(id)
   }
 
   removeTrackById(id){
-    this._multimediaService.removeTrackById(id)
+    return this._multimediaService.removeTrackById(id)
   }
 
   removePlaylistById(id){
-    this._multimediaService.removePlaylistById(id)
+    return this._multimediaService.removePlaylistById(id)
   }
 
   // genres: array de generos(strings)

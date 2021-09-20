@@ -11,7 +11,7 @@ class AddAlbum extends Command {
         const name = this.valueOf('--name', args);
         const year = parseInt(this.valueOf('--year', args));
 
-        return ['ADDED ALBUM', unqfy.addAlbum(artistId, { name, year })];
+        return ['ALBUM ADDED', unqfy.addAlbum(artistId, { name, year })];
     }
 }
 

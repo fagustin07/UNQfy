@@ -9,7 +9,7 @@ class GetArtist extends Command {
     execute(unqfy, args) {
         const id = parseInt(this.valueOf('--id', args));
         
-        return ['FOUND ARTIST', unqfy.getArtistById(id)];
+        return ['ARTIST FOUND', unqfy.getArtistById(id)];
     }
 
 }

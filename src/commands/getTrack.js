@@ -9,7 +9,7 @@ class GetTrack extends Command {
     execute(unqfy, args) {
         const id = parseInt(this.valueOf('--id', args));
         
-        return ['FOUND TRACK', unqfy.getTrackById(id)];
+        return ['TRACK FOUND', unqfy.getTrackById(id)];
     }
 
 }

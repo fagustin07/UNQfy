@@ -8,7 +8,7 @@ class GetPlaylist extends Command {
     execute(unqfy,args){
         const id = parseInt(this.valueOf('--id', args));
 
-        return ['FOUND PLAYLIST', unqfy.getPlaylistById(id)];
+        return ['PLAYLIST FOUND', unqfy.getPlaylistById(id)];
     }
 }
 

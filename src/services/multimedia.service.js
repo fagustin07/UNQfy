@@ -51,7 +51,7 @@ class MultimediaService {
         return newPlaylist;
     }
 
-    // GET
+    // ACCESSORS
 
     getPlaylistById(id) {
         return this._getOrThrow(id, this._getArrayOf(this._playlists), "Playlist not found");
@@ -79,6 +79,20 @@ class MultimediaService {
         return artist.getTracks();
     }
 
+    getAllArtists() {
+        return this._getArrayOf(this._artists);
+    }
+    
+    getAlbumsFrom(artistId) {
+        const artist = this.getArtistById(artistId);
+        return artist.albums();
+    }
+
+    getTracksFrom(artistId) {
+        const artist = this.getArtistById(artistId);
+        return artist.albums().tracks();
+    }
+
     // REMOVE
 
     removeArtistById(id) {
@@ -86,6 +100,7 @@ class MultimediaService {
         const albums = artist.albums();
         albums.forEach(album => this.removeAlbumById(album.id));
         delete this._artists[id];
+        return artist;
     }
 
     removeAlbumById(id) {
@@ -93,6 +108,7 @@ class MultimediaService {
         const tracks = album.tracks();
         tracks.forEach(track => this.removeTrackById(track.id));
         this._getArrayOf(this._artists).forEach(artist => artist.removeAlbum(album));
+        return album;
     }
 
     removeTrackById(id) {
@@ -102,6 +118,8 @@ class MultimediaService {
             .filter(container => container.hasTrack(track));
 
         trackContainers.forEach(container => container.removeTrack(track));
+        
+        return track;
     }
 
     removePlaylistById(id) {

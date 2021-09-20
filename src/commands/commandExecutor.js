@@ -1,13 +1,23 @@
 const AddArtist = require('./AddArtist');
 const AddAlbum = require('./AddAlbum.js');
-const GetArtist = require('./getArtist');
-const GetAlbum = require('./getAlbum');
 const AddTrack = require('./AddTrack');
+const CreatePlaylist = require('./createPlaylist');
+
+const GetAlbum = require('./getAlbum');
+const GetArtist = require('./getArtist');
 const GetTrack = require('./getTrack');
 const GetTracksByGenres = require('./getTracksByGenres');
 const GetTracksByArtist = require('./getTracksByArtist');
-const CreatePlaylist = require('./createPlaylist');
 const GetPlaylist = require('./getPlaylist');
+const GetAllArtists = require('./getAllArtists');
+const GetAlbumsFrom = require('./getAlbumsFrom');
+const GetTracksFrom = require('./getTracksFrom');
+
+const RemoveArtist = require('./removeArtist');
+const RemoveAlbum = require('./removeAlbum');
+const RemoveTrack = require('./removeTrack');
+const RemovePlaylist = require('./removePlaylist');
+
 const Printer = require('../lib/Printer');
 const UNQfyPersistence = require('../lib/UNQfyPersistence');
 
@@ -15,7 +25,9 @@ class CommandExecutor {
     constructor() {
         this._commands = [
             AddArtist, AddAlbum, AddTrack, CreatePlaylist,
-            GetArtist, GetAlbum, GetTrack, GetTracksByGenres, GetTracksByArtist, GetPlaylist
+            GetArtist, GetAlbum, GetTrack, GetTracksByGenres, GetTracksByArtist, GetPlaylist,
+            GetAllArtists, GetAlbumsFrom, GetTracksFrom,
+            RemoveArtist, RemoveAlbum, RemoveTrack, RemovePlaylist
         ];
         this._printer = new Printer();
         this._unqfyPersistence = new UNQfyPersistence();

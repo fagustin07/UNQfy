@@ -33,12 +33,21 @@ class Artist {
         return Object.values(this._albums);
     }
 
-    getTracks(){
+    getTracks() {
         return this.albums().reduce((tracks, album) => tracks.concat(album.tracks()), []);
     }
 
     removeAlbum(anAlbum) {
         delete this._albums[anAlbum.id];
+    }
+
+    toJSON() {
+        return {
+            id: this.id,
+            name: this.name,
+            country: this.country,
+            albums: this.albums().map(album => album.toJSON()),
+        }
     }
 }
 

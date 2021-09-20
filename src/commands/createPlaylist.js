@@ -11,7 +11,7 @@ class CreatePlaylist extends Command {
         const genresToInclude = this.valueOf('--genresToInclude', args).split(',').map(genre => genre.trim())
         const maxDuration = parseInt(this.valueOf('--maxDuration', args));
 
-        return ['ADDED PLAYLIST', unqfy.createPlaylist(name, genresToInclude, maxDuration)];
+        return ['PLAYLIST ADDED', unqfy.createPlaylist(name, genresToInclude, maxDuration)];
     }
 }
 

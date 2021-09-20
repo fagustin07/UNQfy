@@ -9,7 +9,7 @@ class GetTracksByArtist extends Command {
     execute(unqfy,args){
         const artistName = this.valueOf('--artistName', args)
 
-        return ['FOUND TRACKS', unqfy.getTracksMatchingArtist(artistName)];    
+        return ['TRACKS FOUND', unqfy.getTracksMatchingArtist(artistName)];    
     }
 }
 

@@ -11,7 +11,7 @@ class AddTrack extends Command {
         const duration = parseInt(this.valueOf('--duration', args));
         const genres = this.valueOf('--genres', args).split(',').map(genre => genre.trim())
 
-        return ['ADDED TRACK', unqfy.addTrack(albumId, { name, duration, genres})];
+        return ['TRACK ADDED', unqfy.addTrack(albumId, { name, duration, genres})];
     }
 }
 
