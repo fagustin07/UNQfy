@@ -12,6 +12,7 @@ const GetPlaylist = require('./getPlaylist');
 const GetAllArtists = require('./getAllArtists');
 const GetAlbumsFrom = require('./getAlbumsFrom');
 const GetTracksFrom = require('./getTracksFrom');
+const SearchByPartialName = require('./searchByPartialName');
 
 const RemoveArtist = require('./removeArtist');
 const RemoveAlbum = require('./removeAlbum');
@@ -27,6 +28,7 @@ class CommandExecutor {
             AddArtist, AddAlbum, AddTrack, CreatePlaylist,
             GetArtist, GetAlbum, GetTrack, GetTracksByGenres, GetTracksByArtist, GetPlaylist,
             GetAllArtists, GetAlbumsFrom, GetTracksFrom,
+            SearchByPartialName,
             RemoveArtist, RemoveAlbum, RemoveTrack, RemovePlaylist
         ];
         this._printer = new Printer();

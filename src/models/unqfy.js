@@ -114,6 +114,9 @@ class UNQfy {
     return this._entitiesManager.getTracksMatchingArtist(artistName)
   }
 
+  searchByPartialName(aPartialName) {
+    return this._entitiesManager.searchByPartialName(aPartialName);
+  }
 
   // name: nombre de la playlist
   // genresToInclude: array de generos

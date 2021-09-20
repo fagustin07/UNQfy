@@ -97,6 +97,15 @@ class EntitiesManager {
         return artist.albums().tracks();
     }
 
+    searchByPartialName(aPartialName) {
+        return {
+            artists: this._searchByPartialNameIn(this._getArrayOf(this._artists), aPartialName),
+            albums: this._searchByPartialNameIn(this._albums(), aPartialName),
+            tracks: this._searchByPartialNameIn(this._tracks(), aPartialName),
+            playlists: this._searchByPartialNameIn(this._getArrayOf(this._playlists), aPartialName)
+        };
+    }
+
     // REMOVE
 
     removeArtistById(id) {
@@ -153,6 +162,11 @@ class EntitiesManager {
 
     _tracks() {
         return this._albums().reduce((tracks, album) => tracks.concat(album.tracks()), [])
+    }
+
+    _searchByPartialNameIn(aRecognizableList, aPartialName) {
+        return aRecognizableList
+            .filter( obj => obj.name.toLowerCase().includes(aPartialName.toLowerCase()));
     }
 
     _getOrThrow(id, anArray, msgError) {
