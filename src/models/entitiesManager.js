@@ -173,22 +173,21 @@ class EntitiesManager {
         const tracks = anArtist.albums().map(album => album.tracks()).flat();
         const uniqueKeys = {};
         tracks.forEach( track => uniqueKeys[track.id] = undefined);
-        const uniqueTracks = Object.keys(uniqueKeys);
         const playedTracksPair = this._playedTracksPair();
 
-        const counts = uniqueTracks.reduce((obj, aTrackId) => {
-            obj[Number(aTrackId)] = 
-            playedTracksPair
-                .filter(playedTrackPair => playedTrackPair.fst.id === parseInt(aTrackId))
-                .reduce((totalPlayed, trackPair) => totalPlayed + trackPair.snd, 0);
-            return obj;
+        const tracksAndTimesListen = 
+            Object.keys(uniqueKeys)
+                .reduce((map, aTrackId) => {
+                    map[Number(aTrackId)] = 
+                        playedTracksPair
+                            .filter(playedTrackPair => playedTrackPair.fst.id === parseInt(aTrackId))
+                            .reduce((totalPlayed, trackPair) => totalPlayed + trackPair.snd, 0);
+            return map;
         }, {});
         
         const take = (stringId) => tracks.find(track => track.id === parseInt(stringId));
-
-        
         const topThree = 
-                Object.entries(counts)
+                Object.entries(tracksAndTimesListen)
                     .map((entry) => new Pair(take(entry[0]), entry[1]))
                     .sort((a, b) => (a.snd > b.snd) ? -1 : 1)
                     .slice(0,3)
