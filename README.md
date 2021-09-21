@@ -8,14 +8,20 @@
 - Federico Sandoval @fagustin07
 
 # Diagrama de Clases
+- Primera version:
 
 ![diagrama-de-clases](https://github.com/fagustin07/UNQfy/blob/885586e7b2bfa98f3f9294ca915c103faa0e81f3/imagenes/Diagrama%20de%20clases%20UNQFy.jpg)
+
+- Segunda version:
+
+![diagrama-de-clases](https://github.com/fagustin07/UNQfy/blob/e6f59b7d2448b090cdb2db1952d6ff2c872a1010/imagenes/Diagrama%20de%20clases%20UNQFy%20ver%202.jpg)
+
 
 # Command Pattern
 
 Para utilizar la interfaz provista por el objeto UNQFy en forma de comandos desde la consola hemos propuesto el patron de diseño Command. Dicho patron fue diseñado de la siguiente forma:
 
-![command-pattern](https://github.com/fagustin07/UNQfy/blob/b7b8ac9bc9ea02e7daa350b6d6baf11a424b321e/imagenes/Command%20Pattern.jpg)
+![command-pattern](https://github.com/fagustin07/UNQfy/blob/e6f59b7d2448b090cdb2db1952d6ff2c872a1010/imagenes/Command%20Pattern.jpg)
 
 De esta forma logramos:
 - Abstraer comportamiento
@@ -23,6 +29,7 @@ De esta forma logramos:
 
 # Comandos
 
+### Create
 - Agregar un artista
 ```javascript
 node main.js addArtist --name Nirvana --country USA
@@ -37,6 +44,13 @@ node main.js addAlbum --artistId 1 --name Nevermind --year 1991
 ```javascript
 node main.js addTrack --albumId 2 --name "Smells like teen spirit" --duration 500 --genres "rock, alternative"
 ```
+
+- Crear una playlist
+```javascript
+node main.js createPlaylist --name "Full Nirvana" --genresByInclude "rock, alternative, metal" --maxDuration 8000
+```
+
+### Accessors
 
 - Obtener un artista
 ```javascript
@@ -64,7 +78,49 @@ node main.js getTracksByArtist --artistName Nirvana
 node main.js getTracksByGenres --genres "rock, pop"
 ```
 
-- Crear una playlist
+- Obtener una playlist
 ```javascript
-node main.js createPlaylist --name "Full Nirvana" --genresByInclude "rock, alternative, metal" --maxDuration 8000
+node main.js getPlaylist --id 4
+```
+
+- Obtener todos los artistas
+```javascript
+node main.js getAllArtists
+```
+
+- Obtener todos los albums de un artista
+```javascript
+node main.js getAlbumsFrom --artistId 1
+```
+
+- Obtener todos los tracks de un album
+```javascript
+node main.js getTracksFrom --albumId 2
+```
+
+- Busqueda parcial
+```javascript
+node main.js searchByPartialName --name "Nirv"
+```
+
+### Remove
+
+- Borrar un artista
+```javascript
+node main.js removeArtist --id 1
+```
+
+- Borrar un album
+```javascript
+node main.js removeAlbum --id 2
+```
+
+- Borrar un track
+```javascript
+node main.js removeTrack --id 3
+```
+
+- Borrar una playlist
+```javascript
+node main.js removePlaylist --id 4
 ```
