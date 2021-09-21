@@ -47,7 +47,7 @@ node main.js addTrack --albumId 2 --name "Smells like teen spirit" --duration 50
 
 - Crear una playlist
 ```javascript
-node main.js createPlaylist --name "Full Nirvana" --genresByInclude "rock, alternative, metal" --maxDuration 8000
+node main.js createPlaylist --name "Full Nirvana" --genresToInclude "rock, alternative, metal" --maxDuration 8000
 ```
 
 ### Accessors

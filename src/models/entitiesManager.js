@@ -136,7 +136,10 @@ class EntitiesManager {
     }
 
     removePlaylistById(id) {
+        const playlist = this._playlists[id];
         delete this._playlists[id];
+
+        return playlist
     }
 
     //PRIVATE

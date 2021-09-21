@@ -17,7 +17,7 @@ class GetTracksByArtist extends Command {
     }
 
     expectedArgs() {
-        return ['--id'];
+        return ['--artistName'];
     }
 }
 
