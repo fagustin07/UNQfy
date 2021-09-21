@@ -132,6 +132,25 @@ class UNQfy {
     return this._entitiesManager.createPlaylist(name,genresToInclude,maxDuration);
   }
 
+  // USERS
+
+    //Usuarios:
+    addUser(username){
+      return this._entitiesManager.addUser(username);
+    }
+  
+    userListenTo(aUserId, aTrackId){
+      return this._entitiesManager.userListenTo(aUserId, aTrackId);
+    }
+  
+    timesUserListenedTrack(aUserId, aTrackId){
+      return this._entitiesManager.timesUserListenedTrack(aUserId, aTrackId);
+    }
+  
+    thisIs(artistId){
+      return this._entitiesManager.thisIs(artistId);
+    }
+
   save(filename) {
     const serializedData = picklify.picklify(this);
     fs.writeFileSync(filename, JSON.stringify(serializedData, null, 2));

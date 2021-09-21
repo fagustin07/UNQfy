@@ -17,6 +17,13 @@ function createAndAddTrack(unqfy, albumId, trackName, trackDuraction, trackGenre
   return unqfy.addTrack(albumId, { name: trackName, duration: trackDuraction, genres: trackGenres });
 }
 
+function repeat(times, fun) {
+  if (times > 0) {
+    fun();
+    repeat(times-1, fun);
+  }
+}
+
 
 describe('Add, remove and filter data', () => {
   let unqfy = null;
@@ -334,5 +341,63 @@ describe('Playlist Creation and properties', () => {
       assert.throws(() => unqfy.getTrackById(track.id), 'Track not found');
       assert.equal(unqfy.getPlaylistById(playlist.id).hasTrack(track), false)
     });
+  });
+
+  describe('User', () => {
+    it('when an user listen a track, times listen that track increment in one', () => {
+      const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+      const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
+      const track = createAndAddTrack(unqfy, album.id, 'Sweet Child o\' Mine', 1500, ['rock', 'hard rock', 'pop', 'movie']);
+      const user = unqfy.addUser('chester');
+      
+      unqfy.userListenTo(user.id, track.id);
+
+      assert.equal(unqfy.timesUserListenedTrack(user.id, track.id), 1);
+    });
+
+    it('a user should listen many times a track', () => {
+      const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+      const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
+      const track = createAndAddTrack(unqfy, album.id, 'Sweet Child o\' Mine', 1500, ['rock', 'hard rock', 'pop', 'movie']);
+      const user = unqfy.addUser('chester');
+      
+      unqfy.userListenTo(user.id, track.id);
+      unqfy.userListenTo(user.id, track.id);
+
+      assert.equal(unqfy.timesUserListenedTrack(user.id, track.id), 2);
+    });
+
+    it('cannot create a user with an existent username', () => {
+      unqfy.addUser('chester');
+      
+      assert.throws(() => unqfy.addUser('chester'), 'User already exists');
+    });
+  });
+
+  it('Can obtain the top three listen songs from an artist (This is...)', () => {
+    const artist = createAndAddArtist(unqfy, 'Anime Openings Voice', 'Japan');
+    const album = createAndAddAlbum(unqfy, artist.id, 'Openings I', 2020);
+    const jjkOpening = createAndAddTrack(unqfy, album.id, 'JJK', 200, ['pop', 'movie']);
+    const shalaEsShala = createAndAddTrack(unqfy, album.id, 'Shala es Shala', 180, ['pop']);
+    const narutoOpening = createAndAddTrack(unqfy, album.id, 'We have super powers', 60, ['pop']);
+    const hellsingOpening = createAndAddTrack(unqfy, album.id, 'hellsing opening', 60, ['pop']);
+    createAndAddTrack(unqfy, album.id, 'song1', 60, ['pop']);
+    createAndAddTrack(unqfy, album.id, 'song2', 60, ['pop']);
+    createAndAddTrack(unqfy, album.id, 'song3', 60, ['pop']);
+    const aUser = unqfy.addUser("pepe");
+    const anotherUser = unqfy.addUser("jose");
+    repeat(35, () => unqfy.userListenTo(aUser.id,jjkOpening.id));
+    repeat(12, () => unqfy.userListenTo(aUser.id,narutoOpening.id));
+    repeat(150, () => unqfy.userListenTo(aUser.id,hellsingOpening.id));
+    repeat(91, () => unqfy.userListenTo(anotherUser.id,shalaEsShala.id));
+    repeat(80, () => unqfy.userListenTo(anotherUser.id,jjkOpening.id));
+
+   const playlistThisIs = unqfy.thisIs(artist.id);
+
+    assert.equal(playlistThisIs.name, 'This is... ' + artist.name);
+    assert.lengthOf(playlistThisIs.tracks,3);
+    assert.equal(playlistThisIs.tracks[0], hellsingOpening);
+    assert.equal(playlistThisIs.tracks[1], jjkOpening);
+    assert.equal(playlistThisIs.tracks[2], shalaEsShala);
   });
 });
