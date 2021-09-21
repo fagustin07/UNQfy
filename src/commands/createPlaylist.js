@@ -15,7 +15,7 @@ class CreatePlaylist extends Command {
     }
 
     expectedArgsFormatMessage() {
-        return 'createPlaylist --name playlistName --maxDuration aMaxDuration --genresToInclude "genre1, genre2, ..."';
+        return 'createPlaylist --name playlistName --genresToInclude "genre1, genre2, ..." --maxDuration aMaxDuration';
     }
 
     expectedArgs() {
