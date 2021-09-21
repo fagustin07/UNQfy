@@ -10,11 +10,11 @@
 # Diagrama de Clases
 - Primera version:
 
-![diagrama-de-clases](https://github.com/fagustin07/UNQfy/blob/885586e7b2bfa98f3f9294ca915c103faa0e81f3/imagenes/Diagrama%20de%20clases%20UNQFy.jpg)
+![diagrama-de-clases](https://github.com/fagustin07/UNQfy/blob/d2ddad895a4dc601c2fe4859159c205a11fb03f4/imagenes/Diagrama%20de%20clases%20UNQFy.jpg)
 
 - Segunda version:
 
-![diagrama-de-clases](https://github.com/fagustin07/UNQfy/blob/e6f59b7d2448b090cdb2db1952d6ff2c872a1010/imagenes/Diagrama%20de%20clases%20UNQFy%20ver%202.jpg)
+![diagrama-de-clases](https://github.com/fagustin07/UNQfy/blob/d2ddad895a4dc601c2fe4859159c205a11fb03f4/imagenes/Diagrama%20de%20clases%20UNQFy%20ver%202.jpg)
 
 
 # Command Pattern
