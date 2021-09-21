@@ -86,6 +86,10 @@ class UNQfy {
     return this._entitiesManager.getPlaylistById(id);
   }
 
+  getUserById(id){
+    return this._entitiesManager.getUserById(id)
+  }
+
   removeArtistById(id){
     return this._entitiesManager.removeArtistById(id)
   }

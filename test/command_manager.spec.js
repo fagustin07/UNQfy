@@ -22,8 +22,6 @@ const TimesUserListenedTrack = require('../src/commands/timesUserListenedTrack')
 const ThisIs = require('../src/commands/thisIs');
 const GetUser = require('../src/commands/getUser');
 
-
-
 function createAndAddArtist(unqfy, artistName, country) {
     const artist = unqfy.addArtist({ name: artistName, country });
     return artist;

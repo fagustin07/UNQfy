@@ -17,13 +17,13 @@ class User extends Recognizable {
         }
     }
 
-    timesListen(aTrack) {
+    timesListened(aTrack) {
         const trackPair = this.tracksListened[aTrack.id];
 
         return (trackPair!==undefined) ? trackPair.snd : 0;
     }
 
-    tracksListenPair() {
+    tracksListenedPair() {
         return Object.values(this.tracksListened);
     }
     
@@ -33,7 +33,7 @@ class User extends Recognizable {
 
     _addListenTrack(aTrack) {
         const trackPair = this.tracksListened[aTrack.id];
-        trackPair.snd = trackPair.snd + 1;
+        trackPair.snd += 1;
     }
 }
 
