@@ -68,7 +68,6 @@ node main.js getArtist --id 1
 node main.js getAlbum --id 2
 ```
 
-
 - Obtener un track
 ```javascript
 node main.js getTrack --id 3
@@ -139,6 +138,11 @@ node main.js removeTrack --id 3
 - Borrar una playlist
 ```javascript
 node main.js removePlaylist --id 4
+```
+
+- Borrar un usuario
+```javascript
+node main.js removeUser --id 5
 ```
 
 ### User
