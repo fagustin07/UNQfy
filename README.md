@@ -14,7 +14,7 @@
 
 - Segunda version:
 
-![diagrama-de-clases](https://github.com/fagustin07/UNQfy/blob/d2ddad895a4dc601c2fe4859159c205a11fb03f4/imagenes/Diagrama%20de%20clases%20UNQFy%20ver%202.jpg)
+![diagrama-de-clases](https://github.com/fagustin07/UNQfy/blob/d8daa31fa3718ef843be85b49517f19f4b68e4b9/imagenes/Diagrama%20de%20clases%20UNQFy%202.jpg)
 
 
 # Command Pattern
