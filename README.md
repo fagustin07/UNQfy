@@ -115,7 +115,7 @@ node main.js getUser --id 5
 
 - This is Nirvana
 ```javascript
-node main.js thisIs --userId 1
+node main.js thisIs --artistId 1
 ```
 
 ### Remove
