@@ -20,10 +20,9 @@ function createAndAddTrack(unqfy, albumId, trackName, trackDuraction, trackGenre
 function repeat(times, fun) {
   if (times > 0) {
     fun();
-    repeat(times-1, fun);
+    repeat(times - 1, fun);
   }
 }
-
 
 describe('Add, remove and filter data', () => {
   let unqfy = null;
@@ -66,12 +65,12 @@ describe('Add, remove and filter data', () => {
     });
 
     it('should delete a artist', () => {
-      const artist = createAndAddArtist(unqfy,"Nirvana", "USA")
-  
+      const artist = createAndAddArtist(unqfy, "Nirvana", "USA")
+
       unqfy.removeArtistById(artist.id);
-  
+
       const expectedThrown = () => unqfy.getArtistById(artist.id);
-  
+
       assert.throws(expectedThrown, `Artist not found`);
     });
 
@@ -112,18 +111,19 @@ describe('Add, remove and filter data', () => {
     });
 
     it('should delete a album', () => {
-      const artist = createAndAddArtist(unqfy,"Nirvana", "USA");
+      const artist = createAndAddArtist(unqfy, "Nirvana", "USA");
       const album = createAndAddAlbum(unqfy, artist.id, 'Nevermind', 1991);
-  
+
       unqfy.removeAlbumById(album.id);
-  
+
       const expectedThrown = () => unqfy.getAlbumById(album.id);
-  
+
       assert.throws(expectedThrown, `Album not found`);
     });
 
 
   });
+
   describe('Tracks', () => {
 
     it('should add a track to an album', () => {
@@ -166,18 +166,119 @@ describe('Add, remove and filter data', () => {
     });
 
     it('should delete a track', () => {
-      const artist = createAndAddArtist(unqfy,"Nirvana", "USA");
+      const artist = createAndAddArtist(unqfy, "Nirvana", "USA");
       const album = createAndAddAlbum(unqfy, artist.id, 'Nevermind', 1991);
       const track = createAndAddTrack(unqfy, album.id, 'Smells like teen spirit', 500, ['rock', 'alternative']);
 
-  
+
       unqfy.removeTrackById(track.id);
-      
+
       const expectedThrown = () => unqfy.getTrackById(track.id);
-  
+
       assert.throws(expectedThrown, `Track not found`);
     });
 
+  });
+
+  describe('Playlist Creation and properties', () => {
+    let unqfy = null;
+
+    beforeEach(() => {
+      unqfy = new libunqfy.UNQfy();
+    });
+
+    it('should create a playlist as requested', () => {
+      const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+      const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
+      const t1 = createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock', 'movie']);
+      createAndAddTrack(unqfy, album.id, 'Sweet Child o\' Mine', 1500, ['rock', 'hard rock', 'pop', 'movie']);
+
+      const artist2 = createAndAddArtist(unqfy, 'Michael Jackson', 'USA');
+      const album2 = createAndAddAlbum(unqfy, artist2.id, 'Thriller', 1987);
+      const t2 = createAndAddTrack(unqfy, album2.id, 'Thriller', 200, ['pop', 'movie']);
+      const t3 = createAndAddTrack(unqfy, album2.id, 'Another song', 500, ['pop']);
+      const t4 = createAndAddTrack(unqfy, album2.id, 'Another song II', 500, ['pop']);
+
+      const playlist = unqfy.createPlaylist('my playlist', ['pop', 'rock'], 1400);
+
+      assert.equal(playlist.name, 'my playlist');
+      assert.isAtMost(playlist.duration(), 1400);
+      assert.isTrue(playlist.hasTrack(t1));
+      assert.isTrue(playlist.hasTrack(t2));
+      assert.isTrue(playlist.hasTrack(t3));
+      assert.isTrue(playlist.hasTrack(t4));
+      assert.lengthOf(playlist.tracks, 4);
+    });
+
+    it('should find a playlist', () => {
+      const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+      const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
+      createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock', 'movie']);
+      createAndAddTrack(unqfy, album.id, 'Sweet Child o\' Mine', 1500, ['rock', 'hard rock', 'pop', 'movie']);
+
+      const expectedPlaylist = unqfy.createPlaylist('my playlist', ['pop', 'rock'], 1400);
+
+      const playlist = unqfy.getPlaylistById(expectedPlaylist.id);
+
+      assert.equal(playlist, expectedPlaylist);
+    });
+
+
+    it('an playlist cannot have a name alredy declared', () => {
+      const artist = unqfy.createPlaylist('my playlist', ['rock'], 1400);
+
+      const expectedThrown = () => unqfy.createPlaylist('my playlist', ['rock', 'pop'], 800);
+
+      assert.throws(expectedThrown, `Playlist alredy exists`);
+    });
+
+    it('throws exception when an playlist is not found by id', () => {
+      const inexistentId = 99999;
+
+      const expectedThrown = () => unqfy.getPlaylistById(inexistentId);
+
+      assert.throws(expectedThrown, `Playlist not found`);
+    });
+
+
+    it('should delete a playlist', () => {
+      const playlist = unqfy.createPlaylist('my playlist', ['rock'], 1400);
+
+      unqfy.removePlaylistById(playlist.id);
+
+      const expectedThrown = () => unqfy.getPlaylistById(playlist.id);
+
+      assert.throws(expectedThrown, `Playlist not found`);
+    });
+
+    describe('Delete properties', () => {
+
+      it('on delete a track, it delete from playlist and album who contains it', () => {
+        const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+        const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
+        const track = createAndAddTrack(unqfy, album.id, 'Sweet Child o\' Mine', 1500, ['rock', 'hard rock', 'pop', 'movie']);
+
+        const playlist = unqfy.createPlaylist('my playlist', ['pop', 'rock'], 1400);
+
+        unqfy.removeTrackById(track.id);
+
+        assert.equal(unqfy.getPlaylistById(playlist.id).hasTrack(track), false)
+        assert.equal(unqfy.getAlbumById(album.id).hasTrack(track), false)
+      });
+
+      it('when delete an artist, delete from UNQfy his albums and tracks', () => {
+        const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+        const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
+        const track = createAndAddTrack(unqfy, album.id, 'Sweet Child o\' Mine', 1500, ['rock', 'hard rock', 'pop', 'movie']);
+        const playlist = unqfy.createPlaylist('my playlist', ['pop', 'rock'], 1400);
+
+        unqfy.removeArtistById(artist.id);
+
+        assert.throws(() => unqfy.getAlbumById(album.id), 'Album not found');
+        assert.throws(() => unqfy.getTrackById(track.id), 'Track not found');
+        assert.equal(unqfy.getPlaylistById(playlist.id).hasTrack(track), false)
+      });
+    });
   });
 
   it('should find different things by name', () => {
@@ -241,107 +342,6 @@ describe('Add, remove and filter data', () => {
     assert.isTrue(matchingTracks.includes(t2));
     assert.isTrue(matchingTracks.includes(t3));
   });
-});
-
-describe('Playlist Creation and properties', () => {
-  let unqfy = null;
-
-  beforeEach(() => {
-    unqfy = new libunqfy.UNQfy();
-  });
-
-  it('should create a playlist as requested', () => {
-    const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
-    const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
-    const t1 = createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock', 'movie']);
-    createAndAddTrack(unqfy, album.id, 'Sweet Child o\' Mine', 1500, ['rock', 'hard rock', 'pop', 'movie']);
-
-    const artist2 = createAndAddArtist(unqfy, 'Michael Jackson', 'USA');
-    const album2 = createAndAddAlbum(unqfy, artist2.id, 'Thriller', 1987);
-    const t2 = createAndAddTrack(unqfy, album2.id, 'Thriller', 200, ['pop', 'movie']);
-    const t3 = createAndAddTrack(unqfy, album2.id, 'Another song', 500, ['pop']);
-    const t4 = createAndAddTrack(unqfy, album2.id, 'Another song II', 500, ['pop']);
-
-    const playlist = unqfy.createPlaylist('my playlist', ['pop', 'rock'], 1400);
-
-    assert.equal(playlist.name, 'my playlist');
-    assert.isAtMost(playlist.duration(), 1400);
-    assert.isTrue(playlist.hasTrack(t1));
-    assert.isTrue(playlist.hasTrack(t2));
-    assert.isTrue(playlist.hasTrack(t3));
-    assert.isTrue(playlist.hasTrack(t4));
-    assert.lengthOf(playlist.tracks, 4);
-  });
-
-  it('should find a playlist', () => {
-    const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
-    const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
-    createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock', 'movie']);
-    createAndAddTrack(unqfy, album.id, 'Sweet Child o\' Mine', 1500, ['rock', 'hard rock', 'pop', 'movie']);
-
-    const expectedPlaylist = unqfy.createPlaylist('my playlist', ['pop', 'rock'], 1400);
-
-    const playlist = unqfy.getPlaylistById(expectedPlaylist.id);
-
-    assert.equal(playlist, expectedPlaylist);
-  });
-
-
-  it('an playlist cannot have a name alredy declared', () => {
-    const artist = unqfy.createPlaylist('my playlist', ['rock'], 1400);
-
-    const expectedThrown = () => unqfy.createPlaylist('my playlist', ['rock', 'pop'], 800);
-
-    assert.throws(expectedThrown, `Playlist alredy exists`);
-  });
-
-  it('throws exception when an playlist is not found by id', () => {
-    const inexistentId = 99999;
-
-    const expectedThrown = () => unqfy.getPlaylistById(inexistentId);
-
-    assert.throws(expectedThrown, `Playlist not found`);
-  });
-
-
-  it('should delete a playlist', () => {
-    const playlist = unqfy.createPlaylist('my playlist', ['rock'], 1400);
-
-    unqfy.removePlaylistById(playlist.id);
-
-    const expectedThrown = () => unqfy.getPlaylistById(playlist.id);
-
-    assert.throws(expectedThrown, `Playlist not found`);
-  });
-
-  describe('Delete properties', () => {
-
-    it('on delete a track, it delete from playlist and album who contains it', () => {
-      const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
-      const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
-      const track = createAndAddTrack(unqfy, album.id, 'Sweet Child o\' Mine', 1500, ['rock', 'hard rock', 'pop', 'movie']);
-
-      const playlist = unqfy.createPlaylist('my playlist', ['pop', 'rock'], 1400);
-
-      unqfy.removeTrackById(track.id);
-
-      assert.equal(unqfy.getPlaylistById(playlist.id).hasTrack(track), false)
-      assert.equal(unqfy.getAlbumById(album.id).hasTrack(track), false)
-    });
-
-    it('when delete an artist, delete from UNQfy his albums and tracks', () => {
-      const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
-      const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
-      const track = createAndAddTrack(unqfy, album.id, 'Sweet Child o\' Mine', 1500, ['rock', 'hard rock', 'pop', 'movie']);
-      const playlist = unqfy.createPlaylist('my playlist', ['pop', 'rock'], 1400);
-
-      unqfy.removeArtistById(artist.id);
-
-      assert.throws(() => unqfy.getAlbumById(album.id), 'Album not found');
-      assert.throws(() => unqfy.getTrackById(track.id), 'Track not found');
-      assert.equal(unqfy.getPlaylistById(playlist.id).hasTrack(track), false)
-    });
-  });
 
   describe('User', () => {
     it('when an user listen a track, times listen that track increment in one', () => {
@@ -349,7 +349,7 @@ describe('Playlist Creation and properties', () => {
       const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
       const track = createAndAddTrack(unqfy, album.id, 'Sweet Child o\' Mine', 1500, ['rock', 'hard rock', 'pop', 'movie']);
       const user = unqfy.addUser('chester');
-      
+
       unqfy.userListenTo(user.id, track.id);
 
       assert.equal(unqfy.timesUserListenedTrack(user.id, track.id), 1);
@@ -360,7 +360,7 @@ describe('Playlist Creation and properties', () => {
       const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
       const track = createAndAddTrack(unqfy, album.id, 'Sweet Child o\' Mine', 1500, ['rock', 'hard rock', 'pop', 'movie']);
       const user = unqfy.addUser('chester');
-      
+
       unqfy.userListenTo(user.id, track.id);
       unqfy.userListenTo(user.id, track.id);
 
@@ -369,35 +369,55 @@ describe('Playlist Creation and properties', () => {
 
     it('cannot create a user with an existent username', () => {
       unqfy.addUser('chester');
-      
+
       assert.throws(() => unqfy.addUser('chester'), 'User already exists');
     });
-  });
 
-  it('Can obtain the top three listen songs from an artist (This is...)', () => {
-    const artist = createAndAddArtist(unqfy, 'Anime Openings Voice', 'Japan');
-    const album = createAndAddAlbum(unqfy, artist.id, 'Openings I', 2020);
-    const jjkOpening = createAndAddTrack(unqfy, album.id, 'JJK', 200, ['pop', 'movie']);
-    const shalaEsShala = createAndAddTrack(unqfy, album.id, 'Shala es Shala', 180, ['pop']);
-    const narutoOpening = createAndAddTrack(unqfy, album.id, 'We have super powers', 60, ['pop']);
-    const hellsingOpening = createAndAddTrack(unqfy, album.id, 'hellsing opening', 60, ['pop']);
-    createAndAddTrack(unqfy, album.id, 'song1', 60, ['pop']);
-    createAndAddTrack(unqfy, album.id, 'song2', 60, ['pop']);
-    createAndAddTrack(unqfy, album.id, 'song3', 60, ['pop']);
-    const aUser = unqfy.addUser("pepe");
-    const anotherUser = unqfy.addUser("jose");
-    repeat(35, () => unqfy.userListenTo(aUser.id,jjkOpening.id));
-    repeat(12, () => unqfy.userListenTo(aUser.id,narutoOpening.id));
-    repeat(150, () => unqfy.userListenTo(aUser.id,hellsingOpening.id));
-    repeat(91, () => unqfy.userListenTo(anotherUser.id,shalaEsShala.id));
-    repeat(80, () => unqfy.userListenTo(anotherUser.id,jjkOpening.id));
+    it('should find a user', () => {
+      const expectedUser = unqfy.addUser('nico0510');
 
-   const playlistThisIs = unqfy.thisIs(artist.id);
+      const user = unqfy.getUserById(expectedUser.id);
 
-    assert.equal(playlistThisIs.name, 'This is... ' + artist.name);
-    assert.lengthOf(playlistThisIs.tracks,3);
-    assert.equal(playlistThisIs.tracks[0], hellsingOpening);
-    assert.equal(playlistThisIs.tracks[1], jjkOpening);
-    assert.equal(playlistThisIs.tracks[2], shalaEsShala);
+      assert.equal(user, expectedUser);
+    });
+
+    it('should delete a user', () => {
+      const user = unqfy.addUser('nico0510');
+
+      unqfy.removeUserById(user.id);
+
+      const expectedThrown = () => unqfy.getUserById(user.id);
+
+      assert.throws(expectedThrown, `User not found`);
+    });
+
+    it('Can obtain the top three listen songs from an artist (This is...)', () => {
+      const artist = createAndAddArtist(unqfy, 'Anime Openings Voice', 'Japan');
+      const album = createAndAddAlbum(unqfy, artist.id, 'Openings I', 2020);
+      const jjkOpening = createAndAddTrack(unqfy, album.id, 'JJK', 200, ['pop', 'movie']);
+      const shalaEsShala = createAndAddTrack(unqfy, album.id, 'Shala es Shala', 180, ['pop']);
+      const narutoOpening = createAndAddTrack(unqfy, album.id, 'We have super powers', 60, ['pop']);
+      const hellsingOpening = createAndAddTrack(unqfy, album.id, 'hellsing opening', 60, ['pop']);
+      createAndAddTrack(unqfy, album.id, 'song1', 60, ['pop']);
+      createAndAddTrack(unqfy, album.id, 'song2', 60, ['pop']);
+      createAndAddTrack(unqfy, album.id, 'song3', 60, ['pop']);
+      const aUser = unqfy.addUser("pepe");
+      const anotherUser = unqfy.addUser("jose");
+      repeat(35, () => unqfy.userListenTo(aUser.id, jjkOpening.id));
+      repeat(12, () => unqfy.userListenTo(aUser.id, narutoOpening.id));
+      repeat(150, () => unqfy.userListenTo(aUser.id, hellsingOpening.id));
+      repeat(91, () => unqfy.userListenTo(anotherUser.id, shalaEsShala.id));
+      repeat(80, () => unqfy.userListenTo(anotherUser.id, jjkOpening.id));
+
+      const playlistThisIs = unqfy.thisIs(artist.id);
+
+      assert.equal(playlistThisIs.name, 'This is... ' + artist.name);
+      assert.lengthOf(playlistThisIs.tracks, 3);
+      assert.equal(playlistThisIs.tracks[0], hellsingOpening);
+      assert.equal(playlistThisIs.tracks[1], jjkOpening);
+      assert.equal(playlistThisIs.tracks[2], shalaEsShala);
+    });
+
   });
 });
+

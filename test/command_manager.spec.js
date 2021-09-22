@@ -21,6 +21,7 @@ const Listen = require('../src/commands/listen');
 const TimesUserListenedTrack = require('../src/commands/timesUserListenedTrack');
 const ThisIs = require('../src/commands/thisIs');
 const GetUser = require('../src/commands/getUser');
+const RemoveUser = require('../src/commands/removeUser');
 
 function createAndAddArtist(unqfy, artistName, country) {
     const artist = unqfy.addArtist({ name: artistName, country });
@@ -330,6 +331,18 @@ describe('Commands from command-line interpretation', () => {
         const getUserResult = command.execute(unqfy, args)[1];
 
         assert.equal(getUserResult, user);
+    });
+
+    it('should recognized removeUser command', () => {
+        const user = createAndAddUser(unqfy, 'nico0510');
+
+        const command = new RemoveUser();
+        const args = ['--id', `${user.id}`]
+        const removeUserCommandResult = command.execute(unqfy, args)[1];
+
+        assert.equal(removeUserCommandResult.username, user.username);
+        assert.equal(removeUserCommandResult.id, user.id);
+        assert.throws(() => unqfy.getUserById(user.id), 'User not found');
     });
 
 

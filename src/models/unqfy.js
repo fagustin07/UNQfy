@@ -87,35 +87,39 @@ class UNQfy {
   }
 
   getUserById(id){
-    return this._entitiesManager.getUserById(id)
+    return this._entitiesManager.getUserById(id);
   }
 
   removeArtistById(id){
-    return this._entitiesManager.removeArtistById(id)
+    return this._entitiesManager.removeArtistById(id);
   }
 
   removeAlbumById(id){
-    return this._entitiesManager.removeAlbumById(id)
+    return this._entitiesManager.removeAlbumById(id);
   }
 
   removeTrackById(id){
-    return this._entitiesManager.removeTrackById(id)
+    return this._entitiesManager.removeTrackById(id);
   }
 
   removePlaylistById(id){
-    return this._entitiesManager.removePlaylistById(id)
+    return this._entitiesManager.removePlaylistById(id);
+  }
+
+  removeUserById(id){
+    return this._entitiesManager.removeUserById(id);
   }
 
   // genres: array de generos(strings)
   // retorna: los tracks que contenga alguno de los generos en el parametro genres
   getTracksMatchingGenres(genres) {
-    return this._entitiesManager.getTracksMatchingGenres(genres)
+    return this._entitiesManager.getTracksMatchingGenres(genres);
   }
 
   // artistName: nombre de artista(string)
   // retorna: los tracks interpredatos por el artista con nombre artistName
   getTracksMatchingArtist(artistName) {
-    return this._entitiesManager.getTracksMatchingArtist(artistName)
+    return this._entitiesManager.getTracksMatchingArtist(artistName);
   }
 
   searchByPartialName(aPartialName) {

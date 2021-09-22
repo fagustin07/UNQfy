@@ -100,7 +100,7 @@ class EntitiesManager {
     }
 
     getUserById(id){
-        return this._users[id]
+        return this._getOrThrow(id, this._getArrayOf(this._users), 'User not found') 
     }
 
     searchByPartialName(aPartialName) {
@@ -145,6 +145,12 @@ class EntitiesManager {
         const playlist = this._playlists[id];
         delete this._playlists[id];
         return playlist
+    }
+
+    removeUserById(id){
+        const user = this._users[id];
+        delete this._users[id];
+        return user;
     }
 
     //USERS:
