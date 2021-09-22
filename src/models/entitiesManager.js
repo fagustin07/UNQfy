@@ -2,12 +2,14 @@ const Artist = require('./artist');
 const Album = require('./album');
 const Playlist = require("./playlist");
 const Track = require("./track");
+const User = require("./user");
+const Pair = require('../lib/pair');
 
 class EntitiesManager {
-
     constructor() {
         this._artists = {};
-        this._playlists = {}
+        this._playlists = {};
+        this._users = {};
     }
 
     // CREATE
@@ -24,7 +26,7 @@ class EntitiesManager {
     addAlbum(artistId, albumData) {
         const artist = this.getArtistById(artistId)
         if (this._exists(albumData.name, artist.albums())) throw Error('Album alredy exists');
-        
+
         const album = new Album(albumData.name, albumData.year);
         artist.createAlbum(album);
 
@@ -34,7 +36,7 @@ class EntitiesManager {
     addTrack(albumId, trackData) {
         const album = this.getAlbumById(albumId);
         if (this._exists(trackData.name, album.tracks())) throw Error('Track alredy exists');
-        
+
         const track = new Track(trackData.name, trackData.duration, trackData.genres);
 
         album.createTrack(track);
@@ -86,7 +88,7 @@ class EntitiesManager {
     getAllArtists() {
         return this._getArrayOf(this._artists);
     }
-    
+
     getAlbumsFrom(artistId) {
         const artist = this.getArtistById(artistId);
         return artist.albums();
@@ -95,6 +97,10 @@ class EntitiesManager {
     getTracksFrom(albumId) {
         const album = this.getAlbumById(albumId);
         return album.tracks();
+    }
+
+    getUserById(id){
+        return this._getOrThrow(id, this._getArrayOf(this._users), 'User not found') 
     }
 
     searchByPartialName(aPartialName) {
@@ -131,15 +137,77 @@ class EntitiesManager {
             .filter(container => container.hasTrack(track));
 
         trackContainers.forEach(container => container.removeTrack(track));
-        
+
         return track;
     }
 
     removePlaylistById(id) {
         const playlist = this._playlists[id];
         delete this._playlists[id];
-
         return playlist
+    }
+
+    removeUserById(id){
+        const user = this._users[id];
+        delete this._users[id];
+        return user;
+    }
+
+    //USERS:
+
+    addUser(username) {
+        if (this._exists(username, this._getArrayOf(this._users))) throw new Error('User already exists');
+        const newUser = new User(username);
+        this._users[newUser.id] = newUser;
+
+        return newUser;
+    }
+
+    userListenTo(aUserId, aTrackId) {
+        const user = this._getOrThrow(aUserId, this._getArrayOf(this._users), 'User not found');
+        const track = this.getTrackById(aTrackId);
+
+        user.listen(track);
+
+        return user;
+    }
+
+    timesUserListenedTrack(aUserId, aTrackId) {
+        const user = this._getOrThrow(aUserId, this._getArrayOf(this._users), 'User not found');
+        const track = this.getTrackById(aTrackId);
+
+        return user.timesListened(track);
+    }
+
+    // THIS IS
+    thisIs(artistId) {
+        const anArtist = this.getArtistById(artistId);
+        const tracks = anArtist.albums().reduce((tracks, album) => tracks.concat(album.tracks()), []);
+        const uniqueKeys = tracks.map(aTrack => aTrack.id)
+        // tracks.forEach(track => uniqueKeys[track.id] = undefined);
+        const playedTracksPair = this._playedTracksPair();
+
+        const tracksAndTimesListen =
+            uniqueKeys.reduce((map, aTrackId) => {
+                map[Number(aTrackId)] =
+                    playedTracksPair
+                        .filter(playedTrackPair => playedTrackPair.fst.id === parseInt(aTrackId))
+                        .reduce((totalPlayed, trackPair) => totalPlayed + trackPair.snd, 0);
+                return map;
+            }, {});
+
+        const take = (stringId) => tracks.find(track => track.id === parseInt(stringId));
+        const topThree =
+            Object.entries(tracksAndTimesListen)
+                .map(([trackId, totalPlayed]) => new Pair(take(trackId), totalPlayed))
+                .sort((a, b) => (a.snd > b.snd) ? -1 : 1)
+                .slice(0, 3)
+                .map(trackListenPair => trackListenPair.fst);
+
+        return new Playlist('This is... ' + anArtist.name, topThree);
+      
+        return playlist
+
     }
 
     //PRIVATE
@@ -169,7 +237,7 @@ class EntitiesManager {
 
     _searchByPartialNameIn(aRecognizableList, aPartialName) {
         return aRecognizableList
-            .filter( obj => obj.name.toLowerCase().includes(aPartialName.toLowerCase()));
+            .filter(obj => obj.name.toLowerCase().includes(aPartialName.toLowerCase()));
     }
 
     _getOrThrow(id, anArray, msgError) {
@@ -177,6 +245,11 @@ class EntitiesManager {
         if (!maybeElement) throw new Error(msgError);
 
         return maybeElement;
+    }
+
+    _playedTracksPair() {
+        return this._getArrayOf(this._users)
+            .reduce((tracksPairs, user) => tracksPairs.concat(user.tracksListenedPair()), []);
     }
 
     _exists(anElement, anArray) {

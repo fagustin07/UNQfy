@@ -86,32 +86,40 @@ class UNQfy {
     return this._entitiesManager.getPlaylistById(id);
   }
 
+  getUserById(id){
+    return this._entitiesManager.getUserById(id);
+  }
+
   removeArtistById(id){
-    return this._entitiesManager.removeArtistById(id)
+    return this._entitiesManager.removeArtistById(id);
   }
 
   removeAlbumById(id){
-    return this._entitiesManager.removeAlbumById(id)
+    return this._entitiesManager.removeAlbumById(id);
   }
 
   removeTrackById(id){
-    return this._entitiesManager.removeTrackById(id)
+    return this._entitiesManager.removeTrackById(id);
   }
 
   removePlaylistById(id){
-    return this._entitiesManager.removePlaylistById(id)
+    return this._entitiesManager.removePlaylistById(id);
+  }
+
+  removeUserById(id){
+    return this._entitiesManager.removeUserById(id);
   }
 
   // genres: array de generos(strings)
   // retorna: los tracks que contenga alguno de los generos en el parametro genres
   getTracksMatchingGenres(genres) {
-    return this._entitiesManager.getTracksMatchingGenres(genres)
+    return this._entitiesManager.getTracksMatchingGenres(genres);
   }
 
   // artistName: nombre de artista(string)
   // retorna: los tracks interpredatos por el artista con nombre artistName
   getTracksMatchingArtist(artistName) {
-    return this._entitiesManager.getTracksMatchingArtist(artistName)
+    return this._entitiesManager.getTracksMatchingArtist(artistName);
   }
 
   searchByPartialName(aPartialName) {
@@ -131,6 +139,25 @@ class UNQfy {
   */
     return this._entitiesManager.createPlaylist(name,genresToInclude,maxDuration);
   }
+
+  // USERS
+
+    //Usuarios:
+    addUser(username){
+      return this._entitiesManager.addUser(username);
+    }
+  
+    userListenTo(aUserId, aTrackId){
+      return this._entitiesManager.userListenTo(aUserId, aTrackId);
+    }
+  
+    timesUserListenedTrack(aUserId, aTrackId){
+      return this._entitiesManager.timesUserListenedTrack(aUserId, aTrackId);
+    }
+  
+    thisIs(artistId){
+      return this._entitiesManager.thisIs(artistId);
+    }
 
   save(filename) {
     const serializedData = picklify.picklify(this);

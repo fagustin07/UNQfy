@@ -30,6 +30,7 @@ De esta forma logramos:
 # Comandos
 
 ### Create
+
 - Agregar un artista
 ```javascript
 node main.js addArtist --name Nirvana --country USA
@@ -50,6 +51,11 @@ node main.js addTrack --albumId 2 --name "Smells like teen spirit" --duration 50
 node main.js createPlaylist --name "Full Nirvana" --genresToInclude "rock, alternative, metal" --maxDuration 8000
 ```
 
+- Agregar un usuario
+```javascript
+node main.js addUser --username pepito999
+```
+
 ### Accessors
 
 - Obtener un artista
@@ -61,7 +67,6 @@ node main.js getArtist --id 1
 ```javascript
 node main.js getAlbum --id 2
 ```
-
 
 - Obtener un track
 ```javascript
@@ -103,6 +108,16 @@ node main.js getTracksFrom --albumId 2
 node main.js searchByPartialName --name "Nirv"
 ```
 
+- Obtener usuario
+```javascript
+node main.js getUser --id 5
+```
+
+- This is Nirvana
+```javascript
+node main.js thisIs --userId 1
+```
+
 ### Remove
 
 - Borrar un artista
@@ -124,3 +139,23 @@ node main.js removeTrack --id 3
 ```javascript
 node main.js removePlaylist --id 4
 ```
+
+- Borrar un usuario
+```javascript
+node main.js removeUser --id 5
+```
+
+### User
+
+- Escuchar cancion
+```javascript
+node main.js listen --userId 5 --trackId 3
+```
+
+- Saber cuantas veces escuche una cancion
+```javascript
+node main.js timesUserListenTrack --userId 5 --trackId 3
+```
+
+
+
