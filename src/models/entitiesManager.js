@@ -205,6 +205,9 @@ class EntitiesManager {
                 .map(trackListenPair => trackListenPair.fst);
 
         return new Playlist('This is... ' + anArtist.name, topThree);
+      
+        return playlist
+
     }
 
     //PRIVATE
