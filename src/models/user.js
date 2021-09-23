@@ -27,6 +27,15 @@ class User extends Recognizable {
         return Object.values(this.tracksListened);
     }
     
+    toJSON() {
+        return {
+            id: this.id,
+            username: this.username,
+            tracksListened: Object.values(this.tracksListened).map(trackPair => trackPair.fst.toJSON())
+
+        };
+    }
+
     _alreadyListen(aTrack) {
         return this.tracksListened[aTrack.id] !== undefined;
     }
