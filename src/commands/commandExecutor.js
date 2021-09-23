@@ -18,6 +18,7 @@ const RemoveArtist = require('./removeArtist');
 const RemoveAlbum = require('./removeAlbum');
 const RemoveTrack = require('./removeTrack');
 const RemovePlaylist = require('./removePlaylist');
+const RemoveUser = require('./removeUser');
 
 const Printer = require('../lib/Printer');
 const UNQfyPersistence = require('../lib/UNQfyPersistence');
@@ -29,7 +30,7 @@ class CommandExecutor {
             GetArtist, GetAlbum, GetTrack, GetTracksByGenres, GetTracksByArtist, GetPlaylist,
             GetAllArtists, GetAlbumsFrom, GetTracksFrom,
             SearchByPartialName,
-            RemoveArtist, RemoveAlbum, RemoveTrack, RemovePlaylist
+            RemoveArtist, RemoveAlbum, RemoveTrack, RemovePlaylist, RemoveUser
         ];
         this._printer = new Printer();
         this._unqfyPersistence = new UNQfyPersistence();
