@@ -179,12 +179,11 @@ class EntitiesManager {
         return user.timesListened(track);
     }
 
-    // THIS IS
+    // THIS IS delegar charlar: en un objeto PlaylistGenerator
     thisIs(artistId) {
         const anArtist = this.getArtistById(artistId);
         const tracks = anArtist.albums().reduce((tracks, album) => tracks.concat(album.tracks()), []);
         const uniqueKeys = tracks.map(aTrack => aTrack.id)
-        // tracks.forEach(track => uniqueKeys[track.id] = undefined);
         const playedTracksPair = this._playedTracksPair();
 
         const tracksAndTimesListen =
@@ -205,9 +204,6 @@ class EntitiesManager {
                 .map(trackListenPair => trackListenPair.fst);
 
         return new Playlist('This is... ' + anArtist.name, topThree);
-      
-        return playlist
-
     }
 
     //PRIVATE
@@ -227,11 +223,11 @@ class EntitiesManager {
         return Object.values(object)
     }
 
-    _albums() {
+    _albums() { 
         return this._getArrayOf(this._artists).reduce((albums, artist) => albums.concat(artist.albums()), []);
     }
 
-    _tracks() {
+    _tracks() { //delegar en el artista
         return this._albums().reduce((tracks, album) => tracks.concat(album.tracks()), [])
     }
 

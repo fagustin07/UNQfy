@@ -14,6 +14,10 @@ class Playlist extends Recognizable {
         return this.tracks.some(aTrack => aTrack.id === track.id);
     }
 
+    removeTrack(track){
+        this.tracks = this.tracks.filter(aTrack => aTrack.id !== track.id);
+    }
+
     toJSON(){
         return {
             id: this.id,

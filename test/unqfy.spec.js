@@ -258,7 +258,7 @@ describe('Add, remove and filter data', () => {
         const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
         const track = createAndAddTrack(unqfy, album.id, 'Sweet Child o\' Mine', 1500, ['rock', 'hard rock', 'pop', 'movie']);
 
-        const playlist = unqfy.createPlaylist('my playlist', ['pop', 'rock'], 1400);
+        const playlist = unqfy.createPlaylist('my playlist', ['pop', 'rock'], 1700);
 
         unqfy.removeTrackById(track.id);
 
