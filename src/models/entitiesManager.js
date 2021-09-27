@@ -227,8 +227,8 @@ class EntitiesManager {
         return this._getArrayOf(this._artists).reduce((albums, artist) => albums.concat(artist.albums()), []);
     }
 
-    _tracks() { //delegar en el artista
-        return this._albums().reduce((tracks, album) => tracks.concat(album.tracks()), [])
+    _tracks() {
+        return this._getArrayOf(this._artists).reduce((tracks, artist) => tracks.concat(artist.getTracks()), [])
     }
 
     _searchByPartialNameIn(aRecognizableList, aPartialName) {
