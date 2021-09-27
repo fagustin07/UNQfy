@@ -9,7 +9,7 @@ class Listen extends Command{
         const userId = parseInt(this.valueOf('--userId', args));
         const trackId = parseInt(this.valueOf('--trackId', args));
 
-        return ['TRACK LISTENED', unqfy.userListenTo(userId,trackId)];
+        return ['TRACK LISTEN', unqfy.userListenTo(userId,trackId)];
     }
 
     expectedArgsFormatMessage() {
