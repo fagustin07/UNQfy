@@ -125,33 +125,15 @@ class EntitiesManager {
         };
     }
 
-    getTrackAndArtistByTrackName(trackName) {
-        const artist = this._getArtistByTrackName(trackName);
-        const track = this._getTrackByArtist(artist, trackName);
-
-        return {artist: artist, track: track};
-
-    }
-
-    _getArtistByTrackName(trackName) {
+    getArtistByTrackId(trackId) {
         const maybeArtist = this.getAllArtists().find(
             (artist) => {
-                const tracks = artist.getTracks()
-                return tracks.some((track) =>
-                    track.name.toLowerCase() === trackName.toLowerCase())
+                return artist.getTracks().some((track) => track.id === trackId)
             });
         if (!maybeArtist) throw new Error('Artist not found');
 
         return maybeArtist;
 
-    }
-
-    _getTrackByArtist(artist, trackName) {
-        const maybeTrack = artist.getTracks().find((track) => track.name.toLowerCase() === trackName.toLowerCase())
-
-        if (!maybeTrack) throw new Error('Track not found in artist list');
-
-        return maybeTrack;
     }
 
     // REMOVE

@@ -7,18 +7,18 @@ class GetLyrics extends Command {
     }
 
     async execute(unqfy,args){
-        const trackName = this.valueOf('--trackName', args)
+        const trackId = parseInt(this.valueOf('--trackId', args));
 
-        const lyrics = await unqfy.getLyrics(trackName);        
+        const lyrics = await unqfy.getLyrics(trackId);        
         return ['TRACK LYRICS', lyrics];
     }
 
     expectedArgsFormatMessage() {
-        return 'getLyrics --trackName trackName';
+        return 'getLyrics --trackId trackId';
     }
 
     expectedArgs() {
-        return ['--trackName'];
+        return ['--trackId'];
     }
 }
 

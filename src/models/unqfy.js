@@ -11,7 +11,7 @@ const PlaylistGenerator = require('./playlistGenerator');
 const Pair = require('../lib/pair');
 const EntitiesManager = require('./entitiesManager');
 const spotifyClient = require('../helpers/clients/spotifyClient');
-const { getLyrics, getLyricsById } = require('../helpers/clients/musixMatchClient');
+const { getTrack, getLyricsByTrackId } = require('../helpers/clients/musixMatchClient');
 
 
 
@@ -163,16 +163,17 @@ class UNQfy {
     }
   }
 
-  getLyrics(trackName) {
-    const { artist, track } = this._entitiesManager.getTrackAndArtistByTrackName(trackName);
+  getLyrics(trackId) {
+    const track = this.getTrackById(trackId)
+    const artist= this._entitiesManager.getArtistByTrackId(trackId);
 
     if (track.getLyrics() === null) {
       const data = {
-        trackName: trackName,
+        trackName: track.name,
         artistName: artist.name
-      }
-      return getLyrics(data)
-        .then((track) => getLyricsById(track.track.track_id))
+      } 
+      return getTrack(data)
+        .then((track) => getLyricsByTrackId(track.track.track_id))
         .then((lyrics) => {
           track.setLyrics(lyrics)
           return lyrics;

@@ -12,21 +12,16 @@ function searchTrack(trackName, artistName) {
     const options = {
         params: {
             q_track: trackName.toUpperCase(),
-            q_artist: artistName.toUpperCase()
+            q_artist: artistName.toUpperCase(),
+            f_has_lyrics: true
         },
     };
     return musixmatch_api.get('/track.search', options)
         .then((response) => response.data.message.body.track_list)
-        .then((track_list) => track_list.find((track) => track.track.has_lyrics > 0))
-        .then((track) =>
-            !track
-                ? Promise.reject(new Error('No hay letras'))
-                : track
-        )
         .catch((err) => { throw new Error(err.message) })
 }
 
-function getLyricsById(trackId) {
+function getLyricsByTrackId(trackId) {
     const options = {
         params: {
             track_id: trackId
@@ -37,17 +32,16 @@ function getLyricsById(trackId) {
         .catch((err) => { throw new Error(err.message) })
 }
 
-function getLyrics(data) {
-    return searchTrack(data.trackName, data.artistName);
+function getTrack(data) {
+    return searchTrack(data.trackName, data.artistName)
+        .then((track_list) =>
+            track_list.length === 0
+                ? Promise.reject(new Error('No hay letras'))
+                : track_list[0]
+        )
 }
 
 module.exports = {
-    getLyrics,
-    getLyricsById
+    getTrack,
+    getLyricsByTrackId
 };
-
-// const data = {
-//     trackName: 'Farolito',
-//     artistName: 'Los piojos'
-// }
-// console.log(getLyrics(data).then((response) => console.log(response)))
