@@ -5,6 +5,7 @@ class Track extends Recognizable {
         super(name);
         this.duration = duration;
         this.genres = genres;
+        this.lyrics = null;
     }
 
     haveGenres(genres){
@@ -16,8 +17,16 @@ class Track extends Recognizable {
             id: this.id,
             name: this.name,
             duration: this.country,
-            genres: this.genres,
+            genres: this.genres
         }
+    }
+
+    setLyrics(lyrics) {
+        this.lyrics = lyrics;
+    }
+
+    getLyrics() {
+        return this.lyrics
     }
 }
 

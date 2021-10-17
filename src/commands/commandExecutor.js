@@ -29,6 +29,7 @@ const RemoveUser = require('./removeUser');
 
 const Printer = require('../lib/Printer');
 const UNQfyPersistence = require('../lib/UNQfyPersistence');
+const GetLyrics = require('./getLyrics');
 
 class CommandExecutor { 
     constructor() {
@@ -39,7 +40,7 @@ class CommandExecutor {
             SearchByPartialName,
             Listen, TimesUserListenTrack, 
             ThisIs, PopulateAlbumsForArtist,
-            RemoveArtist, RemoveAlbum, RemoveTrack, RemovePlaylist, RemoveUser
+            RemoveArtist, RemoveAlbum, RemoveTrack, RemovePlaylist, RemoveUser, GetLyrics
         ];
         this._printer = new Printer();
         this._unqfyPersistence = new UNQfyPersistence();

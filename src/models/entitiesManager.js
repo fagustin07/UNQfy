@@ -4,6 +4,9 @@ const Playlist = require("./playlist");
 const Track = require("./track");
 const User = require("./user");
 const PlaylistGenerator = require('./playlistGenerator');
+const musixMatchClient = require('../helpers/clients/musixMatchClient');
+const Pair = require('../lib/pair');
+
 
 class EntitiesManager {
     constructor() {
@@ -49,7 +52,7 @@ class EntitiesManager {
     createPlaylist(name, genresToInclude, maxDuration) {
         if (this._exists(name, this._getArrayOf(this._playlists))) throw new Error('Playlist alredy exists');
 
-        const newPlaylist = 
+        const newPlaylist =
             this._playlistGenerator
                 .createPlaylist(name, genresToInclude, this._tracks(), maxDuration);
 
@@ -109,8 +112,8 @@ class EntitiesManager {
         return album.tracks();
     }
 
-    getUserById(id){
-        return this._getOrThrow(id, this._getArrayOf(this._users), 'User not found') 
+    getUserById(id) {
+        return this._getOrThrow(id, this._getArrayOf(this._users), 'User not found')
     }
 
     searchByPartialName(aPartialName) {
@@ -120,6 +123,35 @@ class EntitiesManager {
             tracks: this._searchByPartialNameIn(this._tracks(), aPartialName),
             playlists: this._searchByPartialNameIn(this._getArrayOf(this._playlists), aPartialName)
         };
+    }
+
+    getTrackAndArtistByTrackName(trackName) {
+        const artist = this._getArtistByTrackName(trackName);
+        const track = this._getTrackByArtist(artist, trackName);
+
+        return {artist: artist, track: track};
+
+    }
+
+    _getArtistByTrackName(trackName) {
+        const maybeArtist = this.getAllArtists().find(
+            (artist) => {
+                const tracks = artist.getTracks()
+                return tracks.some((track) =>
+                    track.name.toLowerCase() === trackName.toLowerCase())
+            });
+        if (!maybeArtist) throw new Error('Artist not found');
+
+        return maybeArtist;
+
+    }
+
+    _getTrackByArtist(artist, trackName) {
+        const maybeTrack = artist.getTracks().find((track) => track.name.toLowerCase() === trackName.toLowerCase())
+
+        if (!maybeTrack) throw new Error('Track not found in artist list');
+
+        return maybeTrack;
     }
 
     // REMOVE
@@ -157,7 +189,7 @@ class EntitiesManager {
         return playlist
     }
 
-    removeUserById(id){
+    removeUserById(id) {
         const user = this._users[id];
         delete this._users[id];
         return user;
@@ -197,11 +229,12 @@ class EntitiesManager {
     }
 
     //PRIVATE
+
     _getArrayOf(object) {
         return Object.values(object)
     }
 
-    _albums() { 
+    _albums() {
         return this._getArrayOf(this._artists).reduce((albums, artist) => albums.concat(artist.albums()), []);
     }
 

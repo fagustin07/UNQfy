@@ -1,28 +1,30 @@
 class Printer {
 
-    print(text) {
-      this._separator();
-      console.log(text);
-      this._separator();
-    }
+  print(text) {
+    this._separator();
+    console.log(text);
+    this._separator();
+  }
 
-    printResult(title, commandResult){
-        this._title(title);
-        this._space();
-        if(commandResult instanceof Array){
-            this.printArray(commandResult);
-        }
-        else {
-            console.log(JSON.stringify(commandResult));
-        }
-      }
-    
-    printArray(array) {
-      array.forEach((element) => {
-        console.log(JSON.stringify(element));
-        this._separator();
-      });
+  printResult(title, commandResult) {
+    this._title(title);
+    this._space();
+    if (commandResult instanceof Array) {
+      this.printArray(commandResult);
     }
+    else if (commandResult instanceof Object) {
+      console.log(JSON.stringify(commandResult));
+    } else {
+      console.log(commandResult);
+    }
+  }
+
+  printArray(array) {
+    array.forEach((element) => {
+      console.log(JSON.stringify(element));
+      this._separator();
+    });
+  }
 
   printException(exception) {
     this._separator();
@@ -42,4 +44,4 @@ class Printer {
     console.log();
   }
 }
-  module.exports = Printer;
+module.exports = Printer;
