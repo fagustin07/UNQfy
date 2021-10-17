@@ -10,6 +10,7 @@ const Playlist = require('./playlist');
 const PlaylistGenerator = require('./playlistGenerator');
 const Pair = require('../lib/pair');
 const EntitiesManager = require('./entitiesManager');
+const spotifyClient = require('../helpers/clients/SpotifyClient');
 
 class UNQfy {
 
@@ -125,6 +126,10 @@ class UNQfy {
     return this._entitiesManager.getTracksMatchingArtist(artistName);
   }
 
+  getArtistByName(artistName) {
+    return this._entitiesManager.getArtistByName(artistName);
+  }
+
   searchByPartialName(aPartialName) {
     return this._entitiesManager.searchByPartialName(aPartialName);
   }
@@ -141,6 +146,14 @@ class UNQfy {
       * un metodo hasTrack(aTrack) que retorna true si aTrack se encuentra en la playlist.
   */
     return this._entitiesManager.createPlaylist(name,genresToInclude,maxDuration);
+  }
+
+  async populateAlbumsForArtist(artistName) {
+    const artist =  this.getArtistByName(artistName);
+    const albums = await spotifyClient.getAlbumsFrom(artistName);
+
+    albums.forEach(album => this.addAlbum(artist.id, {name: album.name, year: album.year}))
+    return albums;
   }
 
   // USERS

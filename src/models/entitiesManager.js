@@ -76,6 +76,15 @@ class EntitiesManager {
         return this._getOrThrow(id, this._tracks(), 'Track not found')
     }
 
+    getArtistByName(artistName) {
+        const artist = this._getArrayOf(this._artists).find(anArtist => anArtist.name === artistName);
+        if (artist) {
+            return artist;
+        } else {
+            throw new Error('Artist ' + artistName + ' not found');
+        }
+    }
+
     getTracksMatchingGenres(genres) {
         return this._getArrayOf(this._artists)
             .reduce((tracks, artist) => tracks.concat(artist.getTracksByGenres(genres)), []);

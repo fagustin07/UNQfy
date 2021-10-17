@@ -16,6 +16,7 @@ const GetTracksFrom = require('./getTracksFrom');
 const SearchByPartialName = require('./searchByPartialName');
 const GetUser = require('./getUser');
 const Listen = require('./listen');
+const PopulateAlbumsForArtist = require('./populateAlbumsForArtist');
 
 const TimesUserListenTrack = require('./timesUserListenedTrack');
 const ThisIs = require('./thisIs');
@@ -35,14 +36,16 @@ class CommandExecutor {
             AddArtist, AddAlbum, AddTrack, AddUser, CreatePlaylist,
             GetArtist, GetAlbum, GetTrack, GetTracksByGenres, GetTracksByArtist, GetPlaylist,
             GetAllArtists, GetAlbumsFrom, GetTracksFrom, GetUser,
-            SearchByPartialName, Listen, TimesUserListenTrack, ThisIs,
+            SearchByPartialName,
+            Listen, TimesUserListenTrack, 
+            ThisIs, PopulateAlbumsForArtist,
             RemoveArtist, RemoveAlbum, RemoveTrack, RemovePlaylist, RemoveUser
         ];
         this._printer = new Printer();
         this._unqfyPersistence = new UNQfyPersistence();
     }
 
-    run(command, args) {
+    async run(command, args) {
         const unqfy = this._unqfyPersistence.getUNQfy();
         let maybeCommand = this._commands.find(aCommand => aCommand.canHandle(command));
         
@@ -51,7 +54,7 @@ class CommandExecutor {
             const commandFound = new maybeCommand(); 
             commandFound.validateArgs(args);
             
-            const result = commandFound.execute(unqfy,args);
+            const result = await commandFound.execute(unqfy,args);
             const title = result[0];
             const commandResult = result[1];
 
