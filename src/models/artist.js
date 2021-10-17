@@ -5,6 +5,7 @@ class Artist extends Adder {
     constructor(name, country) {
         super(name);
         this.country = country;
+        this.hasPopulated = false;
     }
 
     createAlbum(anAlbum) {
@@ -29,6 +30,10 @@ class Artist extends Adder {
 
     removeAlbum(anAlbum) {
         this.removeElement(anAlbum);
+    }
+
+    populated() {
+        this.hasPopulated = true;
     }
 
     toJSON() {

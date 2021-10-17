@@ -77,7 +77,7 @@ class EntitiesManager {
     }
 
     getArtistByName(artistName) {
-        const artist = this._getArrayOf(this._artists).find(anArtist => anArtist.name === artistName);
+        const artist = this._getArrayOf(this._artists).find(anArtist => anArtist.name.toUpperCase() === artistName.toUpperCase());
         if (artist) {
             return artist;
         } else {

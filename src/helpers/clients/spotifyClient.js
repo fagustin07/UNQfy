@@ -29,8 +29,8 @@ function getAlbumsFrom(anArtistName) {
             .then(artist_response => searchAlbumsById(artist_response.data.artists.items[0].id))
             .then(albums_response => albums_response.data.items)
             .then(album_list => {
-                const noRep =  [...new Map(album_list.map(item => [item["name"], item])).values()];
-                return noRep.map(album => new Album(album.name, parseInt(album.release_date.slice(0,4))))
+                const album_unique_list =  [...new Map(album_list.map(item => [item["name"], item])).values()];
+                return album_unique_list.map(album => new Album(album.name, parseInt(album.release_date.slice(0,4))))
             })
             .catch(error => {
                 throw new Error(error.message);

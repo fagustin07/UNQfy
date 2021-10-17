@@ -150,10 +150,15 @@ class UNQfy {
 
   async populateAlbumsForArtist(artistName) {
     const artist =  this.getArtistByName(artistName);
-    const albums = await spotifyClient.getAlbumsFrom(artistName);
-
-    albums.forEach(album => this.addAlbum(artist.id, {name: album.name, year: album.year}))
-    return albums;
+    if(!artist.hasPopulated){
+      const albums = await spotifyClient.getAlbumsFrom(artistName);
+  
+      albums.forEach(album => this.addAlbum(artist.id, {name: album.name, year: album.year}));
+      artist.populated();
+      return 'Artist ' + artistName.toLowerCase() + ' successfully populated';
+    } else {
+      return 'Artist ' + artistName.toLowerCase() + ' already populated.'
+    }
   }
 
   // USERS
