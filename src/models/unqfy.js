@@ -148,14 +148,13 @@ class UNQfy {
     return this._entitiesManager.createPlaylist(name,genresToInclude,maxDuration);
   }
 
-  async populateAlbumsForArtist(artistName) {
+  populateAlbumsForArtist(artistName) {
     const artist =  this.getArtistByName(artistName);
     if(!artist.hasPopulated){
-      const albums = await spotifyClient.getAlbumsFrom(artistName);
-  
-      albums.forEach(album => this.addAlbum(artist.id, {name: album.name, year: album.year}));
-      artist.populated();
-      return 'Artist ' + artistName.toLowerCase() + ' successfully populated';
+      return spotifyClient.getAlbumsFrom(artistName)
+              .then(albums => albums.forEach(album => this.addAlbum(artist.id, {name: album.name, year: album.year})))
+              .then( _ => artist.populated())
+              .then(_ => 'Artist ' + artistName.toLowerCase() + ' successfully populated')
     } else {
       return 'Artist ' + artistName.toLowerCase() + ' already populated.'
     }
