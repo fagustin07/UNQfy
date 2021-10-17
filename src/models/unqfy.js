@@ -10,7 +10,7 @@ const Playlist = require('./playlist');
 const PlaylistGenerator = require('./playlistGenerator');
 const Pair = require('../lib/pair');
 const EntitiesManager = require('./entitiesManager');
-const spotifyClient = require('../helpers/clients/SpotifyClient');
+const spotifyClient = require('../helpers/clients/spotifyClient');
 
 class UNQfy {
 
