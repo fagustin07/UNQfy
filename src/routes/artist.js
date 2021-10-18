@@ -1,7 +1,6 @@
 const express = require('express');
 const unqfy = require('../helpers/mock')
 
-const artist = express();
 const router = express.Router()
 
 // CREATE ARTIST
@@ -17,14 +16,15 @@ router.route('/').post((req, res) => {
 
     try {
         const newArtist = unqfy.addArtist(data);
-        res.status(201);
-        res.json({message: 'Created Artist', ...newArtist.toJSON() });
+        res.status(201)
+            .json({ message: 'Created Artist', ...newArtist.toJSON() });
     } catch (exception) {
-        res.status(409);
-        res.json({
-            message: exception.message,
-            status: 409
-        })
+        res.status(409)
+            .json({
+                message: exception.message,
+                errorCode: 'RESOURCE_ALREADY_EXISTS',
+                status: 409
+            })
     }
 })
 
@@ -35,16 +35,17 @@ router.route('/:artistId').get((req, res) => {
 
     try {
         const anArtist = unqfy.getArtistById(parseInt(artistId));
-        res.status(200);
-        res.json(anArtist.toJSON());
+        res.status(200)
+            .json(anArtist.toJSON());
     } catch (exception) {
-        res.status(404);
-        res.json({
-            message: exception.message,
-            status: 404
-        })
+        res.status(404)
+            .json({
+                message: exception.message,
+                errorCode: 'RESOURCE_NOT_FOUND',
+                status: 404
+            })
     }
-    
+
 })
 
 // DELETE ARTIST
@@ -54,16 +55,17 @@ router.route('/:artistId').delete((req, res) => {
 
     try {
         unqfy.removeArtistById(parseInt(artistId));
-        res.status(204); 
-        res.json({})
+        res.status(204)
+            .json({})
     } catch (exception) {
-        res.status(404);
-        res.json({
-            message: exception.message,
-            status: 404
-        })
+        res.status(404)
+            .json({
+                message: exception.message,
+                errorCode: 'RESOURCE_NOT_FOUND',
+                status: 404
+            })
     }
-    
+
 })
 
 // GET ARTISTS BY PARTIAL SEARCH
@@ -71,22 +73,17 @@ router.route('/:artistId').delete((req, res) => {
 router.route('/').get((req, res) => {
     const artistName = req.query.name;
 
-    try {
-        const results = unqfy.searchByPartialName(artistName);
-        res.status(200);
-        res.json(results.artists.map((artist) => artist.toJSON())) 
-    } catch (exception) {
-        res.status(404);
-        res.json({
-            message: exception.message,
-            status: 404
-        })
+    if (artistName === undefined) {
+        res.status(400)
+            .json({
+                status: 400,
+                errorCode: "BAD_REQUEST"
+            })
     }
-    
+
+    const results = unqfy.searchByPartialName(artistName);
+    res.status(200)
+        .json(results.artists.map((artist) => artist.toJSON()))
 })
 
-artist.use('/artists', router)
-
-module.exports={
-    artist
-}
+module.exports = router
