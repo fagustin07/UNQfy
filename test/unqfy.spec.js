@@ -343,6 +343,16 @@ describe('Add, remove and filter data', () => {
     assert.isTrue(matchingTracks.includes(t3));
   });
 
+  it('should get a lyrics track from MusixMatch, starting with track name', async () => {
+    const artist = createAndAddArtist(unqfy, 'Duki', 'Argentina en la casa');
+    const album = createAndAddAlbum(unqfy, artist.id, 'PANAMA', 2021);
+    const track = createAndAddTrack(unqfy, album.id, 'PANAMA', 200, ['trap']);
+
+    const obtainedLyric = await unqfy.getLyrics(track.id);
+
+    assert.notEqual(obtainedLyric, null);
+  });
+
   describe('User', () => {
     it('when an user listen a track, times listen that track increment in one', () => {
       const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
