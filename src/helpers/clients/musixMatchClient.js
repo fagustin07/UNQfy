@@ -1,5 +1,4 @@
 const axios = require('axios');
-const { response } = require('express');
 
 const musixmatch_api = axios.create({
     baseURL: 'http://api.musixmatch.com/ws/1.1',

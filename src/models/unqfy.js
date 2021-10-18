@@ -11,9 +11,6 @@ const PlaylistGenerator = require('./playlistGenerator');
 const Pair = require('../lib/pair');
 const EntitiesManager = require('./entitiesManager');
 const spotifyClient = require('../helpers/clients/spotifyClient');
-const { getTrack, getLyricsByTrackId } = require('../helpers/clients/musixMatchClient');
-
-
 
 class UNQfy {
 
