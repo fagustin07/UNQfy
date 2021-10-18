@@ -4,9 +4,6 @@ const Playlist = require("./playlist");
 const Track = require("./track");
 const User = require("./user");
 const PlaylistGenerator = require('./playlistGenerator');
-const musixMatchClient = require('../helpers/clients/musixMatchClient');
-const Pair = require('../lib/pair');
-
 
 class EntitiesManager {
     constructor() {
