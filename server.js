@@ -5,4 +5,4 @@ const port = 8081;
 
 server = http.createServer(rootApp);
 
-server.listen(port, () => console.log(`Listening to port ${port}`))
+server.listen(port, () => console.log(`Listening on port ${port}`))

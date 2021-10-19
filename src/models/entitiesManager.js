@@ -1,6 +1,5 @@
 const Artist = require('./artist');
 const Album = require('./album');
-const Playlist = require("./playlist");
 const Track = require("./track");
 const User = require("./user");
 const PlaylistGenerator = require('./playlistGenerator');
@@ -99,6 +98,10 @@ class EntitiesManager {
         return this._getArrayOf(this._artists);
     }
 
+    getAllUsers() {
+        return this._getArrayOf(this._users);
+    }
+
     getAlbumsFrom(artistId) {
         const artist = this.getArtistById(artistId);
         return artist.albums();
@@ -185,7 +188,7 @@ class EntitiesManager {
     }
 
     userListenTo(aUserId, aTrackId) {
-        const user = this._getOrThrow(aUserId, this._getArrayOf(this._users), 'User not found');
+        const user = this.getUserById(aUserId);
         const track = this.getTrackById(aTrackId);
 
         user.listen(track);
@@ -193,8 +196,17 @@ class EntitiesManager {
         return user;
     }
 
+    userListenPlaylist(aUserId, aPlaylistId) {
+        const user = this.getUserById(aUserId);
+        const playlist = this.getPlaylistById(aPlaylistId);
+
+        user.listenPlaylist(playlist);
+
+        return user;
+    }
+
     timesUserListenedTrack(aUserId, aTrackId) {
-        const user = this._getOrThrow(aUserId, this._getArrayOf(this._users), 'User not found');
+        const user = this.getUserById(aUserId);
         const track = this.getTrackById(aTrackId);
 
         return user.timesListened(track);

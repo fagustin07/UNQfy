@@ -68,6 +68,10 @@ class UNQfy {
     return this._entitiesManager.getAllArtists();
   }
 
+  getAllUsers() {
+    return this._entitiesManager.getAllUsers();
+  }
+
   getAlbumsFrom(artistId) {
     return this._entitiesManager.getAlbumsFrom(artistId);
   }
@@ -194,6 +198,10 @@ class UNQfy {
 
   userListenTo(aUserId, aTrackId) {
     return this._entitiesManager.userListenTo(aUserId, aTrackId);
+  }
+
+  userListenPlaylist(aUserId, aPlaylistId) {
+    return this._entitiesManager.userListenPlaylist(aUserId, aPlaylistId);
   }
 
   timesUserListenedTrack(aUserId, aTrackId) {

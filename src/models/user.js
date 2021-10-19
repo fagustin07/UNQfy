@@ -17,6 +17,10 @@ class User extends Recognizable {
         }
     }
 
+    listenPlaylist(aPlaylist) {
+        aPlaylist.tracks.forEach(track => this.listen(track));
+    }
+
     timesListened(aTrack) {
         const trackPair = this.tracksListened[aTrack.id];
 
