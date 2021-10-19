@@ -2,9 +2,10 @@ const Adder = require("./adder");
 
 class Album extends Adder {
 
-    constructor(name, year) {
+    constructor(name, year, artist = null) {
         super(name);
         this.year = year;
+        this.artist = artist;
     }
 
     createTrack(aTrack){
@@ -25,6 +26,10 @@ class Album extends Adder {
 
     tracks() {
         return this.elements();
+    }
+
+    artistName() {
+        return this.artist ? this.artist.name : '';
     }
 
     toJSON() {
