@@ -2,7 +2,9 @@ const express = require('express');
 const { getUNQfy, saveUNQfy } = require('../../lib/UNQfyPersistence');
 const router = express.Router()
 
-router.route('/artists')
+const artist = express();
+
+router.route('/')
     .get((req, res) => {
         const artistName = req.query.name;
 
@@ -32,7 +34,7 @@ router.route('/artists')
             const newArtist = unqfy.addArtist(data);
             saveUNQfy(unqfy);
             res.status(201)
-                .json({ message: 'Created Artist', ...newArtist.toJSON() });
+                .json({ ...newArtist.toJSON() });
         } catch (exception) {
             res.status(409)
                 .json({
@@ -44,7 +46,7 @@ router.route('/artists')
     });
 
 
-router.route('/artists/:artistId')
+router.route('/:artistId')
     .get((req, res) => {
         const artistId = req.params.artistId;
 
