@@ -2,8 +2,6 @@ const express = require('express');
 const { getUNQfy, saveUNQfy } = require('../../lib/UNQfyPersistence');
 const router = express.Router()
 
-const artist = express();
-
 router.route('/')
     .get((req, res) => {
         const artistName = req.query.name;
@@ -21,17 +19,10 @@ router.route('/')
             .json(results.artists.map((artist) => artist.toJSON()));
     })
     .post((req, res) => {
-        const name = req.body.name;
-        const country = req.body.country;
-
-        const data = {
-            name: name,
-            country: country
-        }
-
+        const {name, country } = req.body;
         try {
             const unqfy = getUNQfy();
-            const newArtist = unqfy.addArtist(data);
+            const newArtist = unqfy.addArtist({name, country});
             saveUNQfy(unqfy);
             res.status(201)
                 .json({ ...newArtist.toJSON() });
@@ -48,11 +39,11 @@ router.route('/')
 
 router.route('/:artistId')
     .get((req, res) => {
-        const artistId = req.params.artistId;
+        const artistId = parseInt(req.params.artistId);
 
         try {
             const unqfy = getUNQfy();
-            const anArtist = unqfy.getArtistById(parseInt(artistId));
+            const anArtist = unqfy.getArtistById(artistId);
             res.status(200);
             res.json(anArtist.toJSON());
         } catch (exception) {
@@ -64,6 +55,16 @@ router.route('/:artistId')
                 })
         }
 
+    })
+    .patch((req, res) => {
+        const artistId = parseInt(req.params.artistId);
+        const { name, country } = req.body;
+
+        const unqfy = getUNQfy();
+        const artist = unqfy.getArtistById(artistId);
+        artist.update(name, country);
+        res.status(200);
+        res.json(artist.toJSON());
     })
     .delete((req, res) => {
         const artistId = req.params.artistId;
