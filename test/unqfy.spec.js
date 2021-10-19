@@ -240,6 +240,31 @@ describe('Add, remove and filter data', () => {
       assert.throws(expectedThrown, `Playlist not found`);
     });
 
+    it('should create a playlist by tracks ids', () => {
+      const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+      const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
+      const t1 = createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock', 'movie']);
+      createAndAddTrack(unqfy, album.id, 'Sweet Child o\' Mine', 1500, ['rock', 'hard rock', 'pop', 'movie']);
+
+      const artist2 = createAndAddArtist(unqfy, 'Michael Jackson', 'USA');
+      const album2 = createAndAddAlbum(unqfy, artist2.id, 'Thriller', 1987);
+      const t2 = createAndAddTrack(unqfy, album2.id, 'Thriller', 200, ['pop', 'movie']);
+      const t3 = createAndAddTrack(unqfy, album2.id, 'Another song', 500, ['pop']);
+      const t4 = createAndAddTrack(unqfy, album2.id, 'Another song II', 500, ['pop']);
+
+      const playlist = unqfy.createPlaylistByIds('my playlist', [t1.id, t2.id, t3.id, t4.id]);
+
+      console.log(playlist)
+
+      assert.equal(playlist.name, 'my playlist');
+      assert.isAtMost(playlist.duration(), 1400);
+      assert.isTrue(playlist.hasTrack(t1));
+      assert.isTrue(playlist.hasTrack(t2));
+      assert.isTrue(playlist.hasTrack(t3));
+      assert.isTrue(playlist.hasTrack(t4));
+      assert.lengthOf(playlist.tracks, 4);
+    });
+
 
     it('should delete a playlist', () => {
       const playlist = unqfy.createPlaylist('my playlist', ['rock'], 1400);

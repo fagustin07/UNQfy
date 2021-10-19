@@ -57,6 +57,16 @@ class EntitiesManager {
         return newPlaylist;
     }
 
+    createPlaylistByIds(name, tracksIds) {
+        if (this._exists(name, this._getArrayOf(this._playlists))) throw new Error('Playlist alredy exists');
+
+        const newPlaylist = this._playlistGenerator.createPlaylistByIds(name, tracksIds, this._tracks());
+
+        this._playlists[newPlaylist.id] = newPlaylist;
+
+        return newPlaylist;
+    }
+
     // ACCESSORS
 
     getPlaylistById(id) {

@@ -13,6 +13,12 @@ class PlaylistGenerator {
         return new Playlist(name, playlistTracks);
     }
 
+    createPlaylistByIds(name, tracksIds, tracks) {
+        const playlistTracks = tracks.filter((track) => tracksIds.some((id) => id === track.id));
+
+        return new Playlist(name, playlistTracks);
+    }
+
     generateThisIs(anArtist, playedTracksPair) {
         const tracks = anArtist.albums().reduce((tracks, album) => tracks.concat(album.tracks()), []);
         const uniqueKeys = tracks.map(aTrack => aTrack.id)

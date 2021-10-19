@@ -155,6 +155,10 @@ class UNQfy {
     return this._entitiesManager.createPlaylist(name, genresToInclude, maxDuration);
   }
 
+  createPlaylistByIds(name, tracksIds) {
+    return this._entitiesManager.createPlaylistByIds(name, tracksIds)
+  }
+
   populateAlbumsForArtist(artistName) {
     const artist = this.getArtistByName(artistName);
     if (!artist.hasPopulated) {

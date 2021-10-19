@@ -16,18 +16,18 @@ router.route('/')
         const unqfy = getUNQfy();
         const results = unqfy.searchByPartialName(albumName);
 
-        res.status(200);
-        res.json(results.albums.map((album) => album.toJSON()));
+        res.status(200)
+            .json(results.albums.map((album) => album.toJSON()));
     })
     .post((req, res) => {
         const { artist_id, name, year } = req.body;
 
         const unqfy = getUNQfy();
-        const album = unqfy.addAlbum(parseInt(artist_id), {name, year: parseInt(year)});
+        const album = unqfy.addAlbum(parseInt(artist_id), { name, year: parseInt(year) });
         saveUNQfy(unqfy);
 
-        res.status(201);
-        res.json(album.toJSON());
+        res.status(201)
+            .json(album.toJSON());
     });
 
 
@@ -38,8 +38,8 @@ router.route('/:album_id')
         const unqfy = getUNQfy();
         const anAlbum = unqfy.getAlbumById(album_id);
 
-        res.status(200);
-        res.json(anAlbum.toJSON());
+        res.status(200)
+            .json(anAlbum.toJSON());
     })
     .patch((req, res) => {
         const album_id = parseInt(req.params.album_id);
@@ -50,8 +50,8 @@ router.route('/:album_id')
         album.update(year);
         saveUNQfy(unqfy);
 
-        res.status(200);
-        res.json(album.toJSON());
+        res.status(200)
+            .json(album.toJSON());
     })
     .delete((req, res) => {
         const album_id = req.params.album_id;
@@ -60,8 +60,8 @@ router.route('/:album_id')
         unqfy.removeAlbumById(parseInt(album_id));
         saveUNQfy(unqfy);
 
-        res.status(204);
-        res.json({})
+        res.status(204)
+            .json({})
     });
 
 module.exports = router;

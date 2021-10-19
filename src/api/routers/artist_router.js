@@ -19,10 +19,10 @@ router.route('/')
             .json(results.artists.map((artist) => artist.toJSON()));
     })
     .post((req, res) => {
-        const {name, country } = req.body;
+        const { name, country } = req.body;
         try {
             const unqfy = getUNQfy();
-            const newArtist = unqfy.addArtist({name, country});
+            const newArtist = unqfy.addArtist({ name, country });
             saveUNQfy(unqfy);
             res.status(201)
                 .json(newArtist.toJSON());
@@ -65,8 +65,8 @@ router.route('/:artistId')
         artist.update(name, country);
         saveUNQfy(unqfy);
 
-        res.status(200);
-        res.json(artist.toJSON());
+        res.status(200)
+            .json(artist.toJSON());
     })
     .delete((req, res) => {
         const artistId = req.params.artistId;

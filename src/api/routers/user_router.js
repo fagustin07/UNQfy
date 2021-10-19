@@ -5,22 +5,22 @@ const router = express.Router();
 router.route('/')
     .get((_, res) => {
         const unqfy = getUNQfy();
-        const users  = unqfy.getAllUsers();
+        const users = unqfy.getAllUsers();
 
-        res.status(200);
-        res.json(users.map(user => { return { id: user.id, username: user.username}}));
+        res.status(200)
+            .json(users.map(user => { return { id: user.id, username: user.username } }));
     })
     .post((req, res) => {
         const { username } = req.body;
 
         const unqfy = getUNQfy();
-        const user  = unqfy.addUser(username);
+        const user = unqfy.addUser(username);
         saveUNQfy(unqfy);
 
-        res.status(201);
-        res.json(user.toJSON());
+        res.status(201)
+            .json(user.toJSON());
     });
-    
+
 router.route('/:user_id')
     .delete((req, res) => {
         const user_id = req.params.user_id;
@@ -29,8 +29,8 @@ router.route('/:user_id')
         unqfy.removeUserById(user_id);
         saveUNQfy(unqfy);
 
-        res.status(204);
-        res.json({});
+        res.status(204)
+            .json({});
     });
 
 router.route('/:user_id/listenings')
@@ -38,10 +38,10 @@ router.route('/:user_id/listenings')
         const user_id = parseInt(req.params.user_id);
 
         const unqfy = getUNQfy();
-        const user  = unqfy.getUserById(user_id);
+        const user = unqfy.getUserById(user_id);
 
-        res.status(200);
-        res.json(user.toJSON().tracksListened);
+        res.status(200)
+            .json(user.toJSON().tracksListened);
     });
 
 router.route('/:user_id/listenings/track/:track_id')
@@ -51,10 +51,10 @@ router.route('/:user_id/listenings/track/:track_id')
         const track_id = parseInt(params.track_id);
 
         const unqfy = getUNQfy();
-        const times  = unqfy.timesUserListenedTrack(user_id, track_id);
+        const times = unqfy.timesUserListenedTrack(user_id, track_id);
 
-        res.status(200);
-        res.json({times});
+        res.status(200)
+            .json({ times });
     })
     .post((req, res) => {
         const params = req.params;
@@ -62,11 +62,11 @@ router.route('/:user_id/listenings/track/:track_id')
         const track_id = parseInt(params.track_id);
 
         const unqfy = getUNQfy();
-        const user  = unqfy.userListenTo(user_id, track_id);
+        const user = unqfy.userListenTo(user_id, track_id);
         saveUNQfy(unqfy);
 
-        res.status(201);
-        res.json(user.toJSON());
+        res.status(201)
+            .json(user.toJSON());
     })
 
 router.route('/:user_id/listenings/playlist/:playlist_id')
@@ -76,10 +76,10 @@ router.route('/:user_id/listenings/playlist/:playlist_id')
         const playlist_id = parseInt(params.playlist_id);
 
         const unqfy = getUNQfy();
-        const user  = unqfy.userListenPlaylist(user_id, playlist_id);
+        const user = unqfy.userListenPlaylist(user_id, playlist_id);
         saveUNQfy(unqfy);
 
-        res.status(201);
-        res.json(user.toJSON());
+        res.status(201)
+            .json(user.toJSON());
     })
 module.exports = router;
