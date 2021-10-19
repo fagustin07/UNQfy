@@ -27,6 +27,10 @@ class Album extends Adder {
         return this.elements();
     }
 
+    update(year) {
+        this.year = year;
+    }
+
     toJSON() {
         return {
             id: this.id,

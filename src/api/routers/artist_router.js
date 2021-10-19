@@ -1,6 +1,6 @@
 const express = require('express');
 const { getUNQfy, saveUNQfy } = require('../../lib/UNQfyPersistence');
-const router = express.Router()
+const router = express.Router();
 
 router.route('/')
     .get((req, res) => {
@@ -11,7 +11,7 @@ router.route('/')
                 .json({
                     status: 400,
                     errorCode: "BAD_REQUEST"
-                })
+                });
         }
         const unqfy = getUNQfy();
         const results = unqfy.searchByPartialName(artistName);
@@ -25,14 +25,14 @@ router.route('/')
             const newArtist = unqfy.addArtist({name, country});
             saveUNQfy(unqfy);
             res.status(201)
-                .json({ ...newArtist.toJSON() });
+                .json(newArtist.toJSON());
         } catch (exception) {
             res.status(409)
                 .json({
                     message: exception.message,
                     errorCode: 'RESOURCE_ALREADY_EXISTS',
                     status: 409
-                })
+                });
         }
     });
 
@@ -52,7 +52,7 @@ router.route('/:artistId')
                     message: exception.message,
                     errorCode: 'RESOURCE_NOT_FOUND',
                     status: 404
-                })
+                });
         }
 
     })
@@ -63,6 +63,8 @@ router.route('/:artistId')
         const unqfy = getUNQfy();
         const artist = unqfy.getArtistById(artistId);
         artist.update(name, country);
+        saveUNQfy(unqfy);
+
         res.status(200);
         res.json(artist.toJSON());
     })
@@ -81,8 +83,8 @@ router.route('/:artistId')
                     message: exception.message,
                     errorCode: 'RESOURCE_NOT_FOUND',
                     status: 404
-                })
+                });
         }
     });
 
-module.exports = router
+module.exports = router;
