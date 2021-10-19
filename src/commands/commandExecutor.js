@@ -28,7 +28,7 @@ const RemovePlaylist = require('./removePlaylist');
 const RemoveUser = require('./removeUser');
 
 const Printer = require('../lib/Printer');
-const UNQfyPersistence = require('../lib/UNQfyPersistence');
+const { getUNQfy, saveUNQfy } = require('../lib/UNQfyPersistence');
 const GetLyrics = require('./getLyrics');
 
 class CommandExecutor { 
@@ -43,11 +43,10 @@ class CommandExecutor {
             RemoveArtist, RemoveAlbum, RemoveTrack, RemovePlaylist, RemoveUser, GetLyrics
         ];
         this._printer = new Printer();
-        this._unqfyPersistence = new UNQfyPersistence();
     }
 
     async run(command, args) {
-        const unqfy = this._unqfyPersistence.getUNQfy();
+        const unqfy = getUNQfy();
         let maybeCommand = this._commands.find(aCommand => aCommand.canHandle(command));
         
         try {
@@ -64,7 +63,7 @@ class CommandExecutor {
             this._printer.printException(err);
         }
 
-        this._unqfyPersistence.saveUNQfy(unqfy);
+        saveUNQfy(unqfy);
     }
 
     _checkIfExistCommand(maybeCommand) {
