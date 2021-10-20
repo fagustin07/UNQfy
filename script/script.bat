@@ -3,7 +3,7 @@ cd ../
 @REM ARTISTS
 
 node main.js addArtist --name "don cangrejo" --country "USA" @REM #1
-node main.js addArtist --name "bob esponja" --country "Argentina" @REM #2
+node main.js addArtist --name "Queen" --country "Argentina" @REM #2
 node main.js addArtist --name "Bon Jovi" --country "USA" @REM #3
 node main.js addArtist --name "patricio" --country "Argentina" @REM #4
 
@@ -13,7 +13,7 @@ node main.js addArtist --name "patricio" --country "Argentina" @REM #4
 node main.js addAlbum --artistId 2 --name "Vida" --year 2010 @REM #5
 node main.js addAlbum --artistId 2 --name "Muerte" --year 2012 @REM #6
 node main.js addAlbum --artistId 1 --name "Blue" --year 2006 @REM #7
-node main.js addAlbum --artistId 2 --name "Greater hits" --year 1974 @REM #8
+node main.js addAlbum --artistId 2 --name "Greatest Hits" --year 1974 @REM #8
 node main.js addAlbum --artistId 3 --name "Cross Road" --year 1997 @REM #9
 node main.js addAlbum --artistId 3 --name "mi vida" --year 2006 @REM #10
 
@@ -37,7 +37,7 @@ node main.js addTrack --albumId 8 --name "Black Dog" --duration 255 --genres "ba
 node main.js addTrack --albumId 8 --name "Since i have been loving you" --duration 188 --genres "reggae, pop" @REM #24
 node main.js addTrack --albumId 8 --name "Dazed and confused" --duration 246 --genres "rap, pop"  @REM #25
 node main.js addTrack --albumId 10 --name "Adios nonino" --duration 266 --genres "pop"  @REM #26
-node main.js addTrack --albumId 8 --name "Stairway to heaven" --duration 420 --genres "rock" @REM #27
+node main.js addTrack --albumId 8 --name "Bohemian Rhapsody" --duration 420 --genres "rock" @REM #27
 
 @REM # PLAYLISTS 
 

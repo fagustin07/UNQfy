@@ -3,18 +3,14 @@ const { getUNQfy } = require('../../lib/UNQfyPersistence');
 const router = express.Router();
 
 router.route('/:trackId/lyrics')
-    .get((req, res) => {
+    .get(async (req, res) => {
         const id = parseInt(req.params.trackId);
 
         try {
             const unqfy = getUNQfy();
-            const track = unqfy.getTrackById(id);
-            const lyrics = unqfy.getLyrics(id);
+            const lyrics = await unqfy.getLyrics(id)
             res.status(200)
-                .json({
-                    Name: track.name,
-                    lyrics: lyrics
-                })
+                .send(lyrics);
         } catch (exception) {
             res.status(404)
                 .json({
@@ -26,4 +22,3 @@ router.route('/:trackId/lyrics')
     })
 
 module.exports = router;
-
