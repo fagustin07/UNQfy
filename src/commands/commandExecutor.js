@@ -46,6 +46,14 @@ class CommandExecutor {
     }
 
     async run(command, args) {
+        if(command === '--help') {
+            const commands = this._commands
+                .map(commandClass => new commandClass().expectedArgsFormatMessage())
+                .sort((a,b) => a > b ? 1 : -1);
+            this._printer.printResult('VALID COMMANDS', commands);
+            return;
+        }
+
         const unqfy = getUNQfy();
         let maybeCommand = this._commands.find(aCommand => aCommand.canHandle(command));
         
