@@ -6,8 +6,7 @@ const { BadRequest } = require('../../errors/basics');
 router.route('/')
     .get((req, res) => {
         const artistName = req.query.name;
-
-        if (artistName === undefined) new BadRequest();
+        if (!artistName) throw new BadRequest();
 
         const unqfy = getUNQfy();
         const results = unqfy.searchByPartialName(artistName);
@@ -16,7 +15,6 @@ router.route('/')
     })
     .post((req, res) => {
         const { name, country } = req.body;
-
         if (!name || !country) throw new BadRequest();
 
         const unqfy = getUNQfy();
@@ -41,7 +39,6 @@ router.route('/:artistId')
     .patch((req, res) => {
         const artistId = parseInt(req.params.artistId);
         const { name, country } = req.body;
-
         if(!artistId || !name || !country) throw new BadRequest();
 
         const unqfy = getUNQfy();
@@ -54,7 +51,6 @@ router.route('/:artistId')
     })
     .delete((req, res) => {
         const artistId = req.params.artistId;
-
         if (!artistId) throw new BadRequest();
 
         const unqfy = getUNQfy();

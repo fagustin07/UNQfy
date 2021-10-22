@@ -9,7 +9,7 @@ class UNQfyError extends Error {
 
 class BadRequest extends UNQfyError {
     constructor() {
-        super('Bad request!', 400, "BAD_REQUEST");
+        super('Bad request', 400, "BAD_REQUEST");
     }
 }
 

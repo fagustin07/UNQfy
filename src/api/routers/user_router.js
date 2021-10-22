@@ -12,6 +12,7 @@ router.route('/')
     })
     .post((req, res) => {
         const { username } = req.body;
+        if(!username) throw new BadRequest();
 
         const unqfy = getUNQfy();
         const user = unqfy.addUser(username);
@@ -24,6 +25,7 @@ router.route('/')
 router.route('/:user_id')
     .delete((req, res) => {
         const user_id = req.params.user_id;
+        if(!user_id) throw new BadRequest();
 
         const unqfy = getUNQfy();
         unqfy.removeUserById(user_id);
@@ -36,6 +38,7 @@ router.route('/:user_id')
 router.route('/:user_id/listenings')
     .get((req, res) => {
         const user_id = parseInt(req.params.user_id);
+        if(!user_id) throw new BadRequest();
 
         const unqfy = getUNQfy();
         const user = unqfy.getUserById(user_id);
@@ -49,6 +52,7 @@ router.route('/:user_id/listenings/track/:track_id')
         const params = req.params;
         const user_id = parseInt(params.user_id);
         const track_id = parseInt(params.track_id);
+        if(!user_id || !track_id) throw new BadRequest();
 
         const unqfy = getUNQfy();
         const times = unqfy.timesUserListenedTrack(user_id, track_id);
@@ -60,6 +64,7 @@ router.route('/:user_id/listenings/track/:track_id')
         const params = req.params;
         const user_id = parseInt(params.user_id);
         const track_id = parseInt(params.track_id);
+        if(!user_id || !track_id) throw new BadRequest();
 
         const unqfy = getUNQfy();
         const user = unqfy.userListenTo(user_id, track_id);
@@ -67,13 +72,14 @@ router.route('/:user_id/listenings/track/:track_id')
 
         res.status(201)
             .json(user.toJSON());
-    })
+    });
 
 router.route('/:user_id/listenings/playlist/:playlist_id')
     .post((req, res) => {
         const params = req.params;
         const user_id = parseInt(params.user_id);
         const playlist_id = parseInt(params.playlist_id);
+        if(!user_id || !playlist_id) throw new BadRequest();
 
         const unqfy = getUNQfy();
         const user = unqfy.userListenPlaylist(user_id, playlist_id);
@@ -81,5 +87,6 @@ router.route('/:user_id/listenings/playlist/:playlist_id')
 
         res.status(201)
             .json(user.toJSON());
-    })
+    });
+
 module.exports = router;
