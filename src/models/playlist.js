@@ -18,6 +18,18 @@ class Playlist extends Recognizable {
         this.tracks = this.tracks.filter(aTrack => aTrack.id !== track.id);
     }
 
+    hasDuration(minDuration, maxDuration) {
+        return this._hasMinDuration(minDuration) && this._hasMaxDuration(maxDuration);
+    }
+
+    _hasMinDuration(minDuration) {
+        return isNaN(minDuration) || this.duration() > minDuration; 
+    }
+
+    _hasMaxDuration(maxDuration) {
+        return isNaN(maxDuration) || this.duration() < maxDuration; 
+    }
+    
     toJSON(){
         return {
             id: this.id,

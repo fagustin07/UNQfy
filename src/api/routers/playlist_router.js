@@ -6,35 +6,28 @@ const router = express.Router();
 
 router.route('/')
     .get((req, res) => {
-        const name = req.query.name;
-        if(!name) throw new BadRequest();
+        const { name, durationLT, durationGT } = req.query;
 
         const unqfy = getUNQfy();
-        const results = unqfy.searchByPartialName(name);
+        const playlists = unqfy.searchPlaylists({name, durationLT: parseInt(durationLT), durationGT: parseInt(durationGT)});
         res.status(200)
-            .json(results.playlists.map((playlist) => playlist.toJSON()));
+            .json(playlists.map((playlist) => playlist.toJSON()));
     })
     .post((req, res) => {
-        const { name, maxDuration, genres } = req.body;
-        if (!name || !maxDuration || !genres) throw new BadRequest();
-
+        const { name, maxDuration, genres, tracks } = req.body;
         const unqfy = getUNQfy();
-        const newPlaylist = unqfy.createPlaylist(name, genres, maxDuration);
+        let playlist;
+        if (maxDuration && genres && genres.length > 0) {
+            playlist = unqfy.createPlaylist(name, genres, maxDuration);    
+        } else if (tracks && tracks.length > 0) {
+            playlist = unqfy.createPlaylistByIds(name, tracks);
+        } else {
+            throw new BadRequest();
+        }
+
         saveUNQfy(unqfy);
         res.status(201)
-            .json(newPlaylist.toJSON());
-    });
-
-router.route('/byIds')
-    .post((req, res) => {
-        const { name, tracksIds } = req.body;
-        if (!name || !tracksIds) throw new BadRequest();
-
-        const unqfy = getUNQfy();
-        const newPlaylist = unqfy.createPlaylistByIds(name, tracksIds);
-        saveUNQfy(unqfy);
-        res.status(201)
-            .json(newPlaylist.toJSON());
+            .json(playlist.toJSON());
     });
 
 router.route('/:playlistId')
@@ -56,12 +49,6 @@ router.route('/:playlistId')
         saveUNQfy(unqfy);
         res.status(204)
             .json({});
-        res.status(404)
-            .json({
-                message: exception.message,
-                status: 404,
-                errorCode: "RESOURCE_NOT_FOUND"
-            })
     });
 
 

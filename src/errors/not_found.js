@@ -48,6 +48,12 @@ class RelatedArtistNotFound extends RelatedResourceNotFound{
     }
 }
 
+class RelatedTrackNotFound extends RelatedResourceNotFound{
+    constructor(){
+        super('track');
+    }
+}
+
 module.exports = {
     ArtistNotFound,
     AlbumNotFound,
@@ -56,5 +62,6 @@ module.exports = {
     UserNotFound,
     LyricsNotFound,
     ArtistNamedNotFound,
+    RelatedTrackNotFound,
     RelatedArtistNotFound,
 }

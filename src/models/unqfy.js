@@ -138,6 +138,12 @@ class UNQfy {
     return this._entitiesManager.searchByPartialName(aPartialName);
   }
 
+  searchPlaylists(filters) {
+    return this.searchByPartialName(filters.name || '')
+               .playlists
+               .filter(playlist => playlist.hasDuration(filters.durationGT, filters.durationLT));
+  }
+
   // name: nombre de la playlist
   // genresToInclude: array de generos
   // maxDuration: duración en segundos
