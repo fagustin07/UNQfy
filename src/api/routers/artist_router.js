@@ -6,7 +6,6 @@ const { BadRequest } = require('../../errors/basics');
 router.route('/')
     .get((req, res) => {
         const artistName = req.query.name;
-        if (!artistName) throw new BadRequest();
 
         const unqfy = getUNQfy();
         const results = unqfy.searchByPartialName(artistName);

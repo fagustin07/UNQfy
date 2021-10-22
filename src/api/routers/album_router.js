@@ -6,7 +6,6 @@ const router = express.Router();
 router.route('/')
     .get((req, res) => {
         const albumName = req.query.name;
-        if (!albumName) throw new BadRequest();
 
         const unqfy = getUNQfy();
         const results = unqfy.searchByPartialName(albumName);
@@ -15,11 +14,11 @@ router.route('/')
             .json(results.albums.map((album) => album.toJSON()));
     })
     .post((req, res) => {
-        const { artist_id, name, year } = req.body;
-        if(!artist_id || !name || !year) throw new BadRequest();
+        const { artistId, name, year } = req.body;
+        if(!artistId || !name || !year) throw new BadRequest();
 
         const unqfy = getUNQfy();
-        const album = unqfy.addAlbum(parseInt(artist_id), { name, year: parseInt(year) });
+        const album = unqfy.addAlbum(parseInt(artistId), { name, year: parseInt(year) });
         saveUNQfy(unqfy);
 
         res.status(201)
@@ -27,24 +26,24 @@ router.route('/')
     });
 
 
-router.route('/:album_id')
+router.route('/:albumId')
     .get((req, res) => {
-        const album_id = parseInt(req.params.album_id);
-        if(!album_id) throw new BadRequest();
+        const albumId = parseInt(req.params.albumId);
+        if(!albumId) throw new BadRequest();
 
         const unqfy = getUNQfy();
-        const anAlbum = unqfy.getAlbumById(album_id);
+        const anAlbum = unqfy.getAlbumById(albumId);
 
         res.status(200)
             .json(anAlbum.toJSON());
     })
     .patch((req, res) => {
-        const album_id = parseInt(req.params.album_id);
+        const albumId = parseInt(req.params.albumId);
         const { year } = req.body;
-        if(!album_id || !year) throw new BadRequest();
+        if(!albumId || !year) throw new BadRequest();
 
         const unqfy = getUNQfy();
-        const album = unqfy.getAlbumById(parseInt(album_id));
+        const album = unqfy.getAlbumById(parseInt(albumId));
         album.update(year);
         saveUNQfy(unqfy);
 
@@ -52,11 +51,11 @@ router.route('/:album_id')
             .json(album.toJSON());
     })
     .delete((req, res) => {
-        const album_id = req.params.album_id;
-        if(!album_id) throw new BadRequest();
+        const albumId = req.params.albumId;
+        if(!albumId) throw new BadRequest();
 
         const unqfy = getUNQfy();
-        unqfy.removeAlbumById(parseInt(album_id));
+        unqfy.removeAlbumById(parseInt(albumId));
         saveUNQfy(unqfy);
 
         res.status(204)

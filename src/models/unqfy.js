@@ -135,11 +135,11 @@ class UNQfy {
   }
 
   searchByPartialName(aPartialName) {
-    return this._entitiesManager.searchByPartialName(aPartialName);
+    return this._entitiesManager.searchByPartialName(aPartialName || '');
   }
 
   searchPlaylists(filters) {
-    return this.searchByPartialName(filters.name || '')
+    return this.searchByPartialName(filters.name)
                .playlists
                .filter(playlist => playlist.hasDuration(filters.durationGT, filters.durationLT));
   }
