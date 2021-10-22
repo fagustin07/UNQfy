@@ -260,8 +260,6 @@ describe('Add, remove and filter data', () => {
 
       const playlist = unqfy.createPlaylistByIds('my playlist', [t1.id, t2.id, t3.id, t4.id]);
 
-      console.log(playlist)
-
       assert.equal(playlist.name, 'my playlist');
       assert.isAtMost(playlist.duration(), 1400);
       assert.isTrue(playlist.hasTrack(t1));
