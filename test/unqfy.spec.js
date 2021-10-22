@@ -57,11 +57,11 @@ describe('Add, remove and filter data', () => {
     });
 
     it('an artist cannot be created with a name that already exists', () => {
-      const artist = createAndAddArtist(unqfy, 'Nirvana', 'USA');
+      createAndAddArtist(unqfy, 'Nirvana', 'USA');
 
       const expectedThrown = () => createAndAddArtist(unqfy, 'Nirvana', 'USA');
 
-      assert.throws(expectedThrown, `Artist alredy exists`);
+      assert.throws(expectedThrown, `Artist already exists`);
     });
 
     it('should delete a artist', () => {
@@ -93,13 +93,19 @@ describe('Add, remove and filter data', () => {
       assert.equal(unqfy.getAlbumById(album.id), album);
     });
 
-    it('an album cannot have a name alredy declared', () => {
+    it('an album cannot have a name already declared', () => {
       const artist = createAndAddArtist(unqfy, 'Nirvana', 'USA');
       const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
 
       const expectedThrown = () => createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
 
-      assert.throws(expectedThrown, `Album alredy exists`);
+      assert.throws(expectedThrown, `Album already exists`);
+    });
+
+    it('an album cannot create if is from an inexistent artist', () => {
+      const expectedThrown = () => createAndAddAlbum(unqfy, 99999, 'Appetite for Destruction', 1987);
+
+      assert.throws(expectedThrown, `Related artist not found`);
     });
 
     it('throws exception when an album is not found by id', () => {
@@ -155,14 +161,14 @@ describe('Add, remove and filter data', () => {
       assert.throws(expectedThrown, `Track not found`);
     });
 
-    it('an track cannot have a name alredy declared', () => {
+    it('an track cannot have a name already declared', () => {
       const artist = createAndAddArtist(unqfy, 'Nirvana', 'USA');
       const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
       const track = createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock']);
 
       const expectedThrown = () => createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock']);
 
-      assert.throws(expectedThrown, `Track alredy exists`);
+      assert.throws(expectedThrown, `Track already exists`);
     });
 
     it('should delete a track', () => {
@@ -224,12 +230,12 @@ describe('Add, remove and filter data', () => {
     });
 
 
-    it('an playlist cannot have a name alredy declared', () => {
+    it('an playlist cannot have a name already declared', () => {
       const artist = unqfy.createPlaylist('my playlist', ['rock'], 1400);
 
       const expectedThrown = () => unqfy.createPlaylist('my playlist', ['rock', 'pop'], 800);
 
-      assert.throws(expectedThrown, `Playlist alredy exists`);
+      assert.throws(expectedThrown, `Playlist already exists`);
     });
 
     it('throws exception when an playlist is not found by id', () => {

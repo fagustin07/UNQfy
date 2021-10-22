@@ -3,6 +3,8 @@ const Album = require('./album');
 const Track = require("./track");
 const User = require("./user");
 const PlaylistGenerator = require('./playlistGenerator');
+const { ArtistAlreadyExists, AlbumAlreadyExists, TrackAlreadyExists, PlaylistAlreadyExists, UserAlreadyExists } = require('../errors/already_exists');
+const { ArtistNotFound, AlbumNotFound, TrackNotFound, PlaylistNotFound, UserNotFound, ArtistNamedNotFound, RelatedArtistNotFound } = require('../errors/not_found');
 
 class EntitiesManager {
     constructor() {
@@ -15,7 +17,7 @@ class EntitiesManager {
     // CREATE
 
     addArtist(artistData) {
-        if (this._exists(artistData.name, this._getArrayOf(this._artists))) throw new Error('Artist alredy exists');
+        if (this._exists(artistData.name, this._getArrayOf(this._artists))) throw new ArtistAlreadyExists();
 
         const newArtist = new Artist(artistData.name, artistData.country);
 
@@ -24,8 +26,18 @@ class EntitiesManager {
     }
 
     addAlbum(artistId, albumData) {
-        const artist = this.getArtistById(artistId)
-        if (this._exists(albumData.name, artist.albums())) throw Error('Album alredy exists');
+        let artist = null;
+        try{
+            artist = this.getArtistById(artistId)
+        } catch(err){
+            if (err instanceof ArtistNotFound){
+                throw new RelatedArtistNotFound();
+            } else{
+                throw err;
+            }
+        }
+
+        if (this._exists(albumData.name, artist.albums())) throw new AlbumAlreadyExists();
 
         const album = new Album(albumData.name, albumData.year, artist);
         artist.createAlbum(album);
@@ -35,7 +47,7 @@ class EntitiesManager {
 
     addTrack(albumId, trackData) {
         const album = this.getAlbumById(albumId);
-        if (this._exists(trackData.name, album.tracks())) throw Error('Track alredy exists');
+        if (this._exists(trackData.name, album.tracks())) throw new TrackAlreadyExists();
 
         const track = new Track(trackData.name, trackData.duration, trackData.genres, album);
 
@@ -46,7 +58,7 @@ class EntitiesManager {
     }
 
     createPlaylist(name, genresToInclude, maxDuration) {
-        if (this._exists(name, this._getArrayOf(this._playlists))) throw new Error('Playlist alredy exists');
+        if (this._exists(name, this._getArrayOf(this._playlists))) throw new PlaylistAlreadyExists();
 
         const newPlaylist =
             this._playlistGenerator
@@ -58,7 +70,7 @@ class EntitiesManager {
     }
 
     createPlaylistByIds(name, tracksIds) {
-        if (this._exists(name, this._getArrayOf(this._playlists))) throw new Error('Playlist alredy exists');
+        if (this._exists(name, this._getArrayOf(this._playlists))) throw new PlaylistAlreadyExists();
 
         const newPlaylist = this._playlistGenerator.createPlaylistByIds(name, tracksIds, this._tracks());
 
@@ -70,19 +82,19 @@ class EntitiesManager {
     // ACCESSORS
 
     getPlaylistById(id) {
-        return this._getOrThrow(id, this._getArrayOf(this._playlists), "Playlist not found");
+        return this._getOrThrow(id, this._getArrayOf(this._playlists), new PlaylistNotFound());
     }
 
     getArtistById(id) {
-        return this._getOrThrow(id, this._getArrayOf(this._artists), 'Artist not found');
+        return this._getOrThrow(id, this._getArrayOf(this._artists), new ArtistNotFound());
     }
 
     getAlbumById(id) {
-        return this._getOrThrow(id, this._albums(), 'Album not found')
+        return this._getOrThrow(id, this._albums(), new AlbumNotFound());
     }
 
     getTrackById(id) {
-        return this._getOrThrow(id, this._tracks(), 'Track not found')
+        return this._getOrThrow(id, this._tracks(), new TrackNotFound());
     }
 
     getArtistByName(artistName) {
@@ -90,7 +102,7 @@ class EntitiesManager {
         if (artist) {
             return artist;
         } else {
-            throw new Error('Artist ' + artistName + ' not found');
+            throw new ArtistNamedNotFound(artistName);
         }
     }
 
@@ -123,7 +135,7 @@ class EntitiesManager {
     }
 
     getUserById(id) {
-        return this._getOrThrow(id, this._getArrayOf(this._users), 'User not found')
+        return this._getOrThrow(id, this._getArrayOf(this._users), new UserNotFound());
     }
 
     searchByPartialName(aPartialName) {
@@ -140,7 +152,7 @@ class EntitiesManager {
             (artist) => {
                 return artist.getTracks().some((track) => track.id === trackId)
             });
-        if (!maybeArtist) throw new Error('Artist not found');
+        if (!maybeArtist) throw new ArtistNotFound();
 
         return maybeArtist;
 
@@ -190,7 +202,7 @@ class EntitiesManager {
     //USERS:
 
     addUser(username) {
-        if (this._exists(username, this._getArrayOf(this._users))) throw new Error('User already exists');
+        if (this._exists(username, this._getArrayOf(this._users))) throw new UserAlreadyExists();
         const newUser = new User(username);
         this._users[newUser.id] = newUser;
 
@@ -248,9 +260,9 @@ class EntitiesManager {
             .filter(obj => obj.name.toLowerCase().includes(aPartialName.toLowerCase()));
     }
 
-    _getOrThrow(id, anArray, msgError) {
+    _getOrThrow(id, anArray, err) {
         let maybeElement = anArray.find(element => element.id === id);
-        if (!maybeElement) throw new Error(msgError);
+        if (!maybeElement) throw err;
 
         return maybeElement;
     }

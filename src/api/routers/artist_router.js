@@ -1,18 +1,14 @@
 const express = require('express');
 const { getUNQfy, saveUNQfy } = require('../../lib/UNQfyPersistence');
 const router = express.Router();
+const { BadRequest } = require('../../errors/basics');
 
 router.route('/')
     .get((req, res) => {
         const artistName = req.query.name;
 
-        if (artistName === undefined) {
-            res.status(400)
-                .json({
-                    status: 400,
-                    errorCode: "BAD_REQUEST"
-                });
-        }
+        if (artistName === undefined) new BadRequest();
+
         const unqfy = getUNQfy();
         const results = unqfy.searchByPartialName(artistName);
         res.status(200)
@@ -20,45 +16,33 @@ router.route('/')
     })
     .post((req, res) => {
         const { name, country } = req.body;
-        try {
-            const unqfy = getUNQfy();
-            const newArtist = unqfy.addArtist({ name, country });
-            saveUNQfy(unqfy);
-            res.status(201)
-                .json(newArtist.toJSON());
-        } catch (exception) {
-            res.status(409)
-                .json({
-                    message: exception.message,
-                    errorCode: 'RESOURCE_ALREADY_EXISTS',
-                    status: 409
-                });
-        }
+
+        if (!name || !country) throw new BadRequest();
+
+        const unqfy = getUNQfy();
+        const newArtist = unqfy.addArtist({ name, country });
+        saveUNQfy(unqfy);
+        res.status(201)
+            .json(newArtist.toJSON());
     });
 
 
 router.route('/:artistId')
     .get((req, res) => {
         const artistId = parseInt(req.params.artistId);
+        if (!artistId) throw new BadRequest();
 
-        try {
-            const unqfy = getUNQfy();
-            const anArtist = unqfy.getArtistById(artistId);
-            res.status(200);
-            res.json(anArtist.toJSON());
-        } catch (exception) {
-            res.status(404)
-                .json({
-                    message: exception.message,
-                    errorCode: 'RESOURCE_NOT_FOUND',
-                    status: 404
-                });
-        }
+        const unqfy = getUNQfy();
+        const anArtist = unqfy.getArtistById(artistId);
+        res.status(200);
+        res.json(anArtist.toJSON());
 
     })
     .patch((req, res) => {
         const artistId = parseInt(req.params.artistId);
         const { name, country } = req.body;
+
+        if(!artistId || !name || !country) throw new BadRequest();
 
         const unqfy = getUNQfy();
         const artist = unqfy.getArtistById(artistId);
@@ -71,20 +55,14 @@ router.route('/:artistId')
     .delete((req, res) => {
         const artistId = req.params.artistId;
 
-        try {
-            const unqfy = getUNQfy();
-            unqfy.removeArtistById(parseInt(artistId));
-            saveUNQfy(unqfy);
-            res.status(204)
-                .json({})
-        } catch (exception) {
-            res.status(404)
-                .json({
-                    message: exception.message,
-                    errorCode: 'RESOURCE_NOT_FOUND',
-                    status: 404
-                });
-        }
+        if (!artistId) throw new BadRequest();
+
+        const unqfy = getUNQfy();
+        unqfy.removeArtistById(parseInt(artistId));
+        saveUNQfy(unqfy);
+        res.status(204)
+            .json({})
+
     });
 
 module.exports = router;
