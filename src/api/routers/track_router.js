@@ -17,4 +17,30 @@ router.route('/:trackId/lyrics')
         }
     });
 
+/**
+ * @swagger
+ * definitions:
+ *   Track:
+ *     type: object
+ *     required:
+ *       - id
+ *       - name
+ *       - duration
+ *       - genres
+ *     properties:
+ *       id:
+ *         type: number
+ *         example: 26
+ *       name:
+ *         type: string
+ *         example: Adios nonino
+ *       duration:
+ *         type: number
+ *         example: 266
+ *       genres:
+ *         type: array
+ *         items:
+ *           type: string
+ *         example: [pop]
+ */
 module.exports = router;
