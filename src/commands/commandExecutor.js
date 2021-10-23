@@ -65,8 +65,14 @@ class CommandExecutor {
             const result = await commandFound.execute(unqfy,args);
             const title = result[0];
             const commandResult = result[1];
+            let jsonResult;
+            if(commandFound.isADetailsCommand()) {
+                jsonResult = commandResult.toJSONDetails();
+            } else {
+                jsonResult = commandResult;
+            }
 
-            this._printer.printResult(title, commandResult);
+            this._printer.printResult(title, jsonResult);
         } catch(err) {
             this._printer.printException(err);
         }

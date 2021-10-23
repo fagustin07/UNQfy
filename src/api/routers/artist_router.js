@@ -20,7 +20,7 @@ router.route('/')
         const newArtist = unqfy.addArtist({ name, country });
         saveUNQfy(unqfy);
         res.status(201)
-            .json(newArtist.toJSON());
+            .json(newArtist.toJSONDetails());
     });
 
 
@@ -32,7 +32,7 @@ router.route('/:artistId')
         const unqfy = getUNQfy();
         const anArtist = unqfy.getArtistById(artistId);
         res.status(200);
-        res.json(anArtist.toJSON());
+        res.json(anArtist.toJSONDetails());
 
     })
     .patch((req, res) => {

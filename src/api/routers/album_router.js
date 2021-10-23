@@ -72,7 +72,7 @@ router.route('/')
         saveUNQfy(unqfy);
 
         res.status(201)
-            .json(album.toJSON());
+            .json(album.toJSONDetails());
     });
 
 /**
@@ -161,7 +161,7 @@ router.route('/:albumId')
         const anAlbum = unqfy.getAlbumById(albumId);
 
         res.status(200)
-            .json(anAlbum.toJSON());
+            .json(anAlbum.toJSONDetails());
     })
     .patch((req, res) => {
         const albumId = parseInt(req.params.albumId);

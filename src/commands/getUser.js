@@ -12,6 +12,10 @@ class GetUser extends Command {
         return ['USER FOUND', unqfy.getUserById(id)];
     }
 
+    isADetailsCommand() {
+        return true;
+    }
+
     expectedArgsFormatMessage() {
         return 'getUser --id userId';
     }

@@ -38,7 +38,7 @@ router.route('/:playlistId')
         const unqfy = getUNQfy();
         const playlist = unqfy.getPlaylistById(id);
         res.status(200)
-            .json(playlist.toJSON());
+            .json(playlist.toJSONDetails());
     })
     .delete((req, res) => {
         const id = parseInt(req.params.playlistId);

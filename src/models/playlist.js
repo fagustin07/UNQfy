@@ -35,6 +35,12 @@ class Playlist extends Recognizable {
             id: this.id,
             name: this.name,
             duration: this.duration(),
+        }
+    }
+
+    toJSONDetails(){
+        return {
+            ...this.toJSON(),
             tracks: this.tracks.map(track => track.toJSON())
         }
     }

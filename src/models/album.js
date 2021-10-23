@@ -41,6 +41,12 @@ class Album extends Adder {
             id: this.id,
             name: this.name,
             year: this.year,
+        }
+    }
+
+    toJSONDetails() {
+        return {
+            ...this.toJSON(),
             tracks: this.tracks().map(track => track.toJSON()),
         }
     }

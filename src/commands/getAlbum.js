@@ -12,6 +12,10 @@ class GetAlbum extends Command {
         return ['ALBUM FOUND', unqfy.getAlbumById(id)];
     }
 
+    isADetailsCommand() {
+        return true;
+    }
+
     expectedArgsFormatMessage() {
         return 'getAlbum --id albumId';
     }

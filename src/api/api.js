@@ -23,8 +23,8 @@ app.use('/api/albums', albums_router);
 app.use('/api/users', users_router);
 app.use('/api/playlists', playlist_router);
 app.use('/api/tracks', track_router);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use('*', invalid_router);
 app.use(error_handler);
 

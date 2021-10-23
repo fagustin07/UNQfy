@@ -31,15 +31,6 @@ class User extends Recognizable {
         return Object.values(this.tracksListened);
     }
     
-    toJSON() {
-        return {
-            id: this.id,
-            username: this.username,
-            tracksListened: Object.values(this.tracksListened).map(trackPair => trackPair.fst.toJSON())
-
-        };
-    }
-
     _alreadyListen(aTrack) {
         return this.tracksListened[aTrack.id] !== undefined;
     }
@@ -47,6 +38,21 @@ class User extends Recognizable {
     _addListenTrack(aTrack) {
         const trackPair = this.tracksListened[aTrack.id];
         trackPair.snd += 1;
+    }
+
+    toJSON() {
+        return {
+            id: this.id,
+            username: this.username,
+            tracksListened: Object.values(this.tracksListened).map(trackPair => trackPair.fst.toJSON())
+        };
+    }
+
+    toJSONDetails() {
+        return {
+            ...this.toJSON(),
+            tracksListened: Object.values(this.tracksListened).map(trackPair => trackPair.fst.toJSON())
+        };
     }
 }
 

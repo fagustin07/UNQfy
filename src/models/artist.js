@@ -46,8 +46,14 @@ class Artist extends Adder {
             id: this.id,
             name: this.name,
             country: this.country,
-            albums: this.albums().map(album => album.toJSON()),
         }
+    }
+
+    toJSONDetails() {
+     return {
+         ...this.toJSON(),
+         albums: this.albums().map(album => album.toJSON()),
+     }   
     }
 }
 

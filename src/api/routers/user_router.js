@@ -44,7 +44,7 @@ router.route('/:user_id/listenings')
         const user = unqfy.getUserById(user_id);
 
         res.status(200)
-            .json(user.toJSON().tracksListened);
+            .json(user.toJSONDetails().tracksListened);
     });
 
 router.route('/:user_id/listenings/track/:track_id')
@@ -71,7 +71,7 @@ router.route('/:user_id/listenings/track/:track_id')
         saveUNQfy(unqfy);
 
         res.status(201)
-            .json(user.toJSON());
+            .json(user.toJSONDetails());
     });
 
 router.route('/:user_id/listenings/playlist/:playlist_id')
@@ -86,7 +86,7 @@ router.route('/:user_id/listenings/playlist/:playlist_id')
         saveUNQfy(unqfy);
 
         res.status(201)
-            .json(user.toJSON());
+            .json(user.toJSONDetails());
     });
 
 module.exports = router;
