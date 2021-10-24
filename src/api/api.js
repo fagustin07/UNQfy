@@ -13,22 +13,17 @@ const track_router = require('./routers/track_router.js');
 const invalid_router = require('./routers/invalid_router.js');
 const error_handler = require('./error_handler');
 
-
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use('/api/artists', artists_router);
 app.use('/api/albums', albums_router);
 app.use('/api/users', users_router);
 app.use('/api/playlists', playlist_router);
 app.use('/api/tracks', track_router);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-
 app.use('*', invalid_router);
+
 app.use(error_handler);
-
-
-
 
 module.exports = app;

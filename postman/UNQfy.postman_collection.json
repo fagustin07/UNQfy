@@ -467,6 +467,61 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "related track not found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "63f7e491-2760-4b9c-87e6-8d32020c40d2",
+								"type": "text/javascript",
+								"exec": [
+									"const chai = require('chai');",
+									"chai.config.truncateThreshold = 0;",
+									"",
+									"pm.test(\"track not found\", function () {",
+									"    pm.response.to.have.status(404);",
+									"    pm.response.to.have.jsonBody();",
+									"    ",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.be.deep.equal({",
+									"        status: 404,",
+									"        errorCode: \"RELATED_RESOURCE_NOT_FOUND\"",
+									"    });",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:{{port}}/api/tracks/99999/lyrics",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"tracks",
+								"9999",
+								"lyrics"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},

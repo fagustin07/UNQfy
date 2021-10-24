@@ -8,6 +8,7 @@ function error_handler(err, _, res, __) {
         res.status(400)
         res.json({ status: 400, errorCode: 'BAD_REQUEST' });
     } else {
+        console.log(err.message);
         res.status(500)
         res.json({ status: 500, errorCode: 'INTERNAL_SERVER_ERROR' });
     }
