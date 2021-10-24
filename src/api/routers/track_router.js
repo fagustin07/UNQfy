@@ -23,10 +23,6 @@ router.route('/:trackId/lyrics')
  *   Track:
  *     type: object
  *     required:
- *       - id
- *       - name
- *       - duration
- *       - genres
  *     properties:
  *       id:
  *         type: number

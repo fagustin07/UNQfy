@@ -95,7 +95,7 @@ router.route('/')
  *       200:
  *         description: OK
  *         schema:
- *            $ref: '#/definitions/Album'
+ *            $ref: '#/definitions/AlbumDetails'
  *       400:
  *         description: BAD_REQUEST
  *       404:
@@ -203,6 +203,19 @@ router.route('/:albumId')
  *       year:
  *         type: number
  *         example: 2006
+
+ *   AlbumDetails:
+ *     type: object
+ *     properties:
+ *       id:
+ *         type: number
+ *         example: 10
+ *       name:
+ *         type: string
+ *         example: mi vida
+ *       year:
+ *         type: number
+ *         example: 2006
  *       tracks:
  *         type: array
  *         items:
@@ -243,8 +256,8 @@ router.route('/:albumId')
  *       tracks:
  *         type: array
  *         items:
- *          type: Album
- *          example: []
+ *          $ref: '#/definitions/Track'
+ *         example: []
 */
 
 module.exports = router;
