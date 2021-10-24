@@ -1,0 +1,129 @@
+/**
+ * @swagger
+ * /albums:
+ *   get:
+ *     summary: Returns albums with given name
+ *     tags:
+ *       - Albums
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - in: query
+ *         name: name
+ *         schema:
+ *           type: string
+ *           example: Mi VId
+ *         description: partial name from an desired album 
+ *     responses:
+ *       200:
+ *         description: OK
+ *         schema:
+ *          type: array
+ *          items:
+ *            $ref: '#/definitions/Album'
+ *       500:
+ *         description: INTERNAL_SERVER_ERROR
+ *   post:
+ *     summary: Create an album
+ *     tags:
+ *       - Albums
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - in: body
+ *         name: album request
+ *         schema:
+ *           $ref: '#/definitions/AlbumRequest'
+ *     responses:
+ *       201:
+ *         description: CREATED
+ *         schema:
+ *            $ref: '#/definitions/NewAlbum'
+ *       400:
+ *         description: BAD_REQUEST
+ *       404:
+ *         description: RELATED_RESOURCE_NOT_FOUND
+ *       409:
+ *         description: RESOURCE_ALREADY_EXISTS
+ *       500:
+ *         description: INTERNAL_SERVER_ERROR 
+ */
+
+
+/**
+ * @swagger
+ * /albums/{albumId}:
+ *   get:
+ *     summary: Return album with given albumId
+ *     tags:
+ *       - Albums
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - in: path
+ *         name: albumId
+ *         schema:
+ *           type: number
+ *           example: 5
+ *         description: id from an album 
+ *     responses:
+ *       200:
+ *         description: OK
+ *         schema:
+ *            $ref: '#/definitions/AlbumDetails'
+ *       400:
+ *         description: BAD_REQUEST
+ *       404:
+ *         description: RESOURCE_NOT_FOUND
+ *       500:
+ *         description: INTERNAL_SERVER_ERROR
+ *   patch:
+ *     summary: Update an album
+ *     tags:
+ *       - Albums
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - in: path
+ *         name: albumId
+ *         schema:
+ *           type: number
+ *           example: 5
+ *         description: id from an album
+ *       - in: body
+ *         name: update album data
+ *         schema:
+ *           $ref: '#/definitions/AlbumUpdateRequest'
+ *     responses:
+ *       200:
+ *         description: UPDATED
+ *         schema:
+ *            $ref: '#/definitions/Album'
+ *       400:
+ *         description: BAD_REQUEST
+ *       404:
+ *         description: RESOURCE_NOT_FOUND
+ *       500:
+ *         description: INTERNAL_SERVER_ERROR
+ *   delete:
+ *     summary: Delete an album
+ *     tags:
+ *       - Albums
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - in: path
+ *         name: albumId
+ *         schema:
+ *           type: number
+ *           example: 5
+ *     responses:
+ *       204:
+ *         description: DELETED
+ *       400:
+ *         description: BAD_REQUEST
+ *       404:
+ *         description: RESOURCE_NOT_FOUND
+ *       500:
+ *         description: INTERNAL_SERVER_ERROR 
+ */
