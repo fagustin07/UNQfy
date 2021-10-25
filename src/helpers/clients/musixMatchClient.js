@@ -34,7 +34,14 @@ function _getLyricsByTrackId(trackId) {
         }
     }
     return musixmatch_api.get('/track.lyrics.get', options)
-        .then((response) => response.data.message.body.lyrics.lyrics_body)
+        .then((response) => {
+            const lyrics = response.data.message.body.lyrics.lyrics_body;
+            const wipedLyrics = lyrics
+                    .replace('******* This Lyrics is NOT for Commercial use *******', '')
+                    .replace(/\([0-9]*\)/, '');
+
+            return wipedLyrics;
+        })
         .catch((err) => { throw err; })
 }
 
