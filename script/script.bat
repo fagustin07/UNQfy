@@ -31,8 +31,8 @@ node main.js addTrack --albumId 6 --name "Jeremias" --duration 171 --genres "roc
 node main.js addTrack --albumId 7 --name "A name" --duration 206 --genres "rap, pop" @REM #18
 node main.js addTrack --albumId 7 --name "El hombre de la estrella" --duration 202 --genres "reggae"  @REM #19
 node main.js addTrack --albumId 7 --name "El revelde" --duration 224 --genres "rock" @REM #20
-node main.js addTrack --albumId 9 --name "Always" --duration 198 --genres "pop" @REM #21
-node main.js addTrack --albumId 9 --name "La ingrata" --duration 212 --genres "rock, pop, reggae"  @REM #22
+node main.js addTrack --albumId 9 --name "It's my life" --duration 198 --genres "pop" @REM #21
+node main.js addTrack --albumId 9 --name "Always" --duration 212 --genres "rock, pop, reggae"  @REM #22
 node main.js addTrack --albumId 8 --name "Black Dog" --duration 255 --genres "ballet"  @REM #23
 node main.js addTrack --albumId 8 --name "Since i have been loving you" --duration 188 --genres "reggae, pop" @REM #24
 node main.js addTrack --albumId 8 --name "Dazed and confused" --duration 246 --genres "rap, pop"  @REM #25

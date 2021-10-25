@@ -1,16 +1,18 @@
 const express = require('express');
 const { BadRequest } = require('../../errors/basics');
-const { getUNQfy } = require('../../lib/UNQfyPersistence');
+const { getUNQfy, saveUNQfy} = require('../../lib/UNQfyPersistence');
 const router = express.Router();
 
 router.route('/:trackId/lyrics')
     .get(async (req, res, next) => {
         const id = parseInt(req.params.trackId);
-        if(!id) throw new BadRequest();
 
         try {
+            if(!id) throw new BadRequest();
+
             const unqfy = getUNQfy();
             const lyrics = await unqfy.getLyrics(id);
+            saveUNQfy(unqfy);
             res.status(200).send(lyrics);
         } catch (err) {
             next(err);
