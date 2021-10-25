@@ -1,0 +1,57 @@
+definitions:
+  User:
+    type: object
+    properties:
+      id:
+        type: number
+        example: 9999
+      username:
+        type: string
+        example: a_username
+  UserRequest:
+    type: object
+    properties:
+      username:
+        type: string
+        example: "my_awesome_username"
+  NewUser:
+    type: object
+    properties:
+      id:
+        type: number
+        example: 9999
+      username:
+        type: string
+        example: "my_awesome_username"
+      tracksListened:
+        type: array
+        items:
+          $ref: "#/definitions/Track"
+        example: []
+  TimesTrackListening:
+    type: object
+    properties:
+      times:
+        type: number
+        example: 5
+  UserDetails:
+    type: object
+    properties:
+      id:
+        type: number
+        example: 9999
+      username:
+        type: string
+        example: "my_awesome_username"
+      tracksListened:
+        type: array
+        items:
+          $ref: "#/definitions/Track"
+        example:
+          [
+            {
+              "id": 11,
+              "name": "Maquiavelico",
+              "genres": ["rock", "rap", "pop"],
+            },
+          ]
