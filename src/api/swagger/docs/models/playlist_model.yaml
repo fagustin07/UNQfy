@@ -52,3 +52,15 @@ definitions:
         items:
           $ref: "#/definitions/Track"
         example: []
+
+  PlaylistByTracksIdsRequest:
+    type: object
+    properties:
+      name:
+        type: string
+        example: "My awesome playlist"
+      tracks:
+        type: array
+        items: number
+        example: [17, 18, 19]
+
