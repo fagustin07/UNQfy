@@ -9,7 +9,11 @@ const options = {
     host: 'localhost:8081',
     basePath: '/api',
   },
-  apis: ['./src/api/swagger/docs/artist/**.js', './src/api/swagger/docs/album/**.js'],
+  apis: [
+    './src/api/swagger/docs/artist/**.js', 
+    './src/api/swagger/docs/album/**.js',
+    './src/api/swagger/docs/playlist/**.js'
+  ],
 };
 
 module.exports = {
