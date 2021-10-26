@@ -57,11 +57,11 @@ describe('Add, remove and filter data', () => {
     });
 
     it('an artist cannot be created with a name that already exists', () => {
-      const artist = createAndAddArtist(unqfy, 'Nirvana', 'USA');
+      createAndAddArtist(unqfy, 'Nirvana', 'USA');
 
       const expectedThrown = () => createAndAddArtist(unqfy, 'Nirvana', 'USA');
 
-      assert.throws(expectedThrown, `Artist alredy exists`);
+      assert.throws(expectedThrown, `Artist already exists`);
     });
 
     it('should delete a artist', () => {
@@ -93,13 +93,19 @@ describe('Add, remove and filter data', () => {
       assert.equal(unqfy.getAlbumById(album.id), album);
     });
 
-    it('an album cannot have a name alredy declared', () => {
+    it('an album cannot have a name already declared', () => {
       const artist = createAndAddArtist(unqfy, 'Nirvana', 'USA');
       const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
 
       const expectedThrown = () => createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
 
-      assert.throws(expectedThrown, `Album alredy exists`);
+      assert.throws(expectedThrown, `Album already exists`);
+    });
+
+    it('an album cannot create if is from an inexistent artist', () => {
+      const expectedThrown = () => createAndAddAlbum(unqfy, 99999, 'Appetite for Destruction', 1987);
+
+      assert.throws(expectedThrown, `Related artist not found`);
     });
 
     it('throws exception when an album is not found by id', () => {
@@ -155,14 +161,14 @@ describe('Add, remove and filter data', () => {
       assert.throws(expectedThrown, `Track not found`);
     });
 
-    it('an track cannot have a name alredy declared', () => {
+    it('an track cannot have a name already declared', () => {
       const artist = createAndAddArtist(unqfy, 'Nirvana', 'USA');
       const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
       const track = createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock']);
 
       const expectedThrown = () => createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock']);
 
-      assert.throws(expectedThrown, `Track alredy exists`);
+      assert.throws(expectedThrown, `Track already exists`);
     });
 
     it('should delete a track', () => {
@@ -224,12 +230,12 @@ describe('Add, remove and filter data', () => {
     });
 
 
-    it('an playlist cannot have a name alredy declared', () => {
+    it('an playlist cannot have a name already declared', () => {
       const artist = unqfy.createPlaylist('my playlist', ['rock'], 1400);
 
       const expectedThrown = () => unqfy.createPlaylist('my playlist', ['rock', 'pop'], 800);
 
-      assert.throws(expectedThrown, `Playlist alredy exists`);
+      assert.throws(expectedThrown, `Playlist already exists`);
     });
 
     it('throws exception when an playlist is not found by id', () => {
@@ -238,6 +244,29 @@ describe('Add, remove and filter data', () => {
       const expectedThrown = () => unqfy.getPlaylistById(inexistentId);
 
       assert.throws(expectedThrown, `Playlist not found`);
+    });
+
+    it('should create a playlist by tracks ids', () => {
+      const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+      const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
+      const t1 = createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock', 'movie']);
+      createAndAddTrack(unqfy, album.id, 'Sweet Child o\' Mine', 1500, ['rock', 'hard rock', 'pop', 'movie']);
+
+      const artist2 = createAndAddArtist(unqfy, 'Michael Jackson', 'USA');
+      const album2 = createAndAddAlbum(unqfy, artist2.id, 'Thriller', 1987);
+      const t2 = createAndAddTrack(unqfy, album2.id, 'Thriller', 200, ['pop', 'movie']);
+      const t3 = createAndAddTrack(unqfy, album2.id, 'Another song', 500, ['pop']);
+      const t4 = createAndAddTrack(unqfy, album2.id, 'Another song II', 500, ['pop']);
+
+      const playlist = unqfy.createPlaylistByIds('my playlist', [t1.id, t2.id, t3.id, t4.id]);
+
+      assert.equal(playlist.name, 'my playlist');
+      assert.isAtMost(playlist.duration(), 1400);
+      assert.isTrue(playlist.hasTrack(t1));
+      assert.isTrue(playlist.hasTrack(t2));
+      assert.isTrue(playlist.hasTrack(t3));
+      assert.isTrue(playlist.hasTrack(t4));
+      assert.lengthOf(playlist.tracks, 4);
     });
 
 

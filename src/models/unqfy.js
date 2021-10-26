@@ -11,6 +11,7 @@ const PlaylistGenerator = require('./playlistGenerator');
 const Pair = require('../lib/pair');
 const EntitiesManager = require('./entitiesManager');
 const spotifyClient = require('../helpers/clients/spotifyClient');
+const { TrackNotFound, RelatedTrackNotFound } = require('../errors/not_found');
 
 class UNQfy {
 
@@ -63,6 +64,10 @@ class UNQfy {
 
   getAllArtists() {
     return this._entitiesManager.getAllArtists();
+  }
+
+  getAllUsers() {
+    return this._entitiesManager.getAllUsers();
   }
 
   getAlbumsFrom(artistId) {
@@ -131,7 +136,13 @@ class UNQfy {
   }
 
   searchByPartialName(aPartialName) {
-    return this._entitiesManager.searchByPartialName(aPartialName);
+    return this._entitiesManager.searchByPartialName(aPartialName || '');
+  }
+
+  searchPlaylists(filters) {
+    return this.searchByPartialName(filters.name)
+               .playlists
+               .filter(playlist => playlist.hasDuration(filters.durationGT, filters.durationLT));
   }
 
   // name: nombre de la playlist
@@ -148,6 +159,10 @@ class UNQfy {
     return this._entitiesManager.createPlaylist(name, genresToInclude, maxDuration);
   }
 
+  createPlaylistByIds(name, tracksIds) {
+    return this._entitiesManager.createPlaylistByIds(name, tracksIds)
+  }
+
   populateAlbumsForArtist(artistName) {
     const artist = this.getArtistByName(artistName);
     if (!artist.hasPopulated) {
@@ -161,9 +176,16 @@ class UNQfy {
   }
 
   async getLyrics(trackId) {
-    const track = this.getTrackById(trackId);
-
-    return await track.getLyrics();
+    try {
+      const track = this.getTrackById(trackId);
+      return await track.getLyrics();
+    } catch(err) {
+      if (err instanceof TrackNotFound){
+        throw new RelatedTrackNotFound();
+      } else {
+        throw err;
+      }
+    }
   }
 
   // USERS
@@ -175,6 +197,10 @@ class UNQfy {
 
   userListenTo(aUserId, aTrackId) {
     return this._entitiesManager.userListenTo(aUserId, aTrackId);
+  }
+
+  userListenPlaylist(aUserId, aPlaylistId) {
+    return this._entitiesManager.userListenPlaylist(aUserId, aPlaylistId);
   }
 
   timesUserListenedTrack(aUserId, aTrackId) {

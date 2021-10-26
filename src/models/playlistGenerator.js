@@ -1,5 +1,6 @@
 const Playlist = require('./playlist');
 const Pair = require('../lib/pair');
+const { RelatedTrackNotFound } = require('../errors/not_found');
 
 class PlaylistGenerator {
 
@@ -11,6 +12,15 @@ class PlaylistGenerator {
             )
 
         return new Playlist(name, playlistTracks);
+    }
+
+    createPlaylistByIds(name, tracksIds, tracks) {
+        const playlist = tracksIds.map(id => {
+                            const track = tracks.find(track => track.id === id);
+                            if (!track) throw new RelatedTrackNotFound();
+                            return track;
+                        });
+        return new Playlist(name, playlist);
     }
 
     generateThisIs(anArtist, playedTracksPair) {

@@ -33,6 +33,10 @@ class Command {
         }
     }
 
+    isADetailsCommand() {
+        return false;
+    }
+
     expectedArgsFormatMessage() {
         throw new Error('Subclass responsability');
     }

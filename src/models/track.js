@@ -27,7 +27,10 @@ class Track extends Recognizable {
         return this.album.artistName();
     }
 
-    
+    _showLyrics() {
+        return this.name.toUpperCase() + '\n\n' + this._lyrics;
+    }
+
     toJSON() {
         return {
             id: this.id,
@@ -37,8 +40,13 @@ class Track extends Recognizable {
         }
     }
 
-    _showLyrics() {
-        return this.name.toUpperCase() + '\n\n' + this._lyrics;
+    toJSONDetails() {
+        return {
+            id: this.id,
+            name: this.name,
+            duration: this.country,
+            genres: this.genres
+        }
     }
 }
 

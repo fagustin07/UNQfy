@@ -15,6 +15,10 @@ class GetPlaylist extends Command {
         return 'getPlaylist --id playlistId';
     }
 
+    isADetailsCommand() {
+        return true;
+    }
+
     expectedArgs() {
         return ['--id'];
     }

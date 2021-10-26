@@ -28,7 +28,7 @@ const RemovePlaylist = require('./removePlaylist');
 const RemoveUser = require('./removeUser');
 
 const Printer = require('../lib/Printer');
-const UNQfyPersistence = require('../lib/UNQfyPersistence');
+const { getUNQfy, saveUNQfy } = require('../lib/UNQfyPersistence');
 const GetLyrics = require('./getLyrics');
 
 class CommandExecutor { 
@@ -43,11 +43,18 @@ class CommandExecutor {
             RemoveArtist, RemoveAlbum, RemoveTrack, RemovePlaylist, RemoveUser, GetLyrics
         ];
         this._printer = new Printer();
-        this._unqfyPersistence = new UNQfyPersistence();
     }
 
     async run(command, args) {
-        const unqfy = this._unqfyPersistence.getUNQfy();
+        if(command === '--help') {
+            const commands = this._commands
+                .map(commandClass => new commandClass().expectedArgsFormatMessage())
+                .sort((a,b) => a > b ? 1 : -1);
+            this._printer.printResult('VALID COMMANDS', commands);
+            return;
+        }
+
+        const unqfy = getUNQfy();
         let maybeCommand = this._commands.find(aCommand => aCommand.canHandle(command));
         
         try {
@@ -58,13 +65,19 @@ class CommandExecutor {
             const result = await commandFound.execute(unqfy,args);
             const title = result[0];
             const commandResult = result[1];
+            let jsonResult;
+            if(commandFound.isADetailsCommand()) {
+                jsonResult = commandResult.toJSONDetails();
+            } else {
+                jsonResult = commandResult;
+            }
 
-            this._printer.printResult(title, commandResult);
+            this._printer.printResult(title, jsonResult);
         } catch(err) {
             this._printer.printException(err);
         }
 
-        this._unqfyPersistence.saveUNQfy(unqfy);
+        saveUNQfy(unqfy);
     }
 
     _checkIfExistCommand(maybeCommand) {

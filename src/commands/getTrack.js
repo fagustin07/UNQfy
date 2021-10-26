@@ -16,6 +16,10 @@ class GetTrack extends Command {
         return 'getTrack --id trackId';
     }
 
+    isADetailsCommand() {
+        return true;
+    }
+
     expectedArgs() {
         return ['--id'];
     }

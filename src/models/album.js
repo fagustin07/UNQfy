@@ -28,6 +28,10 @@ class Album extends Adder {
         return this.elements();
     }
 
+    update(year) {
+        this.year = year;
+    }
+    
     artistName() {
         return this.artist ? this.artist.name : '';
     }
@@ -37,6 +41,12 @@ class Album extends Adder {
             id: this.id,
             name: this.name,
             year: this.year,
+        }
+    }
+
+    toJSONDetails() {
+        return {
+            ...this.toJSON(),
             tracks: this.tracks().map(track => track.toJSON()),
         }
     }

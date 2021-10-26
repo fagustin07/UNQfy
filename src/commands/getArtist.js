@@ -12,6 +12,10 @@ class GetArtist extends Command {
         return ['ARTIST FOUND', unqfy.getArtistById(id)];
     }
 
+    isADetailsCommand() {
+        return true;
+    }
+
     expectedArgsFormatMessage() {
         return 'getArtist --id artistId';
     }

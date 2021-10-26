@@ -11,7 +11,7 @@ class GetAllArtists extends Command {
     }
 
     expectedArgsFormatMessage() {
-        return '';
+        return 'getAllArtists';
     }
 
     expectedArgs() {

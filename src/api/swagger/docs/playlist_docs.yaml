@@ -1,0 +1,128 @@
+paths:
+  /playlists:
+    get:
+      summary: Returns playlist by name, durationLT and durationGT
+      tags:
+        - Playlist
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: name
+          schema:
+            type: string
+            example: Bon Jovi
+          description: name from an desired playlist
+        - in: query
+          name: durationLT
+          schema:
+            type: number
+            example: 300
+          description: max duration from desired playlist
+        - in: query
+          name: durationGT
+          schema:
+            type: number
+            example: 100
+          description: min duration from desired playlist
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Playlist"
+        400:
+          description: BAD_REQUEST
+        500:
+          description: INTERNAL_SERVER_ERROR
+    post:
+      summary: Create a playlist either by maximum duration and genres or by tracksId. If all are found, throws a BadRequest error.
+      description: "Examples:\n
+        \n- *By maxDuration and genres*:\n
+        {
+        \n
+        \"name\": \"My awesome playlist\",
+        \n
+        \"maxDuration\": 5000,
+        \n
+        \"genres\": [\"rock\"]
+        \n
+        }
+        \n\n- *By tracksIds*:\n
+        {
+        \n
+        \"name\": \"My awesome playlist 2\",
+        \n
+        \"tracks\": [17, 18, 19]
+        \n
+        }"
+      tags:
+        - Playlist
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: playlist request
+          schema:
+            $ref: "#/definitions/PlaylistRequest"
+          description: "*Choose between maxDuration and genres, or tracks*"
+      responses:
+        201:
+          description: CREATED
+          schema:
+            $ref: "#/definitions/NewPlaylist"
+        400:
+          description: BAD_REQUEST
+        404:
+          description: RELATED_RESOURCE_NOT_FOUND
+        409:
+          description: RESOURCE_ALREADY_EXISTS
+        500:
+          description: INTERNAL_SERVER_ERROR
+  /playlists/{playlistId}:
+    get:
+      summary: "Return an playlist by a given id"
+      tags:
+        - Playlist
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: playlistId
+          schema:
+            type: number
+            example: 28
+          description: "Playlist id"
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/Playlist"
+        400:
+          description: BAD_REQUEST
+        404:
+          description: RESOURCE_NOT_FOUND
+        500:
+          description: INTERNAL_SERVER_ERROR
+    delete:
+      summary: Delete a playlist
+      tags:
+        - Playlist
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: playlistId
+          schema:
+            type: number
+            example: 28
+      responses:
+        204:
+          description: DELETED
+        400:
+          description: BAD_REQUEST
+        404:
+          description: RESOURCE_NOT_FOUND
+        500:
+          description: INTERNAL_SERVER_ERROR

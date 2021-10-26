@@ -36,13 +36,24 @@ class Artist extends Adder {
         this.hasPopulated = true;
     }
 
+    update(name, country) {
+        this.name = name;
+        this.country = country;
+    }
+
     toJSON() {
         return {
             id: this.id,
             name: this.name,
             country: this.country,
-            albums: this.albums().map(album => album.toJSON()),
         }
+    }
+
+    toJSONDetails() {
+     return {
+         ...this.toJSON(),
+         albums: this.albums().map(album => album.toJSON()),
+     }   
     }
 }
 
