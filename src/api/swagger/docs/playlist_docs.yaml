@@ -37,7 +37,26 @@ paths:
         500:
           description: INTERNAL_SERVER_ERROR
     post:
-      summary: Create a playlist by max duration
+      summary: Create a playlist either by maximum duration and genres or by tracksId. If all are found, throws a BadRequest error.
+      description: "Example:
+        \n
+        {
+        \n
+        name: My awesome playlist,
+        \n
+        maxDuration: 5000,
+        \n
+        genres: [rock],
+        \n
+        }
+        \n
+        {
+        \n
+        name: My awesome playlist,
+        \n
+        tracks: [17, 18, 19],
+        \n
+        }"
       tags:
         - Playlist
       produces:
@@ -46,9 +65,8 @@ paths:
         - in: body
           name: playlist request
           schema:
-            oneOf:
-              - $ref: "#/definitions/PlaylistMaxDurationRequest"
-              - $ref: "#/definitions/PlaylistByTracksIdsRequest"
+            $ref: "#/definitions/PlaylistRequest"
+          description: "*the parameters maxDuration and genres are not required if you if you want to create a playlist by ids*"
       responses:
         201:
           description: CREATED
@@ -65,14 +83,14 @@ paths:
   /playlists/{playlistId}:
     get:
       summary: "Return an playlist by a given id"
-      tags: 
+      tags:
         - Playlist
       produces:
         - application/json
       parameters:
         - in: path
           name: playlistId
-          schema: 
+          schema:
             type: number
             example: 28
           description: "Playlist id"
@@ -108,4 +126,3 @@ paths:
           description: RESOURCE_NOT_FOUND
         500:
           description: INTERNAL_SERVER_ERROR
-

@@ -21,7 +21,7 @@ definitions:
           $ref: "#/definitions/Track"
         example: []
 
-  PlaylistMaxDurationRequest:
+  PlaylistRequest:
     type: object
     properties:
       name:
@@ -33,7 +33,11 @@ definitions:
       genres:
         type: array
         items: string
-        example: ["rock"]
+        example: ["rock"] 
+      tracks:
+        type: array
+        items: number
+        example: [17, 18, 19]
 
   NewPlaylist:
     type: object
@@ -52,15 +56,5 @@ definitions:
         items:
           $ref: "#/definitions/Track"
         example: []
-
-  PlaylistByTracksIdsRequest:
-    type: object
-    properties:
-      name:
-        type: string
-        example: "My awesome playlist"
-      tracks:
-        type: array
-        items: number
-        example: [17, 18, 19]
+      
 
