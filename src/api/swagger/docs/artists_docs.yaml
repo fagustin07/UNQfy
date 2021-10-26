@@ -1,7 +1,7 @@
 paths:
   /artists:
     get:
-      summary: Returns artist with by name
+      summary: Return artists by name
       tags:
         - Artist
       produces:

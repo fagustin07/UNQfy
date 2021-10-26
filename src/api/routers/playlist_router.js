@@ -15,15 +15,14 @@ router.route('/')
     })
     .post((req, res) => {
         const { name, maxDuration, genres, tracks } = req.body;
+        if(!name) throw new BadRequest();
 
-        if(!name) { new BadRequest() }
+        const unqfy = getUNQfy();
 
         const isByGenres = (maxDuration  && genres && genres.length > 0) && (!tracks)
         const isByIds = (!maxDuration && !genres) && (tracks && tracks.length > 0)
 
-        const unqfy = getUNQfy();
         let playlist;
-        
         if (isByGenres) {
             playlist = unqfy.createPlaylist(name, genres, maxDuration);    
         } else if (isByIds) {
@@ -34,7 +33,7 @@ router.route('/')
 
         saveUNQfy(unqfy);
         res.status(201)
-            .json(playlist.toJSON());
+            .json(playlist.toJSONDetails());
     });
 
 router.route('/:playlistId')
