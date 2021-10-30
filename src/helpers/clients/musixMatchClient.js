@@ -1,5 +1,5 @@
 const axios = require('axios');
-const { LyricsNotFound } = require('../../errors/not_found');
+const { LyricsNotFound } = require('../../errors/model_errors');
 
 const musixmatch_api = axios.create({
     baseURL: 'http://api.musixmatch.com/ws/1.1',

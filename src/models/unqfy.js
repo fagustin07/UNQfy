@@ -11,7 +11,7 @@ const PlaylistGenerator = require('./playlistGenerator');
 const Pair = require('../lib/pair');
 const EntitiesManager = require('./entitiesManager');
 const spotifyClient = require('../helpers/clients/spotifyClient');
-const { TrackNotFound, RelatedTrackNotFound } = require('../errors/not_found');
+const { TrackNotFound, RelatedTrackNotFound } = require('../errors/model_errors');
 
 class UNQfy {
 

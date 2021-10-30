@@ -1,6 +1,6 @@
 const Playlist = require('./playlist');
 const Pair = require('../lib/pair');
-const { RelatedTrackNotFound } = require('../errors/not_found');
+const { RelatedTrackNotFound } = require('../errors/model_errors');
 
 class PlaylistGenerator {
 

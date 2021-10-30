@@ -1,5 +1,5 @@
 const express = require('express');
-const { BadRequest } = require('../../errors/basics');
+const { BadRequest } = require('../../errors/api_errors');
 const { getUNQfy, saveUNQfy} = require('../../lib/UNQfyPersistence');
 const router = express.Router();
 

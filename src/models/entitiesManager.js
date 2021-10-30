@@ -3,8 +3,7 @@ const Album = require('./album');
 const Track = require("./track");
 const User = require("./user");
 const PlaylistGenerator = require('./playlistGenerator');
-const { ArtistAlreadyExists, AlbumAlreadyExists, TrackAlreadyExists, PlaylistAlreadyExists, UserAlreadyExists } = require('../errors/already_exists');
-const { ArtistNotFound, AlbumNotFound, TrackNotFound, PlaylistNotFound, UserNotFound, ArtistNamedNotFound, RelatedArtistNotFound } = require('../errors/not_found');
+const { ArtistNotFound, AlbumNotFound, TrackNotFound, PlaylistNotFound, UserNotFound, ArtistNamedNotFound, RelatedArtistNotFound, ArtistAlreadyExists, AlbumAlreadyExists, TrackAlreadyExists, PlaylistAlreadyExists, UserAlreadyExists } = require('../errors/model_errors');
 
 class EntitiesManager {
     constructor() {

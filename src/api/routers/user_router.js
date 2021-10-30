@@ -1,6 +1,7 @@
 const express = require('express');
 const { getUNQfy, saveUNQfy } = require('../../lib/UNQfyPersistence');
 const router = express.Router();
+const { BadRequest } = require('../../errors/api_errors');
 
 router.route('/')
     .get((_, res) => {
