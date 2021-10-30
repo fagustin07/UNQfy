@@ -141,8 +141,8 @@ class UNQfy {
 
   searchPlaylists(filters) {
     return this.searchByPartialName(filters.name)
-               .playlists
-               .filter(playlist => playlist.hasDuration(filters.durationGT, filters.durationLT));
+      .playlists
+      .filter(playlist => playlist.hasDuration(filters.durationGT, filters.durationLT));
   }
 
   // name: nombre de la playlist
@@ -175,17 +175,18 @@ class UNQfy {
     }
   }
 
-  async getLyrics(trackId) {
+  getLyrics(trackId) {
     try {
-      const track = this.getTrackById(trackId);
-      return await track.getLyrics();
+      return this.getTrackById(trackId)
+        .getLyrics()
+        .then((lyrics) => lyrics);
     } catch(err) {
-      if (err instanceof TrackNotFound){
+      if (err instanceof TrackNotFound) {
         throw new RelatedTrackNotFound();
       } else {
         throw err;
       }
-    }
+    };
   }
 
   // USERS

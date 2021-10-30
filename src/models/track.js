@@ -14,13 +14,18 @@ class Track extends Recognizable {
         return genres.some(aGenre => this.genres.includes(aGenre))
     }
 
-    async getLyrics(){
+    getLyrics(){
         if(this._lyrics === null) {
-          const lyrics = await musixMatchClient.getLyricsFrom(this);
-          this._lyrics = lyrics;
-        }
+          return musixMatchClient.getLyricsFrom(this)
+            .then(track_lyrics => { 
+                this._lyrics = track_lyrics;
 
-        return this._showLyrics();
+                return this._showLyrics();
+            })
+            .catch(err => {throw err;});
+        } else {
+            return Promise.resolve(this._showLyrics());
+        }
     }
 
     artistName() {
