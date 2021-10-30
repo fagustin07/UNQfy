@@ -3,7 +3,7 @@ const Album = require('./album');
 const Track = require("./track");
 const User = require("./user");
 const PlaylistGenerator = require('./playlistGenerator');
-const { EntityAlreadyExists, EntityNotFound, RelatedEntityNotFound, ArtistNamedNotFound } = require('../errors/model_errors');
+const { EntityAlreadyExists, EntityNotFound, RelatedEntityNotFound, EntityCalledNotFound } = require('../errors/model_errors');
 
 class EntitiesManager {
     constructor() {
@@ -101,7 +101,7 @@ class EntitiesManager {
         if (artist) {
             return artist;
         } else {
-            throw new ArtistNamedNotFound(artistName);
+            throw new EntityCalledNotFound('Artist', artistName);
         }
     }
 
