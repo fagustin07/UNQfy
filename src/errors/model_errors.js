@@ -1,5 +1,23 @@
 const { UNQfyError } = require('./abstract_errors');
 
+class EntityNotFound extends UNQfyError {
+    constructor(entity){
+        super(`${entity} not found`);
+    }
+}
+
+class EntityAlreadyExists extends UNQfyError {
+    constructor(entity){
+        super(`${entity} already exists`);
+    }
+}
+
+class RelatedEntityNotFound extends UNQfyError {
+    constructor(entity){
+        super(`Related ${entity.toLowerCase()} not found`);
+    }
+}
+
 class ArtistNotFound extends UNQfyError {
     constructor(){
         super('Artist not found');
@@ -98,5 +116,8 @@ module.exports = {
     AlbumAlreadyExists,
     TrackAlreadyExists,
     PlaylistAlreadyExists,
-    UserAlreadyExists
+    UserAlreadyExists,
+    EntityAlreadyExists,
+    EntityNotFound,
+    RelatedEntityNotFound
 }

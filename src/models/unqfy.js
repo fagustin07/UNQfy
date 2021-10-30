@@ -11,7 +11,7 @@ const PlaylistGenerator = require('./playlistGenerator');
 const Pair = require('../lib/pair');
 const EntitiesManager = require('./entitiesManager');
 const spotifyClient = require('../helpers/clients/spotifyClient');
-const { TrackNotFound, RelatedTrackNotFound } = require('../errors/model_errors');
+const { EntityNotFound, RelatedEntityNotFound } = require('../errors/model_errors');
 
 class UNQfy {
 
@@ -181,8 +181,8 @@ class UNQfy {
         .getLyrics()
         .then((lyrics) => lyrics);
     } catch(err) {
-      if (err instanceof TrackNotFound) {
-        throw new RelatedTrackNotFound();
+      if (err instanceof EntityNotFound && err.message.startsWith('Track')) {
+        throw new RelatedEntityNotFound('Track');
       } else {
         throw err;
       }
