@@ -2,10 +2,10 @@
   "name": "loggin",
   "version": "1.0.0",
   "description": "",
-  "main": "loggin_api.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node loggin_app.js"
+    "start": "node app.js"
   },
   "author": "",
   "license": "ISC",

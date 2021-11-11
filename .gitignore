@@ -2,8 +2,8 @@ node_modules/
 data.json
 .vscode/
 
-Loggin/logs
+Logging/logs
 
-Loggin/node_modules
+Logging/node_modules
 
-Loggin/.env
+Logging/.env
