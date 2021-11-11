@@ -5,3 +5,5 @@ data.json
 Loggin/logs
 
 Loggin/node_modules
+
+Loggin/.env

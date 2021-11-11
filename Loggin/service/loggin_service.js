@@ -1,5 +1,5 @@
 const localLog = require('./local_loggin');
-const saveInLoggly = require('./loggy_service');
+const saveInLoggly = require('./loggly_consumer');
 
 let _isActive = false;
 
@@ -13,9 +13,9 @@ const desactivate = () => {
 
 const log = (message, level) => {
     if(_isActive) {
-        console.log(message);
-        localLog(level, message);
-        saveInLoggly(level, message);
+        console.log(`---- [${level.toUpperCase()}] ${message} ----`);
+        localLog(level.toLowerCase(), message);
+        saveInLoggly(level.toLowerCase(), message);
     }
 };
 
