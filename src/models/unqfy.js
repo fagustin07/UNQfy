@@ -12,11 +12,18 @@ const Pair = require('../lib/pair');
 const EntitiesManager = require('./entitiesManager');
 const spotifyClient = require('../helpers/clients/spotifyClient');
 const { EntityNotFound, RelatedEntityNotFound } = require('../errors/model_errors');
+const Observable = require('./observable');
+const Observer = require('./observer');
+const ObserverManager = require('./observerManager');
+const Action = require('./action');
 
-class UNQfy {
+class UNQfy extends Observable {
 
   constructor() {
+    super();
     this._entitiesManager = new EntitiesManager();
+    this.addObserver(new Observer(), Object.keys(Action)); // TODO: representar Logger
+    this.addObserver(new Observer(), [Action.addAlbum]); // TODO: representar Notifier
   }
 
   // artistData: objeto JS con los datos necesarios para crear un artista
@@ -29,7 +36,9 @@ class UNQfy {
       - una propiedad name (string)
       - una propiedad country (string)
     */
-    return this._entitiesManager.addArtist(artistData);
+    const newArtist = this._entitiesManager.addArtist(artistData);
+    this._notify(Action.addArtist, newArtist);
+    return newArtist;
   }
 
   // albumData: objeto JS con los datos necesarios para crear un album
@@ -42,10 +51,10 @@ class UNQfy {
        - una propiedad name (string)
        - una propiedad year (number)
     */
-
-    return this._entitiesManager.addAlbum(artistId, albumData)
+    const album = this._entitiesManager.addAlbum(artistId, albumData);
+    this._notify(Action.addAlbum, album);
+    return album;
   }
-
 
   // trackData: objeto JS con los datos necesarios para crear un track
   //   trackData.name (string)
@@ -59,7 +68,9 @@ class UNQfy {
         - una propiedad duration (number),
         - una propiedad genres (lista de strings)
     */
-    return this._entitiesManager.addTrack(albumId, trackData)
+    const newTrack = this._entitiesManager.addTrack(albumId, trackData);
+    this._notify(Action.addTrack, newTrack);
+    return newTrack;
   }
 
   getAllArtists() {
@@ -100,23 +111,33 @@ class UNQfy {
   }
 
   removeArtistById(id) {
-    return this._entitiesManager.removeArtistById(id);
+    const deletedArtist = this._entitiesManager.removeArtistById(id);
+    this._notify(Action.deleteArtist, deletedArtist);
+    return deletedArtist;
   }
 
   removeAlbumById(id) {
-    return this._entitiesManager.removeAlbumById(id);
+    const deletedAlbum = this._entitiesManager.removeAlbumById(id);
+    this._notify(Action.deleteAlbum, deletedAlbum);
+    return deletedAlbum;
   }
 
   removeTrackById(id) {
-    return this._entitiesManager.removeTrackById(id);
+    const deletedTrack = this._entitiesManager.removeTrackById(id);
+    this._notify(Action.deleteTrack, deletedTrack);
+    return deletedTrack;
   }
 
   removePlaylistById(id) {
-    return this._entitiesManager.removePlaylistById(id);
+    const deletedPlaylist = this._entitiesManager.removePlaylistById(id);
+    this._notify(Action.deletePlaylist, deletedPlaylist);
+    return deletedPlaylist;
   }
 
   removeUserById(id) {
-    return this._entitiesManager.removeUserById(id);
+    const deletedUser = this._entitiesManager.removeUserById(id);
+    this._notify(Action.deletePlaylist, deletedUser);
+    return deletedUser;
   }
 
   // genres: array de generos(strings)
@@ -156,11 +177,15 @@ class UNQfy {
         * un metodo duration() que retorne la duración de la playlist.
         * un metodo hasTrack(aTrack) que retorna true si aTrack se encuentra en la playlist.
     */
-    return this._entitiesManager.createPlaylist(name, genresToInclude, maxDuration);
+    const newPlaylist = this._entitiesManager.createPlaylist(name, genresToInclude, maxDuration);
+    this._notify(Action.addPlaylist, newPlaylist);
+    return newPlaylist;
   }
 
   createPlaylistByIds(name, tracksIds) {
-    return this._entitiesManager.createPlaylistByIds(name, tracksIds)
+    const newPlaylist = this._entitiesManager.createPlaylistByIds(name, tracksIds);
+    this._notify(Action.addPlaylist, newPlaylist);
+    return newPlaylist;
   }
 
   populateAlbumsForArtist(artistName) {
@@ -193,11 +218,15 @@ class UNQfy {
 
   //Usuarios:
   addUser(username) {
-    return this._entitiesManager.addUser(username);
+    const newUser = this._entitiesManager.addUser(username);
+    this._notify(Action.addUser, newUser);
+    return newUser;
   }
 
   userListenTo(aUserId, aTrackId) {
-    return this._entitiesManager.userListenTo(aUserId, aTrackId);
+    const user = this._entitiesManager.userListenTo(aUserId, aTrackId);
+    this._notify(Action.trackListen, {userId: aUserId, trackId: aTrackId});
+    return user;
   }
 
   userListenPlaylist(aUserId, aPlaylistId) {
@@ -220,7 +249,10 @@ class UNQfy {
   static load(filename) {
     const serializedData = fs.readFileSync(filename, { encoding: 'utf-8' });
     //COMPLETAR POR EL ALUMNO: Agregar a la lista todas las clases que necesitan ser instanciadas
-    const classes = [UNQfy, Artist, Album, Track, _idGenerator, Playlist, User, EntitiesManager, Pair, PlaylistGenerator];
+    const classes = [
+      UNQfy, Artist, Album, Track, _idGenerator, Playlist, User,
+      EntitiesManager, Pair, PlaylistGenerator,
+      Action, ObserverManager, Observer, Observable];
     return picklify.unpicklify(JSON.parse(serializedData), classes);
   }
 }
