@@ -186,7 +186,7 @@ class UNQfy {
       } else {
         throw err;
       }
-    };
+    }
   }
 
   // USERS

@@ -15,4 +15,4 @@ class UNQfyAPIError extends Error {
 module.exports = {
     UNQfyError,
     UNQfyAPIError,
-}
+};
