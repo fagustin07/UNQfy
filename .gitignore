@@ -1,3 +1,9 @@
 node_modules/
 data.json
 .vscode/
+
+Loggin/logs
+
+Loggin/node_modules
+
+Loggin/.env

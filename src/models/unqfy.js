@@ -211,7 +211,7 @@ class UNQfy extends Observable {
       } else {
         throw err;
       }
-    };
+    }
   }
 
   // USERS
