@@ -2,7 +2,7 @@
 FROM node:12
 
 # Set the working directory.
-WORKDIR /home/unqfy/loggin
+WORKDIR /home/unqfy/logging
 
 # Copy the file from your host to your current location.
 COPY package.json .
@@ -15,14 +15,13 @@ RUN ["npm", "install"]
 EXPOSE 7080
 
 # Copy the rest of your app's source code from your host to your image filesystem.
-COPY . /home/unqfy/loggin/
+COPY . /home/unqfy/logging/
 
 # Give node user permissions to write to /home/unqfy/ 
-RUN chown -R node:users /home/unqfy/
+RUN chown -R unqfy:users /home/unqfy/
 
 # Enable the user node. By default, the containers run the commands with the root user.
-USER node
+USER unqfy
 
 # Run the specified command within the container.
 CMD [ "npm", "start" ]
-
