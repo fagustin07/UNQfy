@@ -1,7 +1,7 @@
-const { LoggingError, EmptyMessage, InvalidLevel } = require('../model/errors');
+const { LoggingErrorApi, EmptyMessage, InvalidLevel } = require('../model/errors');
 
 function error_handler(err, _, res, __) {
-    if (err instanceof LoggingError) {
+    if (err instanceof LoggingErrorApi) {
         res.status(err.status);
         res.json({ status: err.status, errorCode: err.errorCode, message: err.message });
     } else if(err instanceof EmptyMessage || err instanceof InvalidLevel) {
