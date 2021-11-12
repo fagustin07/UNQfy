@@ -10,6 +10,7 @@ const albums_router = require('./routers/album_router.js');
 const users_router = require('./routers/user_router.js');
 const playlist_router = require('./routers/playlist_router.js');
 const track_router = require('./routers/track_router.js');
+const heartbeat_router = require('./routers/heartbeat_router');
 const invalid_router = require('./routers/invalid_router.js');
 const model_error_handler = require('./model_error_handler');
 const api_error_handler = require('./api_error_handler');
@@ -23,6 +24,7 @@ app.use('/api/albums', albums_router);
 app.use('/api/users', users_router);
 app.use('/api/playlists', playlist_router);
 app.use('/api/tracks', track_router);
+app.use('/api/heartbeat', heartbeat_router);
 app.use('*', invalid_router);
 
 app.use(model_error_handler);
