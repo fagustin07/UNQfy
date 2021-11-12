@@ -12,15 +12,14 @@ class BadRequest extends NewsletterErrorApi {
         super(400, 'BAD_REQUEST');
     }
 }
-
-class NotifyError extends Error {
+class EmailAlreadyRegistered extends Error {
     constructor() {
-        super('Notifications could not be sent');
+        super('Email already registered');
     }
 }
 
 module.exports = {
-    NotifyError,
     BadRequest,
-    NewsletterErrorApi
+    NewsletterErrorApi,
+    EmailAlreadyRegistered
 };
