@@ -1,7 +1,7 @@
 const http = require('http');
 const rootApp = require('./src/api/api');
 
-const port = 7072;
+const port = 7090;
 
 const server = http.createServer(rootApp);
 

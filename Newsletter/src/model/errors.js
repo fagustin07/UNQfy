@@ -12,6 +12,13 @@ class BadRequest extends NewsletterErrorApi {
         super(400, 'BAD_REQUEST');
     }
 }
+
+class ResourceAlreadyExists extends NewsletterErrorApi {
+    constructor() {
+        super(409, 'RESOURCE_ALREADY_EXISTS');
+    }
+}
+
 class EmailAlreadyRegistered extends Error {
     constructor() {
         super('Email already registered');
@@ -21,5 +28,6 @@ class EmailAlreadyRegistered extends Error {
 module.exports = {
     BadRequest,
     NewsletterErrorApi,
-    EmailAlreadyRegistered
+    EmailAlreadyRegistered,
+    ResourceAlreadyExists
 };

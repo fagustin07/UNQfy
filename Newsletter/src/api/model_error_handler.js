@@ -1,8 +1,8 @@
-const { EmailAlreadyRegistered, BadRequest } = require("../model/errors");
+const { EmailAlreadyRegistered, ResourceAlreadyExists } = require("../model/errors");
 
 function model_error_handler(err, req, res, next) {
     if (err instanceof EmailAlreadyRegistered) {
-        next(new BadRequest(), req, res, next);
+        next(new ResourceAlreadyExists(), req, res, next);
     } else next(err, req, res, next);
 }
 

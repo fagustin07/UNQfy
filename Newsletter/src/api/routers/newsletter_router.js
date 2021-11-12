@@ -61,4 +61,8 @@ router.post('/notify', (req, res) => {
         .json();
 });
 
+router.get('/heartbeat', (_, res) => {
+    res.status(200).send();
+});
+
 module.exports = router;
