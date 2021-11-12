@@ -7,7 +7,7 @@ router.post('/change', (_, res) => {
     logger.change();
 
     res.status(200);
-    res.json({ statusCode: 200, active: logger.isActive() });
+    res.json({ statusCode: 200, active: logger.isActive()});
 });
 
 router.post('/log', (req, res) => {
@@ -18,8 +18,8 @@ router.post('/log', (req, res) => {
     if(logger.isActive()) {
         logger.log(level, message, object);
 
-        res.status(200)
-        res.json({ statusCode: 200 });
+        res.status(201);
+        res.json({ statusCode: 201 });
     } else {
         throw new LoggingDesactivated();
     }

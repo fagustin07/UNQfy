@@ -1,4 +1,4 @@
-class LoggingError extends Error {
+class LoggingErrorApi extends Error {
     constructor(status, errorCode, message = errorCode) {
         super();
         this.status = status;
@@ -7,13 +7,13 @@ class LoggingError extends Error {
     }
 }
 
-class BadRequest extends LoggingError { 
+class BadRequest extends LoggingErrorApi { 
     constructor() {
         super(400, 'BAD_REQUEST');
     }
 }
 
-class LoggingDesactivated extends LoggingError {
+class LoggingDesactivated extends LoggingErrorApi {
     constructor() {
         super(400, 'BAD_REQUEST', 'Logging service is off');
     }
@@ -32,7 +32,7 @@ class InvalidLevel extends Error {
 }
 
 module.exports = {
-    LoggingError,
+    LoggingErrorApi,
     BadRequest,
     LoggingDesactivated,
     EmptyMessage,
