@@ -25,4 +25,8 @@ router.post('/log', (req, res) => {
     }
 });
 
+router.get('/heartbeat', (_, res) => {
+    res.status(200).send();
+});
+
 module.exports = router;

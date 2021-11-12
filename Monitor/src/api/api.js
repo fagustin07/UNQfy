@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const app = express();
 const monitor_router = require('./routers/monitor_router.js');
