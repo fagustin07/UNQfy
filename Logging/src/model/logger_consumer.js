@@ -16,8 +16,8 @@ const logger = winston.createLogger({
       format: format.combine(timestampFormat, format.align(), messageFormat)
     }),
     new Loggly({
-      token: process.env.loggly_token,
-      subdomain: process.env.loggly_subdomain,
+      token: process.env.LOGGLY_TOKEN,
+      subdomain: process.env.LOGGLY_SUBDOMAIN,
       tags: ["UNQfy - FeNixCrew"],
       json: true
     })
