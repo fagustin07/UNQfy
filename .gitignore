@@ -1,9 +1,5 @@
-node_modules/
-data.json
-.vscode/
-
-**/logs
-
 **/node_modules
-
+**/data.json
+**/.vscode/
+**/logs
 **/.env

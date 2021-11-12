@@ -1,4 +1,4 @@
-name: Node CI
+name: UNQfy CI
 
 on: [push, pull_request]
 
@@ -17,5 +17,6 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - name: Install dependencies and run tests
       run: |
+        cd UNQfy
         npm install
         npm test
