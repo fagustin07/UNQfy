@@ -1,8 +1,8 @@
 const http = require('http');
-const rootApp = require('./loggin_api.js');
+const rootApp = require('./src/api/api');
 
-const port = 8082;
+const port = 7071;
 
 const server = http.createServer(rootApp);
 
-server.listen(port, () => console.log(`Logging listening on port ${port}`));
+server.listen(port, () => console.log(`Logging listen on port ${port}`));

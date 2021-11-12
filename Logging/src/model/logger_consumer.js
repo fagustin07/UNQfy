@@ -1,0 +1,30 @@
+require('dotenv').config();
+const winston = require('winston');
+const { Loggly } = require('winston-loggly-bulk');
+const format = winston.format;
+
+const messageFormat = format.printf(({ level, message, timestamp, object }) => `${timestamp} - [${level}]: ${message} - ${JSON.stringify(object)}`);
+const timestampFormat = format.timestamp({ format: 'DD-MM-YYYY hh:mm:ss' });
+
+const logger = winston.createLogger({
+    level: 'info',
+    transports: [
+      new winston.transports.Console({ 
+        format: format.combine(format.colorize(), timestampFormat, format.align(), messageFormat) 
+      }),
+      new winston.transports.File({ 
+        filename: 'logs/unqfy.log',
+        format: format.combine(timestampFormat, format.align(), messageFormat)
+      }),
+      new Loggly({
+          token: process.env.LOGGLY_TOKEN,
+          subdomain: process.env.LOGGLY_SUBDOMAIN,
+          tags: ["UNQfy - FeNixCrew"],
+          json: true
+      })
+    ]
+  });
+
+logger.silent = false; 
+
+module.exports = logger;
