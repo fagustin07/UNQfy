@@ -1,4 +1,6 @@
 const { EmailAlreadyRegistered } = require('./errors');
+const picklify = require('picklify');
+const fs = require('fs');
 
 class NotifyService {
     constructor() {
@@ -40,10 +42,26 @@ class NotifyService {
     }
 
     _notifySubscribers(subscribers, subject, message) {
-        return subscribers.map((suscr) => console.log({subject: subject, message: message, suscr: suscr}));
+        return subscribers.map((suscr) => console.log({ subject: subject, message: message, suscr: suscr }));
+    }
+
+    static load() {
+        if (fs.existsSync('data.json')) {
+            const serializedData = fs.readFileSync('data.json', { encoding: 'utf-8' });
+            const classes = [NotifyService];
+            const notifyService = picklify.unpicklify(JSON.parse(serializedData), classes);
+            return notifyService;
+        }
+        return new NotifyService();
+    }
+
+    save() {
+        const serializedData = picklify.picklify(this);
+        fs.writeFileSync('data.json', JSON.stringify(serializedData, null, 2));
     }
 
 }
 
-const singleton = new NotifyService();
-module.exports = singleton;
+module.exports = {
+    NotifyService: NotifyService
+};
