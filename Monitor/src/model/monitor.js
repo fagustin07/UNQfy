@@ -1,4 +1,5 @@
-const { UNQFY_HOST, LOGGING_HOST, NEWSLETTER_HOST } = process.env;
+const { UNQFY_HOST, LOGGING_HOST, NEWSLETTER_HOST, DISCORD_WEBHOOK } = process.env;
+const { default: axios } = require('axios');
 const Service = require('../model/service_enum');
 const ServiceClient = require("./service_client");
 
@@ -30,9 +31,7 @@ class Monitor {
     this._services.forEach((service) => {
       service.checkHeartbeat()
         .then(heartbeatReport => {
-          if(heartbeatReport !== null) {
-            console.log(this._getReport(service, heartbeatReport));
-          }
+          if(heartbeatReport !== null) this._doReport(service, heartbeatReport);
         })
         .catch( _ => console.log(`Cannot detect last ${service.name} service hearbeat.`))
     });
@@ -46,7 +45,16 @@ class Monitor {
     clearInterval(this._timer);
   }
 
-  _getReport(service, heartbeatReport) {
+  _doReport(service, heartbeatReport) {
+    const report = this._generateReport(service, heartbeatReport);
+    axios.post(DISCORD_WEBHOOK, { content: report })
+     .then(_ => {
+       console.log(`${service.name} heartbeat report was send successfully.`)
+     })
+     .catch (err => console.log(`Failed to send report. Problem: ${err.message}`));
+  }
+
+  _generateReport(service, heartbeatReport) {
     return `[${this._timeReport()}] ${service.name} service ${heartbeatReport}.`;
   }
 
