@@ -5,6 +5,9 @@ FROM node:12
 ENV NODE_ENV=development
 ENV DEBUG=true
 
+#Creamos usuario unqfy
+RUN useradd -ms /bin/bash unqfy
+
 # Crea un directorio y nos movemos ahí
 WORKDIR /home/unqfy/monitor
 

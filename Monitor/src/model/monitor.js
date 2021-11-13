@@ -47,11 +47,12 @@ class Monitor {
 
   _doReport(service, heartbeatReport) {
     const report = this._generateReport(service, heartbeatReport);
+    console.log(report);
     axios.post(DISCORD_WEBHOOK, { content: report })
      .then(_ => {
-       console.log(`${service.name} heartbeat report was send successfully.`)
+       console.log(`${service.name} heartbeat report has been sent successfully.`)
      })
-     .catch (err => console.log(`Failed to send report. Problem: ${err.message}`));
+     .catch (err => console.log(`Failed to send ${service.name} service report. Problem: ${err.message}`));
   }
 
   _generateReport(service, heartbeatReport) {

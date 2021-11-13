@@ -1,6 +1,9 @@
 # Use the official image as a parent image.
 FROM node:12
 
+#Create unqfy user.
+RUN useradd -ms /bin/bash unqfy
+
 # Set the working directory.
 WORKDIR /home/unqfy/logging
 
