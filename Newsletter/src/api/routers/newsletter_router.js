@@ -32,6 +32,7 @@ router.post('/unsubscribe', (req, res) => {
 router.route('/subscriptions')
     .get((req, res) => {
         const artistId = req.query.artistId;
+        if (!artistId) throw new BadRequest();
 
         const newsletter = getNewsletter();
         const subscribers = newsletter.getSubscribersForArtistId(artistId);
