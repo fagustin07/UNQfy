@@ -34,6 +34,7 @@ class NotifyService {
 
     deleteSubscribersOfArtistId(artistId) {
         delete this.subscribers[artistId];
+        console.log(`Deleted subscriptions from artistId ${artistId}`);
     }
 
     notify(artistId, subject, message) {

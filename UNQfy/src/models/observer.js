@@ -1,6 +1,10 @@
 class Observer {
+    constructor(baseURL) {
+        this._baseURL = baseURL;
+    }
+
     update(action, data) {
-        console.log(`[NOTIFICADO] ACCION: ${action} DATA: ${data}`);
+        throw new Error('Subclass responsability');
     }
 }
 
