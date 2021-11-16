@@ -1,4 +1,4 @@
-const { UNQFY_HOST, LOGGING_HOST, NEWSLETTER_HOST, DISCORD_WEBHOOK } = process.env;
+const { UNQFY_API_HOST, LOGGING_API_HOST, NEWSLETTER_API_HOST, DISCORD_WEBHOOK } = process.env;
 const { default: axios } = require('axios');
 const Service = require('../model/service_enum');
 const ServiceClient = require("./service_client");
@@ -9,9 +9,9 @@ class Monitor {
     this._active = true;
     this._timer = null;
     this._services = [
-      new ServiceClient(Service.UNQfy, UNQFY_HOST),
-      new ServiceClient(Service.Logging, LOGGING_HOST),
-      new ServiceClient(Service.Newsletter, NEWSLETTER_HOST)
+      new ServiceClient(Service.UNQfy, UNQFY_API_HOST),
+      new ServiceClient(Service.Logging, LOGGING_API_HOST),
+      new ServiceClient(Service.Newsletter, NEWSLETTER_API_HOST)
     ];
     this._activate();
   }
