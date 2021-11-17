@@ -11,9 +11,13 @@ services:
     ports:
       - "7070:7070"
     environment:
-      - TZ=America/Argentina/Buenos_Aires
-      - NEWSLETTER_API_HOST=http://newsletter:7090
       - LOGGING_API_HOST=http://logging:7080
+      - NEWSLETTER_API_HOST=http://newsletter:7090
+      - SPOTIFY_API_HOST=https://api.spotify.com/v1
+      - MUSIX_MATCH_API_HOST=http://api.musixmatch.com/ws/1.1
+      - SPOTIFY_TOKEN=
+      - MUSIX_MATCH_API_KEY=
+      - TZ=America/Argentina/Buenos_Aires
   logging:
     container_name: logging
     networks:
@@ -24,7 +28,7 @@ services:
     volumes:
       - ./Logging/logs:/usr/src/app/logs
     environment:
-      - LOGGLY_TOKEN
+      - LOGGLY_TOKEN=
       - LOGGLY_SUBDOMAIN=fenixcreworg
       - TZ=America/Argentina/Buenos_Aires
   newsletter:
@@ -44,7 +48,6 @@ services:
     build: ./Monitor
     ports:
       - "7100:7100"
-      - "80:80"
     depends_on:
       - unqfy
       - newsletter
@@ -54,4 +57,4 @@ services:
       - UNQFY_API_HOST=http://unqfy:7070
       - LOGGING_API_HOST=http://logging:7080
       - NEWSLETTER_API_HOST=http://newsletter:7090
-      - DISCORD_WEBHOOK
+      - DISCORD_WEBHOOK=
