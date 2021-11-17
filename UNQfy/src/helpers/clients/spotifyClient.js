@@ -1,14 +1,13 @@
 const axios = require('axios');
-const spotifyCreds = require('../../../spotifyCreds');
 const Album = require('../../models/album');
+require('dotenv').config();
 
 const spotify_api = axios.create({
-  baseURL: 'https://api.spotify.com/v1',
+  baseURL: process.env.SPOTIFY_API_HOST,
   headers: {
-    Authorization: `Bearer ${spotifyCreds.access_token}`
+    Authorization: `Bearer ${process.env.SPOTIFY_TOKEN}`
   }
 });
-
 
 function searchArtist(artistName) {
     const options = {

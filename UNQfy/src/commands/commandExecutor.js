@@ -1,6 +1,6 @@
-const AddArtist = require('./AddArtist');
-const AddAlbum = require('./AddAlbum.js');
-const AddTrack = require('./AddTrack');
+const AddArtist = require('./addArtist');
+const AddAlbum = require('./addAlbum');
+const AddTrack = require('./addTrack');
 const CreatePlaylist = require('./createPlaylist');
 const AddUser = require('./addUser');
 

@@ -1,5 +1,5 @@
-const picklify = require('picklify'); // para cargar/guardar unqfy
-const fs = require('fs'); // para cargar/guardar unqfy
+const picklify = require('picklify');
+const fs = require('fs');
 const Artist = require('./artist');
 const Album = require('./album');
 const Track = require('./track');
@@ -11,11 +11,11 @@ const Pair = require('../lib/pair');
 const EntitiesManager = require('./entitiesManager');
 const spotifyClient = require('../helpers/clients/spotifyClient');
 const { EntityNotFound, RelatedEntityNotFound } = require('../errors/model_errors');
-const Observable = require('./observable');
-const ObserverManager = require('./observerManager');
-const Logging = require('./logging');
-const Newsletter = require('./newsletter');
-const Action = require('./action');
+const Observable = require('./observer/observable');
+const ObserverManager = require('./observer/observerManager');
+const Logging = require('./observer/logging');
+const Newsletter = require('./observer/newsletter');
+const Action = require('./observer/action');
 require('dotenv').config();
 
 class UNQfy extends Observable {

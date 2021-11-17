@@ -2,9 +2,9 @@ const axios = require('axios');
 const { EntityNotFound } = require('../../errors/model_errors');
 
 const musixmatch_api = axios.create({
-    baseURL: 'http://api.musixmatch.com/ws/1.1',
+    baseURL: process.env.MUSIX_MATCH_API_HOST,
     params: {
-        apikey: 'fad874e461e9c5d209590f09c61f2ca3'
+        apikey: process.env.MUSIX_MATCH_API_KEY
     }
 });
 
