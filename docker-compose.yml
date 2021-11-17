@@ -4,6 +4,7 @@ networks:
     driver: bridge
 services:
   unqfy:
+    container_name: unqfy
     networks:
       - unqfynet
     build: ./UNQfy
@@ -14,6 +15,7 @@ services:
       - NEWSLETTER_API_HOST=http://newsletter:7090
       - LOGGING_API_HOST=http://logging:7080
   logging:
+    container_name: logging
     networks:
       - unqfynet
     build: ./Logging
@@ -22,10 +24,11 @@ services:
     volumes:
       - ./Logging/logs:/usr/src/app/logs
     environment:
-      - LOGGLY_TOKEN=1047cead-58e2-4b98-a40d-df0e5ba00a7
+      - LOGGLY_TOKEN
       - LOGGLY_SUBDOMAIN=fenixcreworg
       - TZ=America/Argentina/Buenos_Aires
   newsletter:
+    container_name: newsletter
     networks:
       - unqfynet
     build: ./Newsletter
@@ -35,6 +38,7 @@ services:
       - TZ=America/Argentina/Buenos_Aires
       - UNQFY_API_HOST=http://unqfy:7070
   monitor:
+    container_name: monitor
     networks:
       - unqfynet
     build: ./Monitor
@@ -47,7 +51,7 @@ services:
       - logging
     environment:
       - TZ=America/Argentina/Buenos_Aires
-      - UNQFY_HOST=http://unqfy:7070
-      - LOGGING_HOST=http://logging:7080
-      - NEWSLETTER_HOST=http://newsletter:7090
-      - DISCORD_WEBHOOK="https://discord.com/api/webhooks/907743539297927218/g8YD9YdoUx
+      - UNQFY_API_HOST=http://unqfy:7070
+      - LOGGING_API_HOST=http://logging:7080
+      - NEWSLETTER_API_HOST=http://newsletter:7090
+      - DISCORD_WEBHOOK
