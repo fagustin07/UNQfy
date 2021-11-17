@@ -16,6 +16,9 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - name: Install dependencies and run tests
+      env:
+        MUSIX_MATCH_API_KEY: ${{ secrets.MUSIX_MATCH_API_KEY }}
+        MUSIX_MATCH_API_HOST: ${{ secrets.MUSIX_MATCH_API_HOST }}
       run: |
         cd UNQfy
         npm install
