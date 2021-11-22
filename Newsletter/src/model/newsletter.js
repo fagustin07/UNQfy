@@ -1,10 +1,12 @@
-const { EmailAlreadyRegistered } = require('./errors');
+const { EmailAlreadyRegistered, NotifyError } = require('./errors');
 const picklify = require('picklify');
 const fs = require('fs');
+const gmailClient = require('./gmail_client');
 
 class NotifyService {
     constructor() {
         this.subscribers = {};
+        this.client = gmailClient;
     }
 
     subscribe(artistId, email) {
@@ -42,8 +44,30 @@ class NotifyService {
         return this._notifySubscribers(subscribers, subject, message);
     }
 
-    _notifySubscribers(subscribers, subject, message) {
-        return subscribers.map((suscr) => console.log({ subject: subject, message: message, suscr: suscr }));
+    async _notifySubscribers(subscribers, subject, message) {
+        return await gmailClient.sendMails(subscribers, subject, message);
+    }
+
+    _createMessage(subject, bodyLines, receiver) {
+        const utf8Subject = `=?utf-8?B?${Buffer.from(subject).toString('base64')}?=`;
+        let messageParts = [
+            `From: Unqfy <unqfy30@gmail.com>`,
+            `To: ${receiver}`,
+            'Content-Type: text/html; charset=utf-8',
+            'MIME-Version: 1.0',
+            `Subject: ${utf8Subject}`,
+            '',
+            bodyLines
+        ];
+        const message = messageParts.join('\n');
+
+        const encodedMessage = Buffer.from(message)
+            .toString('base64')
+            .replace(/\+/g, '-')
+            .replace(/\//g, '_')
+            .replace(/=+$/, '');
+
+        return encodedMessage;
     }
 
     static load() {
