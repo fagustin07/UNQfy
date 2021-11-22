@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-const BASE_URL = process.env;
+const BASE_URL = process.env.NEWSLETTER_API_HOST;
 
 const notifyNewAlbum = (album) => {
     return axios.post(BASE_URL + '/api/notify', {
