@@ -9,7 +9,7 @@ require('dotenv').config();
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-// app.use(artist_id_middleware);
+app.use(artist_id_middleware);
 
 app.use('/api', newsletter_router);
 

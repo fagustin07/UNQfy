@@ -1,12 +1,16 @@
 const { EmailAlreadyRegistered } = require('./errors');
 const picklify = require('picklify');
 const fs = require('fs');
-const GmailClient = require('../helpers/clients/gmail_client');
+const MailSender = require('./mail_sender')
 
 class NotifyService {
     constructor() {
         this.subscribers = {};
-        this.client = new GmailClient();
+        this.mailSender = new MailSender();
+    }
+
+    setGmailClient(gmailClient) {
+        this.client = gmailClient;
     }
 
     subscribe(artistId, email) {
@@ -41,48 +45,26 @@ class NotifyService {
 
     notify(artistId, subject, message) {
         const subscribers = this.subscribers[artistId];
-        if(subscribers) {
-            this._notifySubscribers(subscribers, subject, message);
+        if (subscribers) {
+            this.mailSender.sendMailsToUsers(subscribers, subject, message);
         }
     }
 
-    _notifySubscribers(subscribers, subject, message) {
-        this.client.sendMails(subscribers, subject, message);
+    static load() {
+        if (fs.existsSync('data.json')) {
+            const serializedData = fs.readFileSync('data.json', { encoding: 'utf-8' });
+            const classes = [NotifyService, MailSender];
+            const notifyService = picklify.unpicklify(JSON.parse(serializedData), classes);
+            return notifyService;
+        }
+        return new NotifyService();
     }
 
-    _createMessage(subject, bodyLines, receiver) {
-        const utf8Subject = `=?utf-8?B?${Buffer.from(subject).toString('base64')}?=`;
-        let messageParts = [
-            `From: Unqfy <unqfy30@gmail.com>`,
-            `To: ${receiver}`,
-            'Content-Type: text/html; charset=utf-8',
-            'MIME-Version: 1.0',
-            `Subject: ${utf8Subject}`,
-            '',
-            bodyLines
-        ];
-        const message = messageParts.join('\n');
-
-        const encodedMessage = Buffer.from(message)
-            .toString('base64')
-            .replace(/\+/g, '-')
-            .replace(/\//g, '_')
-            .replace(/=+$/, '');
-
-        return encodedMessage;
-    }
-
-    static load(filename) {
-        const serializedData = fs.readFileSync(filename, { encoding: 'utf-8' });
-        const classes = [NotifyService, GmailClient];
-        
-        return picklify.unpicklify(JSON.parse(serializedData), classes);
-    }
-
-    save(filename) {
+    save() {
         const serializedData = picklify.picklify(this);
-        fs.writeFileSync(filename, JSON.stringify(serializedData, null, 2));
-      }
+        fs.writeFileSync('data.json', JSON.stringify(serializedData, null, 2));
+    }
+
 }
 
 module.exports = {
