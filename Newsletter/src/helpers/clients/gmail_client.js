@@ -1,6 +1,8 @@
 const fs = require('fs');
 const { google } = require('googleapis');
-const { TOKEN_PATH, CREDENTIALS_PATH } = process.env;
+
+const CREDENTIALS_PATH = './credentials.json';
+const TOKEN_PATH = './token.json';
 
 class GmailClient {
 
@@ -17,8 +19,8 @@ class GmailClient {
         this._client = this._buildGmailClient();
     }
 
-    async sendMails(receivers, subject, body) {
-        return Promise.all(receivers.map((receiver) => {
+    sendMails(receivers, subject, body) {
+        receivers.forEach((receiver) => {
             this._client.users.messages.send(
                 {
                     userId: 'me',
@@ -27,13 +29,13 @@ class GmailClient {
                     },
                 }
             );
-        }));
+        });
     }
 
     _createMessage(subject, bodyLines, receiver) {
         const utf8Subject = `=?utf-8?B?${Buffer.from(subject).toString('base64')}?=`;
         let messageParts = [
-            `From: Unqfy <unqfy30@gmail.com>`,
+            `From: UNQfy Team <unqfy.noreply@gmail.com>`,
             `To: ${receiver}`,
             'Content-Type: text/html; charset=utf-8',
             'MIME-Version: 1.0',
@@ -79,5 +81,4 @@ class GmailClient {
     }
 }
 
-const singleton = new GmailClient()
-module.exports = singleton;
+module.exports = GmailClient;

@@ -1,12 +1,12 @@
-const { EmailAlreadyRegistered, NotifyError } = require('./errors');
+const { EmailAlreadyRegistered } = require('./errors');
 const picklify = require('picklify');
 const fs = require('fs');
-const gmailClient = require('./gmail_client');
+const GmailClient = require('../helpers/clients/gmail_client');
 
 class NotifyService {
     constructor() {
         this.subscribers = {};
-        this.client = gmailClient;
+        this.client = new GmailClient();
     }
 
     subscribe(artistId, email) {
@@ -40,12 +40,14 @@ class NotifyService {
     }
 
     notify(artistId, subject, message) {
-        const subscribers = this.subscribers[artistId] || [];
-        return this._notifySubscribers(subscribers, subject, message);
+        const subscribers = this.subscribers[artistId];
+        if(subscribers) {
+            this._notifySubscribers(subscribers, subject, message);
+        }
     }
 
-    async _notifySubscribers(subscribers, subject, message) {
-        return await gmailClient.sendMails(subscribers, subject, message);
+    _notifySubscribers(subscribers, subject, message) {
+        this.client.sendMails(subscribers, subject, message);
     }
 
     _createMessage(subject, bodyLines, receiver) {
@@ -70,23 +72,20 @@ class NotifyService {
         return encodedMessage;
     }
 
-    static load() {
-        if (fs.existsSync('data.json')) {
-            const serializedData = fs.readFileSync('data.json', { encoding: 'utf-8' });
-            const classes = [NotifyService];
-            const notifyService = picklify.unpicklify(JSON.parse(serializedData), classes);
-            return notifyService;
-        }
-        return new NotifyService();
+    static load(filename) {
+        const serializedData = fs.readFileSync(filename, { encoding: 'utf-8' });
+        const classes = [NotifyService, GmailClient];
+        
+        return picklify.unpicklify(JSON.parse(serializedData), classes);
     }
 
-    save() {
+    save(filename) {
         const serializedData = picklify.picklify(this);
-        fs.writeFileSync('data.json', JSON.stringify(serializedData, null, 2));
-    }
-
+        fs.writeFileSync(filename, JSON.stringify(serializedData, null, 2));
+      }
 }
 
 module.exports = {
-    NotifyService: NotifyService
+    NotifyService: NotifyService,
+    newsletter: new NotifyService()
 };
