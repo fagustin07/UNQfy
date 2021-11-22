@@ -5,17 +5,15 @@ class MailSender {
         this._client = buildGmailClient();
     }
 
-    sendMailsToUsers(users, subject, message) {
-        users.forEach((user) => {
-            this._client.users.messages.send(
-                {
-                    userId: 'me',
-                    requestBody: {
-                        raw: this._createMessage(subject, message, user),
-                    },
-                }
-            );
-        });
+    sendMail(user, subject, message) {
+        this._client.users.messages.send(
+            {
+                userId: 'me',
+                requestBody: {
+                    raw: this._createMessage(subject, message, user),
+                },
+            }
+        );
     }
 
     _createMessage(subject, bodyLines, receiver) {
@@ -41,4 +39,4 @@ class MailSender {
     }
 }
 
-module.exports = MailSender;
+module.exports = new MailSender();

@@ -1,17 +1,16 @@
 const express = require('express');
-const { BadRequest, NotifyError } = require('../../model/errors');
+const { BadRequest } = require('../../model/errors');
 const router = express.Router();
-// const { getNewsletter, saveNewsletter } = require('../../lib/NewsletterPersistence');
-const { newsletter } = require('../../model/newsletter');
+const { getNewsletter, saveNewsletter } = require('../../lib/NewsletterPersistence');
 
 router.post('/subscribe', (req, res) => {
     const { artistId, email } = req.body;
 
     if (!email) throw new BadRequest();
 
-    // const newsletter = getNewsletter();
+    const newsletter = getNewsletter();
     newsletter.subscribe(artistId, email);
-    // saveNewsletter(newsletter);
+    saveNewsletter(newsletter);
 
     res.status(200)
         .json();
@@ -22,9 +21,9 @@ router.post('/unsubscribe', (req, res) => {
 
     if (!email) throw new BadRequest();
 
-    // const newsletter = getNewsletter();
+    const newsletter = getNewsletter();
     newsletter.unsubscribe(artistId, email);
-    // saveNewsletter(newsletter);
+    saveNewsletter(newsletter);
 
     res.status(200)
         .json();
@@ -35,7 +34,7 @@ router.route('/subscriptions')
         const artistId = req.query.artistId;
         if (!artistId) throw new BadRequest();
 
-        // const newsletter = getNewsletter();
+        const newsletter = getNewsletter();
         const subscribers = newsletter.getSubscribersForArtistId(artistId);
         res.status(200)
         res.json({ artistId: artistId, subscribers: subscribers });
@@ -43,9 +42,9 @@ router.route('/subscriptions')
     .delete((req, res) => {
         const artistId = req.body.artistId;
 
-        // const newsletter = getNewsletter();
+        const newsletter = getNewsletter();
         newsletter.deleteSubscribersOfArtistId(artistId);
-        // saveNewsletter(newsletter);
+        saveNewsletter(newsletter);
 
         res.status(200).send();
     });
@@ -54,7 +53,7 @@ router.post('/notify', (req, res, next) => {
     const { artistId, subject, message } = req.body;
     if (!subject || !message) throw new BadRequest();
 
-    // const newsletter = getNewsletter();
+    const newsletter = getNewsletter();
 
     try {
         newsletter.notify(artistId, subject, message);

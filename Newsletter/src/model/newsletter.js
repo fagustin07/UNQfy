@@ -1,12 +1,11 @@
 const { EmailAlreadyRegistered } = require('./errors');
 const picklify = require('picklify');
 const fs = require('fs');
-const MailSender = require('./mail_sender')
+const mailSender = require('./mail_sender')
 
-class NotifyService {
+class Newsletter {
     constructor() {
         this.subscribers = {};
-        this.mailSender = new MailSender();
     }
 
     setGmailClient(gmailClient) {
@@ -46,14 +45,16 @@ class NotifyService {
     notify(artistId, subject, message) {
         const subscribers = this.subscribers[artistId];
         if (subscribers) {
-            this.mailSender.sendMailsToUsers(subscribers, subject, message);
+            subscribers.forEach((subscriber) => {
+                mailSender.sendMail(subscriber, subject, message);
+            })
         }
     }
 
     static load() {
         if (fs.existsSync('data.json')) {
             const serializedData = fs.readFileSync('data.json', { encoding: 'utf-8' });
-            const classes = [NotifyService, MailSender];
+            const classes = [Newsletter];
             const notifyService = picklify.unpicklify(JSON.parse(serializedData), classes);
             return notifyService;
         }
@@ -68,6 +69,6 @@ class NotifyService {
 }
 
 module.exports = {
-    NotifyService: NotifyService,
-    newsletter: new NotifyService()
+    Newsletter: Newsletter,
+    newsletter: new Newsletter()
 };
