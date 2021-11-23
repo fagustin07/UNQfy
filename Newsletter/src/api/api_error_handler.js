@@ -11,6 +11,7 @@ function api_error_handler(err, _, res, __) {
             res.json({ status: 400, errorCode: 'BAD_REQUEST' });
             break;
         default: {
+            console.log(err);
             res.status(500);
             res.json({ status: 500, errorCode: 'INTERNAL_SERVER_ERROR' });
             break;

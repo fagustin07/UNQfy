@@ -11,7 +11,7 @@ router.post('/subscribe', (req, res) => {
     const newsletter = getNewsletter();
     newsletter.subscribe(artistId, email);
     saveNewsletter(newsletter);
-    
+
     res.status(200)
         .json();
 });
@@ -37,7 +37,7 @@ router.route('/subscriptions')
         const newsletter = getNewsletter();
         const subscribers = newsletter.getSubscribersForArtistId(artistId);
         res.status(200)
-            .json({ artistId: artistId, subscribers: subscribers });
+        res.json({ artistId: artistId, subscribers: subscribers });
     })
     .delete((req, res) => {
         const artistId = req.body.artistId;
@@ -46,20 +46,21 @@ router.route('/subscriptions')
         newsletter.deleteSubscribersOfArtistId(artistId);
         saveNewsletter(newsletter);
 
-        res.status(200)
-            .json();
+        res.status(200).send();
     });
 
-router.post('/notify', (req, res) => {
+router.post('/notify', (req, res, next) => {
     const { artistId, subject, message } = req.body;
-
     if (!subject || !message) throw new BadRequest();
 
     const newsletter = getNewsletter();
-    newsletter.notify(artistId, subject, message);
 
-    res.status(200)
-        .json();
+    try {
+        newsletter.notify(artistId, subject, message);
+        res.status(200).send();
+    } catch(err) {
+        next(err);
+    }
 });
 
 router.get('/heartbeat', (_, res) => {

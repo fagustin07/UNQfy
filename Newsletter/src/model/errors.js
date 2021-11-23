@@ -25,9 +25,16 @@ class EmailAlreadyRegistered extends Error {
     }
 }
 
+class NotifyError extends Error {
+    constructor() {
+        super('An error occurred when sending notifications');
+    }
+}
+
 module.exports = {
     BadRequest,
     NewsletterErrorApi,
     EmailAlreadyRegistered,
-    ResourceAlreadyExists
+    ResourceAlreadyExists,
+    NotifyError
 };

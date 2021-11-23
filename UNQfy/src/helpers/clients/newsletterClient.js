@@ -9,12 +9,12 @@ const notifyNewAlbum = (album) => {
         message: `One of your subscribed artists, ${album.artistName()} 
         released a new album called ${album.name}.\nRegards\n- UNQfy Team.`
     });
-}
+};
 const notifyDeleteArtist = (artist) => {
-    return axios.delete(BASE_URL + '/api/subscriptions', { data: { artistId: artist.id } })
-}
+    return axios.delete(BASE_URL + '/api/subscriptions', { data: { artistId: artist.id } });
+};
 
 module.exports = {
     notifyNewAlbum,
     notifyDeleteArtist
-}
+};
