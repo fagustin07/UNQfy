@@ -11,13 +11,13 @@ services:
     ports:
       - "7070:7070"
     environment:
-      - LOGGING_API_HOST=http://logging:7080
-      - NEWSLETTER_API_HOST=http://newsletter:7090
-      - SPOTIFY_API_HOST=https://api.spotify.com/v1
-      - MUSIX_MATCH_API_HOST=http://api.musixmatch.com/ws/1.1
-      - SPOTIFY_TOKEN=
-      - MUSIX_MATCH_API_KEY=
-      - TZ=America/Argentina/Buenos_Aires
+      - LOGGING_API_HOST=${LOGGING_API_HOST}
+      - NEWSLETTER_API_HOST=${NEWSLETTER_API_HOST}
+      - SPOTIFY_API_HOST=${SPOTIFY_API_HOST}
+      - MUSIX_MATCH_API_HOST=${MUSIX_MATCH_API_HOST}
+      - SPOTIFY_TOKEN=${SPOTIFY_TOKEN}
+      - MUSIX_MATCH_API_KEY=${MUSIX_MATCH_API_KEY}
+      - TZ=${TZ}
   logging:
     container_name: logging
     networks:
@@ -26,9 +26,9 @@ services:
     ports:
       - "7080:7080"
     environment:
-      - LOGGLY_TOKEN=
-      - LOGGLY_SUBDOMAIN=fenixcreworg
-      - TZ=America/Argentina/Buenos_Aires
+      - LOGGLY_TOKEN=${LOGGLY_TOKEN}
+      - LOGGLY_SUBDOMAIN=${LOGGLY_SUBDOMAIN}
+      - TZ=${TZ}
   newsletter:
     container_name: newsletter
     networks:
@@ -37,10 +37,10 @@ services:
     ports:
       - "7090:7090"
     environment:
-      - TZ=America/Argentina/Buenos_Aires
-      - UNQFY_API_HOST=http://unqfy:7070
-      - TOKEN_PATH=./token.json
-      - CREDENTIALS_PATH=./credentials.json
+      - TZ=${TZ}
+      - UNQFY_API_HOST=${UNQFY_API_HOST}
+      - TOKEN_PATH=${GMAIL_TOKEN_PATH}
+      - CREDENTIALS_PATH=${GMAIL_CREDENTIALS_PATH}
   monitor:
     container_name: monitor
     networks:
@@ -53,8 +53,9 @@ services:
       - newsletter
       - logging
     environment:
-      - TZ=America/Argentina/Buenos_Aires
-      - UNQFY_API_HOST=http://unqfy:7070
-      - LOGGING_API_HOST=http://logging:7080
-      - NEWSLETTER_API_HOST=http://newsletter:7090
-      - DISCORD_WEBHOOK=
+      - TZ=${TZ}
+      - UNQFY_API_HOST=${UNQFY_API_HOST}
+      - LOGGING_API_HOST=${LOGGING_API_HOST}
+      - NEWSLETTER_API_HOST=${NEWSLETTER_API_HOST}
+      - DISCORD_WEBHOOK=${DISCORD_WEBHOOK}
+
