@@ -51,20 +51,17 @@ class Newsletter {
         }
     }
 
-    static load() {
-        if (fs.existsSync('data.json')) {
-            const serializedData = fs.readFileSync('data.json', { encoding: 'utf-8' });
-            const classes = [Newsletter];
-            const notifyService = picklify.unpicklify(JSON.parse(serializedData), classes);
-            return notifyService;
-        }
-        return new NotifyService();
+    save(filename) {
+        const serializedData = picklify.picklify(this);
+        fs.writeFileSync(filename, JSON.stringify(serializedData, null, 2));
     }
 
-    save() {
-        const serializedData = picklify.picklify(this);
-        fs.writeFileSync('data.json', JSON.stringify(serializedData, null, 2));
+    static load(filename) {
+        const serializedData = fs.readFileSync(filename, { encoding: 'utf-8' });
+        const classes = [Newsletter];
+        return picklify.unpicklify(JSON.parse(serializedData), classes);
     }
+
 
 }
 

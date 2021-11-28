@@ -1,7 +1,7 @@
 const fs = require('fs'); 
 const newslettermod = require('../model/newsletter'); 
 
-function getNewsletter(filename = 'data.json') {
+function getNewsletter(filename = 'data/data.json') {
     let newsletter = new newslettermod.Newsletter();
     if (fs.existsSync(filename)) {
         newsletter = newslettermod.Newsletter.load(filename);
@@ -9,7 +9,7 @@ function getNewsletter(filename = 'data.json') {
     return newsletter;
 }
 
-function saveNewsletter(newsletter, filename = 'data.json') {
+function saveNewsletter(newsletter, filename = 'data/data.json') {
     newsletter.save(filename);
 }
 

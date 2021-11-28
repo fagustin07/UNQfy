@@ -5,7 +5,7 @@ const ServiceClient = require("./service_client");
 
 class Monitor {
   constructor() {
-    this._interval = 3000;
+    this._interval = 4500;
     this._active = true;
     this._timer = null;
     this._services = [
