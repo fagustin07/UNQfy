@@ -1,5 +1,5 @@
 class NewsletterErrorApi extends Error {
-    constructor(status, errorCode, message = errorCode) {
+    constructor(status, errorCode, message) {
         super();
         this.status = status;
         this.errorCode = errorCode;
@@ -16,6 +16,12 @@ class BadRequest extends NewsletterErrorApi {
 class ResourceAlreadyExists extends NewsletterErrorApi {
     constructor() {
         super(409, 'RESOURCE_ALREADY_EXISTS');
+    }
+}
+
+class ResourceNotFound extends NewsletterErrorApi {
+    constructor() {
+        super(404, 'RESOURCE_NOT_FOUND');
     }
 }
 
@@ -36,5 +42,6 @@ module.exports = {
     NewsletterErrorApi,
     EmailAlreadyRegistered,
     ResourceAlreadyExists,
+    ResourceNotFound,
     NotifyError
 };

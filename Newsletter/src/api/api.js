@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const newsletter_router = require('./routers/newsletter_router');
+const invalid_router = require('./routers/invalid_router');
 const api_error_handler = require('./api_error_handler');
 const model_error_handler = require('./model_error_handler');
 const artist_id_middleware = require('./verify_artistId_middleware');
@@ -12,6 +13,7 @@ app.use(express.json());
 app.use(artist_id_middleware);
 
 app.use('/api', newsletter_router);
+app.use('*', invalid_router);
 
 app.use(model_error_handler);
 app.use(api_error_handler);

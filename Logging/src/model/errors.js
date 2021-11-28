@@ -1,5 +1,5 @@
 class LoggingErrorApi extends Error {
-    constructor(status, errorCode, message = errorCode) {
+    constructor(status, errorCode, message) {
         super();
         this.status = status;
         this.errorCode = errorCode;
@@ -10,6 +10,12 @@ class LoggingErrorApi extends Error {
 class BadRequest extends LoggingErrorApi { 
     constructor() {
         super(400, 'BAD_REQUEST');
+    }
+}
+
+class ResourceNotFound extends LoggingErrorApi {
+    constructor() {
+        super(404, 'RESOURCE_NOT_FOUND');
     }
 }
 
@@ -36,5 +42,6 @@ module.exports = {
     BadRequest,
     LoggingDesactivated,
     EmptyMessage,
-    InvalidLevel
+    InvalidLevel,
+    ResourceNotFound
 };
