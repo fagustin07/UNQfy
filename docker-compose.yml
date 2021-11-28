@@ -10,6 +10,8 @@ services:
     build: ./UNQfy
     ports:
       - "7070:7070"
+    volumes:
+      - ./UNQfy/data:/home/unqfy/unqfy/data
     environment:
       - LOGGING_API_HOST=${LOGGING_API_HOST}
       - NEWSLETTER_API_HOST=${NEWSLETTER_API_HOST}
@@ -25,6 +27,8 @@ services:
     build: ./Logging
     ports:
       - "7080:7080"
+    volumes:
+      - ./Logging/logs:/home/unqfy/logging/logs
     environment:
       - LOGGLY_TOKEN=${LOGGLY_TOKEN}
       - LOGGLY_SUBDOMAIN=${LOGGLY_SUBDOMAIN}
@@ -36,6 +40,8 @@ services:
     build: ./Newsletter
     ports:
       - "7090:7090"
+    volumes:
+      - ./Newsletter/data:/home/unqfy/newsletter/data
     environment:
       - TZ=${TZ}
       - UNQFY_API_HOST=${UNQFY_API_HOST}
