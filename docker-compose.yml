@@ -40,6 +40,8 @@ services:
     build: ./Newsletter
     ports:
       - "7090:7090"
+    depends_on:
+      - unqfy
     volumes:
       - ./Newsletter/data:/home/unqfy/newsletter/data
     environment:

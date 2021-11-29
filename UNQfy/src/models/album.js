@@ -39,6 +39,7 @@ class Album extends Adder {
     toJSON() {
         return {
             id: this.id,
+            artist: this.artistName(),
             name: this.name,
             year: this.year,
         }

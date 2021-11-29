@@ -12,17 +12,17 @@ class ServiceClient {
             .then((_) => {
                 if (!this.heartbeat) {
                     this.heartbeat = true;
-                    return 'is working again';
+                    return this._sendHeartbeatHasChanged();
                 } else {
-                    return null;
+                    return this._sendNoChanges();
                 }
             })
             .catch((_) => {
                 if (this.heartbeat) {
                     this.heartbeat = false;
-                    return 'has stopped working';
+                    return this._sendHeartbeatHasChanged();
                 } else {
-                    return null;
+                    return this._sendNoChanges();
                 }
             });
     }
@@ -32,6 +32,27 @@ class ServiceClient {
             service: this.name,
             status: this.heartbeat ? 'on' : 'off'
         }
+    }
+
+    _sendHeartbeatHasChanged() {
+        return this._generateReport(
+            true, 
+            this.name + ' service ' + this._statusChanged());
+    }
+
+    _sendNoChanges() {
+        return this._generateReport(false, null);
+    }
+
+    _generateReport(isHeartbeatChanged, reportMessage) {
+        return {
+            isHeartbeatChanged,
+            reportMessage
+        };
+    }
+
+    _statusChanged() {
+        return this.heartbeat ? 'is working again' : 'has stopped working';
     }
 
     _heartbeatEndpoint() {

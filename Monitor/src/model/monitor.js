@@ -24,8 +24,11 @@ class Monitor {
   _checkHeartbeats() {
     this._services.forEach((service) => {
       service.checkHeartbeat()
-        .then(heartbeatReport => {
-          if (heartbeatReport !== null) this._doReport(service, heartbeatReport);
+        .then((heartbeatReport) => {
+          const { isHeartbeatChanged, reportMessage } = heartbeatReport;
+          if (isHeartbeatChanged) {
+            this._doReport(service, reportMessage);
+          }
         })
         .catch(_ => console.log(`Cannot detect last ${service.name} service hearbeat.`))
     });
@@ -39,8 +42,8 @@ class Monitor {
     clearInterval(this._timer);
   }
 
-  _doReport(service, heartbeatReport) {
-    const report = this._generateReport(service, heartbeatReport);
+  _doReport(service, reportMessage) {
+    const report = this._generateReport(reportMessage);
     console.log(report);
     this._sendReportToDiscord(service, report);
   }
@@ -55,8 +58,8 @@ class Monitor {
       );
   }
 
-  _generateReport(service, heartbeatReport) {
-    return `[${this._timeReport()}] ${service.name} service ${heartbeatReport}.`;
+  _generateReport(reportMessage) {
+    return `[${this._timeReport()}] ${reportMessage}.`;
   }
 
   _timeReport() {
