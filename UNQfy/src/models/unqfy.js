@@ -16,15 +16,15 @@ const ObserverManager = require('./observer/observerManager');
 const Logging = require('./observer/logging');
 const Newsletter = require('./observer/newsletter');
 const Action = require('./observer/action');
+const basicObservers = require('../lib/basicObservers');
 require('dotenv').config();
 
 class UNQfy extends Observable {
 
-  constructor() {
+  constructor(observers = basicObservers) {
     super();
     this._entitiesManager = new EntitiesManager();
-    this.addObserver(new Logging(), Object.keys(Action));
-    this.addObserver(new Newsletter(), [Action.addAlbum, Action.deleteArtist]);
+    this._addObservers(observers);
   }
 
   addArtist(artistData) {
@@ -163,7 +163,7 @@ class UNQfy extends Observable {
       return this.getTrackById(trackId)
         .getLyrics()
         .then((lyrics) => lyrics);
-    } catch(err) {
+    } catch (err) {
       if (err instanceof EntityNotFound && err.message.startsWith('Track')) {
         throw new RelatedEntityNotFound('Track');
       } else {
@@ -180,7 +180,7 @@ class UNQfy extends Observable {
 
   userListenTo(aUserId, aTrackId) {
     const user = this._entitiesManager.userListenTo(aUserId, aTrackId);
-    this._notify(Action.trackListen, {userId: aUserId, trackId: aTrackId});
+    this._notify(Action.trackListen, { userId: aUserId, trackId: aTrackId });
     return user;
   }
 
@@ -194,6 +194,15 @@ class UNQfy extends Observable {
 
   thisIs(artistId) {
     return this._entitiesManager.thisIs(artistId);
+  }
+
+  _addObservers(observers) {
+    observers.forEach(pairObserverActions =>
+      this.addObserver(
+        pairObserverActions.fst,
+        pairObserverActions.snd
+      )
+    );
   }
 
   save(filename) {
